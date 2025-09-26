@@ -1,13 +1,88 @@
-body {
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+/* CSS Variables */
+:root {
+  /* General colors */
+  --background: #081028;
+  --foreground: #ffffff;
+
+  --card: #0B1739;
+  --card-foreground: #ffffff;
+
+  --popover: #0B1739;
+  --popover-foreground: #ffffff;
+
+  --primary: #93F02F;
+  --primary-foreground: #0B1739;
+
+  --secondary: #0B1739;
+  --secondary-foreground: #ffffff;
+
+  --muted: #AEB9E1;
+  --muted-foreground: #AEB9E1;
+
+  --accent: #93F02F;
+  --accent-foreground: #0B1739;
+
+  --destructive: #F63F39;
+  --destructive-foreground: #ffffff;
+
+  --border: #343B4F;
+  --input: #343B4F;
+  --ring: #93F02F;
+
+  --radius: 0.25rem;
+
+  /* Sidebar colors */
+  --sidebar-background: #081028;
+  --sidebar-foreground: #AEB9E1;
+  --sidebar-primary: #93F02F;
+  --sidebar-primary-foreground: #0B1739;
+  --sidebar-accent: #7E89AC;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #0B1739;
+  --sidebar-ring: #93F02F;
+
+  /* PineappleAI specific colors */
+  --pineapple-bg-primary: #081028;
+  --pineapple-bg-secondary: #0B1739;
+  --pineapple-bg-tertiary: #0A1330;
+  --pineapple-green: #93F02F;
+  --pineapple-text-primary: #ffffff;
+  --pineapple-text-secondary: #AEB9E1;
+  --pineapple-border: #343B4F;
+}
+
+/* Global resets */
+* {
+  box-sizing: border-box;
+  border-color: var(--border);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Source Sans Pro', -apple-system, Roboto, Helvetica, sans-serif;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Wrapper for all admin panel pages */
+.admin-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--pineapple-bg-primary);
+  display: flex;
+  flex-direction: row;
 }
