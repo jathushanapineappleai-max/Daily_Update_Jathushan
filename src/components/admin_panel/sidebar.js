@@ -1,7 +1,8 @@
 ﻿import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/admin_panel/sidebar.css";
 
-import pineappleLogo from "../../assets/images/pineappleAI_logo.png"; // ✅ imported real logo
+import pineappleLogo from "../../assets/images/pineappleAI_logo.png";
 
 import homeIcon from "../../assets/icons/sidebar_home.png";
 import aboutIcon from "../../assets/icons/sidebar_about.png";
@@ -13,29 +14,93 @@ import careersIcon from "../../assets/icons/sidebar_careers.png";
 import logoutIcon from "../../assets/icons/sidebar_logout.png";
 
 const navItems = [
-  { id: "home", label: "Home", icon: homeIcon },
-  { id: "about", label: "About", icon: aboutIcon, dropdown: ["Team", "Vision"] },
-  { id: "services", label: "Services", icon: servicesIcon, dropdown: ["Web Dev", "App Dev", "UI/UX"] },
-  { id: "products", label: "Products", icon: productIcon },
-  { id: "blogs", label: "Blogs", icon: blogIcon },
-  { id: "contact", label: "Contact", icon: contactIcon },
-  { id: "careers", label: "Careers", icon: careersIcon, dropdown: ["Open Roles", "Internships"] },
-  { id: "logout", label: "Logout", icon: logoutIcon },
+  {
+    id: "home",
+    label: "Home",
+    icon: homeIcon,
+    dropdown: [
+      { label: "Product Selection", path: "/admin/product-selection" },
+      { label: "Client Review", path: "/admin/client-review" },
+    ],
+  },
+  {
+    id: "about",
+    label: "About",
+    icon: aboutIcon,
+    path: "/admin/team",
+  },
+  {
+    id: "services",
+    label: "Services",
+    icon: servicesIcon,
+    dropdown: [
+      { label: "Main Services", path: "/admin/main-services" },
+      { label: "Tech Stack", path: "/admin/tech-stack" },
+      { label: "Industry", path: "/admin/industry" },
+    ],
+  },
+  {
+    id: "products",
+    label: "Products",
+    icon: productIcon,
+    dropdown: [
+      { label: "Company Projects", path: "/admin/company-projects" },
+      { label: "Clients Projects", path: "/admin/clients-projects" },
+    ],
+  },
+  {
+    id: "blogs",
+    label: "Blogs",
+    icon: blogIcon,
+    dropdown: [
+      { label: "New Blog", path: "/admin/new-blog" },
+      { label: "Posted Blogs", path: "/admin/posted-blogs" },
+    ],
+  },
+  {
+    id: "contact",
+    label: "Contact",
+    icon: contactIcon,
+    path: "/admin/contact",
+  },
+  {
+    id: "careers",
+    label: "Careers",
+    icon: careersIcon,
+    dropdown: [
+      { label: "New Jobs", path: "/admin/new-jobs" },
+      { label: "Posted Jobs", path: "/admin/posted-jobs" },
+      { label: "Applications", path: "/admin/applications" },
+    ],
+  },
+  {
+    id: "logout",
+    label: "Logout",
+    icon: logoutIcon,
+    path: "/admin/signin",
+  },
 ];
 
 export default function Sidebar() {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState("home");
   const [openDropdowns, setOpenDropdowns] = useState({});
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile toggle state
+  const [sidebarOpen, setSidebarOpen] = useState(false); // mobile toggle
 
-  const toggleDropdown = (id) => {
-    setOpenDropdowns((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
+  const handleNavClick = (item, subPath) => {
+    if (subPath) {
+      navigate(subPath);
+      setSelected(subPath);
+    } else if (item.path) {
+      navigate(item.path);
+      setSelected(item.path);
+    }
 
-  const handleNavClick = (item) => {
-    setSelected(item.id);
-    if (item.dropdown) toggleDropdown(item.id);
-    if (window.innerWidth < 768) setSidebarOpen(false); // auto-close sidebar on mobile
+    if (item.dropdown) {
+      setOpenDropdowns((prev) => ({ ...prev, [item.id]: !prev[item.id] }));
+    }
+
+    if (window.innerWidth < 768) setSidebarOpen(false);
   };
 
   return (
@@ -54,15 +119,11 @@ export default function Sidebar() {
       <div className={`ap-sidebar ${sidebarOpen ? "open" : ""}`}>
         {/* Logo */}
         <div className="ap-sidebar-logo">
-  <img src={pineappleLogo} alt="PineappleAI Logo" />
-  <h1>PineappleAI</h1>
-  {/* Divider line */}
-  <div className="ap-sidebar-logo-divider"></div>
-</div>
+          <img src={pineappleLogo} alt="PineappleAI Logo" />
+          <h1>PineappleAI</h1>
+        </div>
 
-
-
-        {/* Divider under Logo */}
+        {/* Divider line */}
         <hr className="ap-sidebar-logo-divider" />
 
         {/* Navigation */}
@@ -71,18 +132,16 @@ export default function Sidebar() {
             <div key={item.id} className="ap-nav-wrapper">
               <button
                 onClick={() => handleNavClick(item)}
-                className={selected === item.id ? "ap-nav-item active" : "ap-nav-item"}
+                className={
+                  selected === item.path ? "ap-nav-item active" : "ap-nav-item"
+                }
               >
                 {item.icon && (
-                  <img
-                    src={item.icon}
-                    alt={`${item.label} icon`}
-                    className="ap-nav-icon"
-                  />
+                  <img src={item.icon} alt={`${item.label} icon`} className="ap-nav-icon" />
                 )}
                 <span>{item.label}</span>
 
-                {/* Dropdown indicator */}
+                {/* Dropdown arrow */}
                 {item.dropdown && (
                   <span
                     className={`ap-dropdown-icon ${openDropdowns[item.id] ? "open" : ""}`}
@@ -97,11 +156,11 @@ export default function Sidebar() {
                 <div className="ap-dropdown">
                   {item.dropdown.map((subItem) => (
                     <button
-                      key={subItem}
+                      key={subItem.path}
                       className="ap-dropdown-item"
-                      onClick={() => setSelected(subItem)}
+                      onClick={() => handleNavClick(item, subItem.path)}
                     >
-                      {subItem}
+                      {subItem.label}
                     </button>
                   ))}
                 </div>

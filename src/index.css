@@ -77,6 +77,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ===============================
+   Layout Structure
+   =============================== */
+
 /* Wrapper for all admin panel pages */
 .admin-page {
   position: relative;
@@ -85,4 +89,52 @@ body {
   background-color: var(--pineapple-bg-primary);
   display: flex;
   flex-direction: row;
+}
+
+/* Main admin layout wrapper (Sidebar + Content) */
+.admin-layout {
+  display: flex;
+  flex-direction: row;
+  background: var(--pineapple-bg-primary);
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Sidebar is fixed or static width */
+.sidebar {
+  width: 250px; /* Adjust based on your actual sidebar width */
+  min-width: 250px;
+  background-color: var(--sidebar-background);
+  border-right: 1px solid var(--sidebar-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+/* Main content area beside sidebar */
+.admin-main {
+  margin-left: 250px; /* must match sidebar width */
+  flex: 1;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--pineapple-bg-primary);
+}
+
+/* Page Section Example */
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--pineapple-text-primary);
+  margin-bottom: 12px;
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--pineapple-text-secondary);
+  max-width: 800px;
+  line-height: 1.6;
 }

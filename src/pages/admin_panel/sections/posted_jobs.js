@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import "../../../styles/admin_panel/posted_jobs.css";
 
 export default function () {
