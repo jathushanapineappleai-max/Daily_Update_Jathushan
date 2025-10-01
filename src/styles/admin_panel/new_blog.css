@@ -37,3 +37,22 @@
   color: rgb(var(--pineapple-text-secondary));
   margin: 0;
 }
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;           /* buttons move to next line if needed */
+  gap: 16px;                 /* spacing between buttons */
+  justify-content: flex-start; /* align all buttons to left */
+  margin-top: 20px;
+}
+
+.popup-container {
+  position: fixed;
+  top: 20px; /* Position near the top with 20px offset */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Offset by half its width to center */
+  padding: 20px; /* Proper padding for content */
+  z-index: 2000; /* Preserve high z-index */
+  max-width: 90%; /* Prevent overflow on small screens */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}

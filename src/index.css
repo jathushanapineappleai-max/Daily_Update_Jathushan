@@ -1,51 +1,13 @@
+/* index.css */
+
 /* Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
 
-/* CSS Variables */
+/* ================= Global Variables ================= */
 :root {
-  /* General colors */
   --background: #081028;
   --foreground: #ffffff;
-
-  --card: #0B1739;
-  --card-foreground: #ffffff;
-
-  --popover: #0B1739;
-  --popover-foreground: #ffffff;
-
-  --primary: #93F02F;
-  --primary-foreground: #0B1739;
-
-  --secondary: #0B1739;
-  --secondary-foreground: #ffffff;
-
-  --muted: #AEB9E1;
-  --muted-foreground: #AEB9E1;
-
-  --accent: #93F02F;
-  --accent-foreground: #0B1739;
-
-  --destructive: #F63F39;
-  --destructive-foreground: #ffffff;
-
-  --border: #343B4F;
-  --input: #343B4F;
-  --ring: #93F02F;
-
-  --radius: 0.25rem;
-
-  /* Sidebar colors */
-  --sidebar-background: #081028;
-  --sidebar-foreground: #AEB9E1;
-  --sidebar-primary: #93F02F;
-  --sidebar-primary-foreground: #0B1739;
-  --sidebar-accent: #7E89AC;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #0B1739;
-  --sidebar-ring: #93F02F;
-
-  /* PineappleAI specific colors */
   --pineapple-bg-primary: #081028;
   --pineapple-bg-secondary: #0B1739;
   --pineapple-bg-tertiary: #0A1330;
@@ -53,9 +15,11 @@
   --pineapple-text-primary: #ffffff;
   --pineapple-text-secondary: #AEB9E1;
   --pineapple-border: #343B4F;
+  --border: #343B4F;
+  --radius: 0.25rem;
 }
 
-/* Global resets */
+/* ================ Resets & Global Typography ================ */
 * {
   box-sizing: border-box;
   border-color: var(--border);
@@ -77,64 +41,40 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ===============================
-   Layout Structure
-   =============================== */
+/* Global scrollbar */
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.06);
+  border-radius: 6px;
+}
 
-/* Wrapper for all admin panel pages */
+/* admin_layout.css */
+
+/* Wrapper for all admin pages */
 .admin-page {
-  position: relative;
+  display: flex;
+  flex-direction: row;
   min-height: 100vh;
   width: 100%;
   background-color: var(--pineapple-bg-primary);
-  display: flex;
-  flex-direction: row;
 }
 
-/* Main admin layout wrapper (Sidebar + Content) */
+/* Main layout wrapper */
 .admin-layout {
   display: flex;
   flex-direction: row;
-  background: var(--pineapple-bg-primary);
   width: 100%;
   min-height: 100vh;
-  position: relative;
 }
 
-/* Sidebar is fixed or static width */
-.sidebar {
-  width: 250px; /* Adjust based on your actual sidebar width */
-  min-width: 250px;
-  background-color: var(--sidebar-background);
-  border-right: 1px solid var(--sidebar-border);
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
-/* Main content area beside sidebar */
+/* Main content beside sidebar */
 .admin-main {
-  margin-left: 250px; /* must match sidebar width */
+  margin-left: 180px;
   flex: 1;
-  padding: 40px 60px;
-  box-sizing: border-box;
-  min-height: 100vh;
-  overflow-x: hidden;
+  padding: 0 60px 40px 66px;
   background-color: var(--pineapple-bg-primary);
-}
-
-/* Page Section Example */
-.section-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--pineapple-text-primary);
-  margin-bottom: 12px;
-}
-
-.section-desc {
-  font-size: 16px;
-  color: var(--pineapple-text-secondary);
-  max-width: 800px;
-  line-height: 1.6;
+  overflow-x: hidden;
 }

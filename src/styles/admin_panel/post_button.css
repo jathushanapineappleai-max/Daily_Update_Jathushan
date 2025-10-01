@@ -1,1 +1,30 @@
-﻿/* Styles for  */ .post_button-btn { padding:8px 16px; }
+﻿/* post_button.css */
+
+.post_button-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 14px 61px;
+  gap: 8px;
+
+  background: #93F02F;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  color: #0B1739;
+
+  transition: background 0.2s ease, transform 0.1s ease;
+  margin-top: 32px; /* ✅ spacing below description */
+}
+
+.post_button-btn:hover {
+  background: #a9ff4a;
+  transform: translateY(-1px);
+}

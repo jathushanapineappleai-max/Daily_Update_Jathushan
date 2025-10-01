@@ -55,7 +55,6 @@ export default function AdminApp() {
           </Routes>
 
           {/* Example shared Pagination */}
-          <Pagination />
         </div>
       </div>
     </Router>

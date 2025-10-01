@@ -1,1 +1,660 @@
-﻿/* Styles for  Section */ .team-section { padding:20px; }
+﻿:root{
+  --bg:#071028;
+  --panel:#0c2034;
+  --accent:#1fb6ff;
+  --muted:#94a3b8;
+  --input:#081827;
+  --text:#e6eef8;
+  --green:#a6ff3d;
+}
+
+/* wrapper that will be blurred when modal is open */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  transition: filter 180ms ease, opacity 180ms ease;
+}
+
+.content-wrapper.blurred {
+  filter: blur(5px); /* your requested blur level */
+  pointer-events: none;
+  user-select: none;
+}
+
+.team-page-root{
+  min-height: 100vh;
+  background: linear-gradient(180deg, #031029 0%, #071430 100%);
+  color: var(--text);
+  padding: 20px 28px;
+  box-sizing: border-box;
+}
+
+.team-title{
+  margin-left: 18.23%;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.team-container{
+  margin-left: 18.23%;
+  margin-right: 2.89%;
+  background: rgba(11,30,52,0.45);
+  border: 2px solid rgba(31,182,255,0.12);
+  padding: 28px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.row{
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.three-cols{
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.field{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label{
+  font-size: 13px;
+  color: var(--text);
+}
+
+.input, .select, .textarea{
+  background: var(--input);
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 12px 14px;
+  border-radius: 6px;
+  color: var(--text);
+  outline: none;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+.input::placeholder, .textarea::placeholder{
+  color: var(--muted);
+  opacity: 1;
+}
+
+.select{
+  appearance: none;
+  position: relative;
+  color: var(--muted);
+  padding: 12px 34px 12px 14px;
+}
+
+.select::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--muted);
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.select option{
+  color: var(--text);
+  background: var(--input);
+}
+
+.select option:disabled{
+  color: var(--muted);
+}
+
+.select.has-value {
+  color: var(--text);
+}
+
+.textarea{
+  min-height: 84px;
+  resize: vertical;
+}
+
+.photo-row{
+  align-items: flex-start;
+}
+
+.photo-field{
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  max-width: 280px;
+}
+
+.photo-field .field-label{
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-stack{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.photo-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+}
+
+.avatar-placeholder .avatar-icon{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.avatar-icon img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.avatar{
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid rgba(31, 182, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.link-btn{
+  background: none;
+  border: none;
+  color: #f87171;
+  cursor: pointer;
+  padding: 0;
+  font-size: 13px;
+}
+
+.link-btn.change{
+  color: #60f0b6;
+}
+
+.link-btn.delete{
+  color: #ff6b6b;
+}
+
+.photo-drop{
+  flex: 1;
+  min-height: 127px;
+  border-radius: 6px;
+  border: 2px dashed rgba(36,161,88,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.drop-inner{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.drop-icon{
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
+}
+
+.drop-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.drop-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  text-align: center;
+}
+
+.drop-line{
+  font-size: 13px;
+  color: var(--green);
+}
+
+.drop-sub{
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.empty-field{
+  flex: 1;
+}
+
+.fullwidth{
+  width: 100%;
+}
+
+.description-field .textarea{
+  min-height: 72px;
+}
+
+.divider{
+  height: 1px;
+  background: rgba(255,255,255,0.03);
+  margin-top: 6px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.add-employee-btn {
+  background: var(--green);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel-btn {
+  background: none;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* =====================
+  Modal styles for Employee Update Form
+  - Styles for modal overlay, dialog, and form fields
+  - Used in TeamPage for editing employee details
+====================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,12,0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.edit-modal {
+  position: absolute;
+  width: 532px;
+  height: auto;
+  left: calc(50% - 266px);
+  top: 9.75%;
+  background: rgba(11,30,52,0.98);
+  border: 2px solid rgba(31,182,255,0.12);
+  padding: 20px 22px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  color: var(--text);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  overflow: auto;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.form-details {
+  width: 488px;
+  height: 455px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-left: 6px;
+  
+ 
+}
+
+.modal-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+  margin-left: 4px;
+  color: var(--text);
+}
+
+.row-field {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.name-row, .position-row, .linkedin-row {
+  height: 42px;
+}
+
+.photo-row {
+  height: 127px;
+}
+
+.desc-row {
+  height: 82px;
+}
+
+.row-field.description-field {
+  align-items: flex-start;
+}
+
+.row-field.photo-block {
+  align-items: flex-start;
+}
+
+.row-field.photo-block .field-label {
+  margin-top: 25px;
+  width: 103px;
+  height: 20px;
+}
+
+.photo-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.photo-block-inner {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.photo-left {
+  min-width: 48px;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-drop {
+  width: 301.5px;
+  height: 127px;
+  min-height: auto;
+  flex: none;
+  border-radius: 4px;
+  border: 0.6px dashed rgba(36,161,88,0.2);
+}
+
+.edit-modal .avatar {
+  width: 48px;
+  height: 48px;
+  border: none;
+  box-shadow: none;
+}
+
+.edit-modal .avatar-placeholder .avatar-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--accent);
+}
+
+.edit-modal .avatar-icon img {
+  width: 28px;
+  height: 28px;
+}
+
+.edit-modal .link-btn.delete {
+  width: 42px;
+  height: 19px;
+}
+
+.modal-actions {
+  justify-content: flex-end;
+  display: flex;
+  gap: 8px;
+}
+
+.edit-modal .row-field .field-label {
+  min-width: 103px;
+}
+
+.edit-modal .input, .edit-modal .select, .edit-modal .textarea {
+  width: 301.5px;
+  flex: none;
+}
+
+.spacer {
+  width: 66px;
+}
+
+/* Team list */
+.team-list {
+  margin-left: 18.23%;
+  margin-right: 2.89%;
+  background: rgba(11,30,52,0.45);
+  border: 2px solid rgba(31,182,255,0.12);
+  padding: 28px;
+  border-radius: 6px;
+  margin-top: 40px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.list-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.team-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.team-table th,
+.team-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.team-table th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.list-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(78, 78, 248, 0.12);
+}
+
+.list-avatar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(180deg,#a2aeb7,#b3bac0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  margin: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.action-btn:hover {
+  opacity: 0.7;
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+}
+
+.action-btn.edit .action-icon {
+  filter: brightness(0) saturate(100%) invert(87%) sepia(10%) saturate(1844%) hue-rotate(39deg) brightness(102%) contrast(106%);
+}
+
+.action-btn.delete .action-icon {
+  filter: brightness(0) saturate(100%) invert(51%) sepia(92%) saturate(2481%) hue-rotate(334deg) brightness(101%) contrast(101%);
+}
+
+.pagination-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 18.23%;
+  margin-right: 2.89%;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.page-info {
+  color: var(--text);
+}
+
+.pagination-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rows-per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rows-select {
+  background: var(--input);
+  border: 1px solid rgba(255,255,255,0.03);
+  color: var(--text);
+  padding: 4px 24px 4px 8px;
+  border-radius: 4px;
+  appearance: none;
+  position: relative;
+}
+
+.page-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.page-arrows button {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.page-arrows button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* responsive */
+/* =====================
+   Responsive styles for Employee Update Modal
+   - Adjusts modal and form layout for smaller screens
+====================== */
+@media (max-width: 980px){
+  .team-container{
+    position: static;
+    margin: 10px;
+  }
+
+  .row{
+    flex-direction: column;
+  }
+
+  .photo-row{
+    flex-direction: column;
+  }
+
+  .photo-field{
+    max-width: none;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .edit-modal {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    top: 8%;
+    width: auto;
+    height: auto;
+  }
+
+  .modal-content {
+    gap: 12px;
+  }
+
+  .photo-block-inner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .row-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
