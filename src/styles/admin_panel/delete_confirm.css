@@ -1,1 +1,128 @@
-﻿/* Styles for  Popup */ .delete_confirm-popup { padding:20px; }
+﻿/* === Overlay === */
+.delete-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* === Popup Container === */
+.delete-confirm-popup {
+  position: relative;
+  width: 440px;
+  height: auto;
+  background: #0B1739;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  isolation: isolate;
+  animation: fadeIn 0.3s ease;
+}
+
+/* === Close Button === */
+.delete-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #E5E5E5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.delete-close-btn img {
+  width: 10px;
+  height: 10px;
+}
+
+/* === Icon Container === */
+.delete-icon-container img {
+  width: 48px;
+  height: 48px;
+}
+
+/* === Texts === */
+.delete-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.delete-title {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.delete-desc {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 140%;
+  color: #AEB9E1;
+  opacity: 0.56;
+  margin: 0;
+}
+
+/* === Button Group === */
+.delete-btn-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  width: 160px;
+  height: 48px;
+  border-radius: 8px;
+  background: #AEB9E1;
+  border: 1px solid #000000;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Confirm Button */
+.confirm-btn {
+  width: 160px;
+  height: 48px;
+  border-radius: 8px;
+  background: #F63F39;
+  color: #F5F5F5;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

@@ -1,4 +1,5 @@
-﻿import React from "react";
+﻿// AdminHeader.jsx
+import React from "react";
 import "../../styles/admin_panel/admin_header.css";
 
 export default function AdminHeader() {

@@ -1,31 +1,76 @@
 ﻿/* admin_header.css */
 
+/* ============================= */
+/* Header Container */
 .ap-header {
   position: sticky;
-  top: 10px; /* lowered slightly */
-  left: -10px; /* shifted a bit towards the left */
-  width: 120%;
+  top:0;                       /* stick to top of viewport */
+  left: 300px;                  /* aligns right to sidebar (300px width) */
+  width: calc(100% - 300px);    /* remaining horizontal space */
   height: 97px;
-  background-color: var(--pineapple-bg-primary);
-  border-bottom: 1px solid var(--pineapple-border);
+  background-color: var(--pineapple-bg-primary, #081028);
+  border-bottom: 2px solid #0B1739;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  padding-top: 20px; /* adjusted spacing for new top position */
-  padding-left: 12px; /* a bit more spacing from left */
-  z-index: 1000;
+  justify-content: center;      /* vertically center text */
+  padding-left: 16px;           /* spacing from sidebar */
+  padding-top: 0;               /* adjust vertical spacing */
+  z-index: 900;
 }
 
+/* Header Title */
 .ap-header-title {
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
   font-size: 24px;
+  line-height: 32px;
   color: #ffffff;
   margin: 0;
+  padding-top: 25px;
 }
 
+/* Header Subtitle */
 .ap-header-subtitle {
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
   font-size: 14px;
-  color: var(--pineapple-text-secondary);
-  margin-top: 4px;
+  line-height: 14px;
+  color: var(--pineapple-text-secondary, #AEB9E1);
+  margin: 4px 0 0 0;
+}
+
+/* ============================= */
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .ap-header {
+    left: 220px;                /* sidebar shrinks */
+    width: calc(100% - 220px);
+    padding-left: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ap-header {
+    left: 250px;                /* mobile sidebar width */
+    width: calc(100% - 250px);
+    padding-left: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ap-header {
+    left: 220px;
+    width: calc(100% - 220px);
+    padding-left: 8px;
+  }
+
+  .ap-header-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .ap-header-subtitle {
+    font-size: 12px;
+    line-height: 14px;
+  }
 }

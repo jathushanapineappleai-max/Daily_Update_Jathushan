@@ -50,31 +50,3 @@ body {
   background: rgba(255,255,255,0.06);
   border-radius: 6px;
 }
-
-/* admin_layout.css */
-
-/* Wrapper for all admin pages */
-.admin-page {
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
-  width: 100%;
-  background-color: var(--pineapple-bg-primary);
-}
-
-/* Main layout wrapper */
-.admin-layout {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  min-height: 100vh;
-}
-
-/* Main content beside sidebar */
-.admin-main {
-  margin-left: 180px;
-  flex: 1;
-  padding: 0 60px 40px 66px;
-  background-color: var(--pineapple-bg-primary);
-  overflow-x: hidden;
-}

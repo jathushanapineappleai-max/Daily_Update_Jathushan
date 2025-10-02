@@ -56,3 +56,23 @@
   max-width: 90%; /* Prevent overflow on small screens */
   box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
+
+.trash-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trash-icon {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease;
+}
+
+.trash-icon-btn:hover .trash-icon {
+  transform: scale(1.1);
+}
