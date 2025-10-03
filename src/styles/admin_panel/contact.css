@@ -1,1 +1,438 @@
-﻿/* Styles for  Section */ .contact-section { padding:20px; }
+﻿/* =============================== */
+/* Contact Page Wrapper */
+.contact-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  margin-left: 220px; /* Matches sidebar width */
+  margin-top: 80px; /* Matches header height */
+  min-height: calc(100vh - 80px); /* Adjusts for header */
+  width: calc(100% - 220px); /* Spreads to remaining space */
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* =============================== */
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .contact-wrapper {
+    margin-left: 200px; /* Matches sidebar width */
+    width: calc(100% - 200px); /* Spreads to remaining space */
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-wrapper {
+    margin-left: 0; /* Sidebar hidden off-screen */
+    margin-top: 60px; /* Matches mobile header height */
+    width: 100%; /* Full width */
+    min-height: calc(100vh - 60px);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-wrapper {
+    margin-top: 55px; /* Matches smaller header height */
+    min-height: calc(100vh - 55px);
+    padding: 8px;
+  }
+}
+
+/* =============================== */
+/* Page Heading */
+.contact-page-heading {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+}
+
+/* =============================== */
+/* Contact Section */
+.contact-section {
+  background: #0B1739;
+  border: 0.6px solid #343B4F;
+  box-shadow: 1px 1px 1px rgba(16, 25, 52, 0.4);
+  border-radius: 10px;
+  padding: 16px;
+  width: 100%; /* Full width of wrapper */
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+/* =============================== */
+/* Header Wrapper (for All Contacts + Counter) */
+.contact-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #343B4F;
+}
+
+/* Section Header */
+.contact-header {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+/* Counter */
+.contact-counter {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: right;
+  color: #93F02F;
+  width: 97.72px;
+  height: 18px;
+}
+
+/* =============================== */
+/* Table Rows */
+.contact-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 13px;
+  color: #AEB9E1;
+  border-bottom: none;
+  transition: background 0.3s ease;
+  width: 100%; /* Ensure row stretches fully */
+  flex-wrap: nowrap; /* Prevent wrapping */
+  margin: 0; /* Ensure no gaps */
+}
+
+/* Alternate background for even-numbered rows */
+.alt-row {
+  background: #0A1330;
+  width: calc(100% + 32px); /* Offset .contact-section padding */
+  margin-left: -16px; /* Align with container edge */
+  margin-right: -16px; /* Align with container edge */
+  padding: 8px 16px; /* Restore padding for content alignment */
+}
+
+/* Header row */
+.header-row {
+  font-weight: 600;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  border-bottom: none;
+  width: 100%; /* Ensure header row stretches */
+}
+
+/* =============================== */
+/* Columns Alignment */
+.contact-column {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px; /* Accommodate 24px icons */
+  word-break: break-word;
+  overflow: hidden;
+  flex: 1; /* Equal distribution by default */
+  padding: 0 8px; /* Consistent padding for alignment */
+}
+
+/* Adjusted column widths to scale dynamically */
+.header-row .contact-column:nth-child(1),
+.contact-row .contact-column:nth-child(1) {
+  flex: 1 0 12%; /* Name, ~12% of available width */
+  min-width: 100px; /* Minimum for readability */
+}
+
+.header-row .contact-column:nth-child(2),
+.contact-row .contact-column:nth-child(2) {
+  flex: 1 0 18%; /* Email, ~18% */
+  min-width: 140px;
+}
+
+.header-row .contact-column:nth-child(3),
+.contact-row .contact-column:nth-child(3) {
+  flex: 1 0 12%; /* Phone Number, ~12% */
+  min-width: 100px;
+}
+
+.header-row .contact-column:nth-child(4),
+.contact-row .contact-column:nth-child(4) {
+  flex: 1 0 14%; /* Services, ~14% */
+  min-width: 120px;
+}
+
+.header-row .contact-column:nth-child(5),
+.contact-row .contact-column:nth-child(5) {
+  flex: 2 0 34%; /* Message, ~34% */
+  min-width: 200px;
+}
+
+.header-row .contact-column:nth-child(6),
+.contact-row .contact-column:nth-child(6) {
+  flex: 0 0 12%; /* Action, ~12% */
+  min-width: 80px;
+  justify-content: center; /* Center align title and buttons */
+}
+
+/* Sort icon beside column headings */
+.column-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* =============================== */
+/* Action Icons */
+.contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center align buttons */
+  gap: 10px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.icon-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+  opacity: 0.85;
+}
+
+/* =============================== */
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .contact-counter {
+    font-size: 13px;
+    width: 90px;
+  }
+
+  .contact-column {
+    padding: 0 10px; /* Slightly more padding for readability */
+  }
+
+  .alt-row {
+    padding: 8px 10px; /* Match column padding */
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px; /* Better spacing */
+    padding: 12px; /* Card padding */
+    margin-bottom: 12px; /* Space between cards */
+    width: 100%; /* Full width */
+    background: #0B1739; /* Match .contact-section for regular rows */
+    border: 1px solid #343B4F;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
+    animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Micro-interaction */
+  }
+
+  .alt-row {
+    background: #0A1330; /* Alternate card background */
+    width: calc(100% + 32px); /* Offset .contact-section padding */
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 12px; /* Match regular cards */
+  }
+
+  .header-row {
+    display: none;
+  }
+
+  .contact-column {
+    width: 100%;
+    font-size: 13px; /* Readable */
+    flex: none; /* Override flex */
+    padding: 6px 10px; /* Better spacing */
+    gap: 7px; /* For 24px icons */
+    text-overflow: ellipsis; /* Handle overflow */
+    white-space: normal; /* Allow wrapping */
+    position: relative;
+  }
+
+  /* Bold labels for stacked columns */
+  .contact-column:nth-child(1)::before {
+    content: "Name: ";
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-right: 5px;
+  }
+
+  .contact-column:nth-child(2)::before {
+    content: "Email: ";
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-right: 5px;
+  }
+
+  .contact-column:nth-child(3)::before {
+    content: "Phone Number: ";
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-right: 5px;
+  }
+
+  .contact-column:nth-child(4)::before {
+    content: "Services: ";
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-right: 5px;
+  }
+
+  .contact-column:nth-child(5)::before {
+    content: "Message: ";
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-right: 5px;
+  }
+
+  .contact-column:nth-child(6)::before {
+    content: "Actions: ";
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-right: 5px;
+  }
+
+  .contact-actions {
+    flex-wrap: wrap;
+    gap: 8px; /* Touch-friendly */
+    justify-content: flex-start; /* Left-align */
+  }
+
+  .icon-btn {
+    min-width: 48px; /* WCAG touch target */
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-btn img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .contact-counter {
+    font-size: 13px;
+    width: 90px;
+    position: static;
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .contact-header-wrapper {
+    flex-direction: row; /* Side-by-side */
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* For long Message column */
+  .contact-column:nth-child(5) {
+    max-height: 150px;
+    overflow-y: auto; /* Scroll if too long */
+    white-space: normal;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .contact-row:active {
+    transform: scale(0.98); /* Touch feedback */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 12px;
+  }
+
+  .contact-header {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .contact-page-heading {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .contact-column {
+    font-size: 12px;
+    padding: 5px 8px;
+    gap: 6px;
+  }
+
+  .icon-btn img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .icon-btn {
+    min-width: 44px; /* WCAG compliant */
+    min-height: 44px;
+  }
+
+  .contact-counter {
+    font-size: 12px;
+    width: 80px;
+  }
+
+  .alt-row {
+    width: calc(100% + 24px); /* Offset reduced padding */
+    margin-left: -12px;
+    margin-right: -12px;
+    padding: 10px; /* Match regular cards */
+  }
+
+  .contact-row {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .contact-column:nth-child(5) {
+    max-height: 120px;
+  }
+
+  .contact-column::before {
+    font-size: 13px;
+  }
+
+  .contact-header-wrapper {
+    flex-direction: column; /* Stack for small screens */
+    align-items: flex-start;
+    gap: 2px;
+  }
+}

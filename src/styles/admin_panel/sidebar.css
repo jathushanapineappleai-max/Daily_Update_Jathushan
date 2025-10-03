@@ -5,17 +5,17 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 300px;             /* Outer container width */
+  width: 220px;
   min-height: 100vh;
   background-color: var(--sidebar-background, #081028);
   color: var(--sidebar-foreground, #AEB9E1);
   display: flex;
   flex-direction: column;
-  padding: 14px;
+  padding: 12px;
   border-right: 2px solid #0B1739;
-  transition: left 0.3s ease, width 0.3s ease;
+  transition: left 0.3s ease;
   overflow-y: auto;
-  overflow-x: hidden;        /* prevent horizontal cutoff */
+  overflow-x: hidden;
   z-index: 1001;
 }
 
@@ -24,20 +24,20 @@
 .ap-sidebar-logo {
   position: relative;
   width: 100%;
-  max-width: 244px;
+  max-width: 196px;
   min-width: 0;
-  height: 60px;
-  margin-bottom: 16px;
+  height: 50px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 2px;
-  padding-left: 20px;
-  padding-top: 25px;
+  padding-left: 16px;
+  padding-top: 20px;
 }
 
 .ap-sidebar-logo img {
-  width: 39px;
-  height: 39px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -45,21 +45,20 @@
 .ap-sidebar-logo h1 {
   font-family: 'Raleway', sans-serif;
   font-weight: 900;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 20px;
+  line-height: 24px;
   margin: 0;
   background: linear-gradient(92.76deg, #7EBE39 6.05%, #93F02F 68.09%, #3A581A 98.88%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
-  padding-top: 5px;
-
-  flex-shrink: 1;          /* allow shrinking */
-  min-width: 0;            /* prevent overflow */
-  overflow: hidden;        /* hide overflow */
-  text-overflow: ellipsis; /* show ellipsis if text too long */
-  white-space: nowrap;     /* prevent wrapping */
+  padding-top: 4px;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ap-sidebar-logo-divider {
@@ -67,7 +66,7 @@
   height: 0;
   border-bottom: 2px solid #0B1739;
   margin-top: 4px;
-  margin-left: -24px;
+  margin-left: -20px;
 }
 
 /* =============================== */
@@ -75,10 +74,10 @@
 .ap-sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   width: 100%;
-  max-width: 244px;
-  margin-top: 10px;
+  max-width: 196px;
+  margin-top: 8px;
   box-sizing: border-box;
 }
 
@@ -92,33 +91,32 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
-  padding: 12px 20px;
+  gap: 10px;
+  padding: 10px 16px;
   width: 100%;
   background: none;
   border: none;
   color: var(--pineapple-text-secondary, #AEB9E1);
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 7px;
   text-align: left;
   transition: color 0.2s;
   position: relative;
 }
 
 .ap-nav-item:hover {
-  background: none;
   color: var(--pineapple-text-secondary, #AEB9E1);
 }
 
 .ap-nav-item.active {
-  color: #93F02F; /* text green */
+  color: #93F02F;
 }
 
 /* Nav Icon */
 .ap-nav-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 }
 
@@ -126,9 +124,9 @@
 /* Dropdown Arrow */
 .ap-dropdown-icon {
   position: absolute;
-  width: 8px;
-  height: 12px;
-  right: 20px;
+  width: 7px;
+  height: 11px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%) rotate(0deg);
   transition: transform 0.3s ease, opacity 0.3s ease;
@@ -145,9 +143,9 @@
 .ap-dropdown {
   display: flex;
   flex-direction: column;
-  padding-left: 16px;
-  margin-top: 4px;
-  gap: 5px;
+  padding-left: 12px;
+  margin-top: 3px;
+  gap: 4px;
   animation: dropdownFade 0.25s ease;
 }
 
@@ -163,14 +161,14 @@
 }
 
 .ap-dropdown-item {
-  padding: 8px 18px;
+  padding: 6px 14px;
   background: var(--pineapple-bg-tertiary, #0A1330);
   border: none;
   color: var(--pineapple-text-secondary, #AEB9E1);
   text-align: left;
   cursor: pointer;
   border-radius: 4px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   position: relative;
   transition: background 0.2s, color 0.2s;
 }
@@ -200,7 +198,7 @@
 /* =============================== */
 /* Scrollbar Styling */
 .ap-sidebar::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .ap-sidebar::-webkit-scrollbar-thumb {
@@ -210,43 +208,6 @@
 
 .ap-sidebar::-webkit-scrollbar-track {
   background: transparent;
-}
-
-/* =============================== */
-/* Hamburger Toggle (Mobile) */
-.sidebar-toggle {
-  display: none;
-  position: fixed;
-  top: 18px;
-  left: 20px;
-  width: 32px;
-  height: 26px;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  z-index: 1100;
-  background: transparent;
-  border: none;
-}
-
-.sidebar-toggle .bar {
-  height: 3px;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.sidebar-toggle.open .bar:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.sidebar-toggle.open .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.sidebar-toggle.open .bar:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
 }
 
 /* =============================== */
@@ -271,53 +232,12 @@
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .ap-sidebar {
-    width: 220px;
+    width: 200px;
   }
 
   .ap-sidebar-nav {
     width: 100%;
-  }
-
-  .ap-sidebar-logo h1 {
-    font-size: 22px;
-    line-height: 26px;
-  }
-
-  .ap-nav-item {
-    padding: 10px 12px;
-    font-size: 0.95rem;
-  }
-
-  .ap-dropdown-item {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .ap-sidebar {
-    width: 250px;
-    left: -260px;
-    top: 0;
-  }
-
-  .ap-sidebar.open {
-    left: 0;
-  }
-
-  .ap-sidebar-logo h1 {
-    font-size: 20px;
-    line-height: 24px;
-  }
-
-  .sidebar-toggle {
-    display: flex;
-  }
-}
-
-@media (max-width: 480px) {
-  .ap-sidebar {
-    width: 220px;
+    max-width: 180px;
   }
 
   .ap-sidebar-logo h1 {
@@ -326,12 +246,49 @@
   }
 
   .ap-nav-item {
-    padding: 8px 12px;
+    padding: 8px 10px;
     font-size: 0.9rem;
   }
 
   .ap-dropdown-item {
-    padding: 5px 12px;
+    padding: 5px 10px;
     font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ap-sidebar {
+    width: 220px;
+    left: -230px;
+  }
+
+  .ap-sidebar.open {
+    left: 0;
+  }
+
+  .ap-sidebar-logo h1 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ap-sidebar {
+    width: 200px;
+  }
+
+  .ap-sidebar-logo img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .ap-nav-item {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+
+  .ap-dropdown-item {
+    padding: 5px 10px;
+    font-size: 0.8rem;
   }
 }

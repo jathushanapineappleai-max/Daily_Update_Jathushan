@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin_panel/sidebar.css";
 
@@ -83,12 +83,22 @@ const navItems = [
   { id: "logout", label: "Logout", icon: logoutIcon, iconGreen: logoutIconGreen, path: "/admin/signin" },
 ];
 
-export default function Sidebar() {
+// Sidebar component with forwardRef for external toggle
+const Sidebar = forwardRef(({ sidebarOpen: sidebarOpenProp, setSidebarOpen: setSidebarOpenProp }, ref) => {
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState("/admin/product-selection");
   const [openDropdowns, setOpenDropdowns] = useState({ home: true });
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+
+  const isMobile = window.innerWidth < 768;
+  const sidebarOpen = sidebarOpenProp !== undefined ? sidebarOpenProp : internalOpen;
+  const setSidebarOpen = setSidebarOpenProp || setInternalOpen;
+
+  // Allow header to toggle sidebar
+  useImperativeHandle(ref, () => ({
+    toggleSidebar: () => setSidebarOpen((prev) => !prev),
+  }));
 
   const handleNavClick = (item, subPath) => {
     const pathToNavigate = subPath || item.path;
@@ -110,22 +120,26 @@ export default function Sidebar() {
       setOpenDropdowns({});
     }
 
-    if (window.innerWidth < 768) setSidebarOpen(false);
+    if (isMobile) setSidebarOpen(false);
   };
+
+  // Collapse sidebar when clicking outside (mobile only)
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleClickOutside = (e) => {
+      const sidebar = document.querySelector(".ap-sidebar");
+      if (sidebar && !sidebar.contains(e.target)) {
+        setSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [setSidebarOpen, isMobile]);
 
   return (
     <>
-      {/* Hamburger for mobile */}
-      <button
-        className={`sidebar-toggle ${sidebarOpen ? "open" : ""}`}
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        aria-label="Toggle Sidebar"
-      >
-        <span className="bar"></span>
-        <span className="bar"></span>
-        <span className="bar"></span>
-      </button>
-
       {/* Sidebar container */}
       <aside className={`ap-sidebar ${sidebarOpen ? "open" : ""}`}>
         {/* Logo */}
@@ -174,9 +188,7 @@ export default function Sidebar() {
                     {item.dropdown.map((subItem) => (
                       <button
                         key={subItem.path}
-                        className={`ap-dropdown-item ${
-                          selected === subItem.path ? "active" : ""
-                        }`}
+                        className={`ap-dropdown-item ${selected === subItem.path ? "active" : ""}`}
                         onClick={() => handleNavClick(item, subItem.path)}
                       >
                         {subItem.label}
@@ -191,4 +203,6 @@ export default function Sidebar() {
       </aside>
     </>
   );
-}
+});
+
+export default Sidebar;

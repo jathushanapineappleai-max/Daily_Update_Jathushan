@@ -1,78 +1,203 @@
-﻿.new-blog-layout {
-  display: flex;
-  min-height: 100vh;
-  background-color: rgb(var(--pineapple-bg-primary));
-}
-
-/* Sidebar will handle its own width */
-.new-blog-main {
-  flex: 1;
+﻿.new-blog-wrapper {
   display: flex;
   flex-direction: column;
-  padding: 24px;
-  overflow-y: auto;
+  margin-left: 300px;
+  padding: 16px;
+  transition: margin-left 0.3s ease;
 }
 
-.new_blog-section {
-  margin-top: 24px;
-  background-color: rgb(var(--pineapple-bg-secondary));
-  border: 1px solid rgb(var(--pineapple-border));
+@media (max-width: 1024px) {
+  .new-blog-wrapper {
+    margin-left: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .new-blog-wrapper {
+    margin-left: 0;
+  }
+}
+
+/* Page Heading */
+.new-blog-heading {
+  position: relative;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 25px;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+}
+
+/* Container Box */
+.new-blog-section {
+  background: #0B1739;
+  border: 0.6px solid #343B4F;
+  box-shadow: 0px 2px 12px rgba(11, 22, 44, 0.05);
   border-radius: 12px;
   padding: 24px;
-  color: rgb(var(--pineapple-text-primary));
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 1363px;
+  box-sizing: border-box;
 }
 
-.section-title {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: rgb(var(--pineapple-text-primary));
-}
-
-.section-desc {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
-  color: rgb(var(--pineapple-text-secondary));
-  margin: 0;
-}
-
-.button-row {
+/* Form Layout */
+.form-grid {
   display: flex;
-  flex-wrap: wrap;           /* buttons move to next line if needed */
-  gap: 16px;                 /* spacing between buttons */
-  justify-content: flex-start; /* align all buttons to left */
-  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 24px;
 }
 
-.popup-container {
-  position: fixed;
-  top: 20px; /* Position near the top with 20px offset */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Offset by half its width to center */
-  padding: 20px; /* Proper padding for content */
-  z-index: 2000; /* Preserve high z-index */
-  max-width: 90%; /* Prevent overflow on small screens */
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
 }
 
-.trash-icon-btn {
+.form-label {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 19px;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-input select {
+  background: #081028;
+  border: 0.6px solid #343B4F;
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 15px;
+  color: #AEB9E1;
+}
+
+.form-input::placeholder,
+.form-input select option {
+  color: #AEB9E1;
+}
+
+.form-textarea {
+  background: #081028;
+  border: 0.6px solid #343B4F;
+  border-radius: 4px;
+  padding: 16px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 15px;
+  color: #AEB9E1;
+  resize: none;
+  min-height: 95px;
+}
+
+.form-textarea::placeholder {
+  color: #AEB9E1;
+}
+
+/* Full Width Input/Editor */
+.full-width {
+  width: 100%;
+}
+
+/* ================================ */
+/* Editor Outer Container */
+.editor-outer-container {
+  background: #081028;
+  border: 1px solid #343B4F; /* only outer border */
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 300px;
+  box-sizing: border-box;
+  margin-top: 16px;
+}
+
+/* Toolbar inside editor */
+#custom-toolbar {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 8px;
+  width: 100%;
+  height: 67px;
+  background: #081028;
+  border-bottom: 1px solid #343B4F; /* only bottom border */
+  border-radius: 4px 4px 0 0;
+}
+
+/* React Quill Editor */
+.blog-editor {
+  flex: 1;
+  background: #081028;
+  border: none !important; /* remove any Quill borders */
+  box-shadow: none !important; /* remove Quill shadow */
+  color: #FFFFFF;
+  font-family: 'Source Sans Pro', sans-serif;
+  border-radius: 0 0 4px 4px;
+  padding: 10px;
+  min-height: 200px;
+}
+
+/* Remove Quill container borders */
+.ql-container {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Remove editor default borders */
+.ql-editor {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+}
+
+/* Toolbar buttons and selects */
+#custom-toolbar button,
+#custom-toolbar select,
+#custom-toolbar input {
   background: transparent;
+  color: #AEB9E1;
   border: none;
   cursor: pointer;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
 }
 
-.trash-icon {
-  width: 28px;
-  height: 28px;
-  transition: transform 0.2s ease;
+#custom-toolbar button:hover {
+  color: #FFFFFF;
 }
 
-.trash-icon-btn:hover .trash-icon {
-  transform: scale(1.1);
+#custom-toolbar select {
+  background: #081028;
+  border: 0.6px solid #343B4F;
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #AEB9E1;
+}
+
+/* ================================ */
+/* Responsive */
+@media (max-width: 1024px) {
+  .form-grid {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-group,
+  .full-width,
+  .editor-outer-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  #custom-toolbar {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 }

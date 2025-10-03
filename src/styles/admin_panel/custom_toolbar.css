@@ -1,0 +1,171 @@
+/* ========================== */
+/* Custom Toolbar Styles      */
+/* ========================== */
+
+/* Outer Toolbar Container */
+.custom-toolbar {
+  box-sizing: border-box;
+  background: #081028;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 67px;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  /* ✅ Only bottom border */
+  border: none !important;
+  border-bottom: 1px solid #343B4F !important;
+  border-radius: 0 !important;
+}
+
+/* Buttons and Dropdowns */
+.custom-toolbar button,
+.custom-toolbar select {
+  background: transparent !important;
+  border: none !important;
+  color: #AEB9E1 !important;
+  cursor: pointer;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  outline: none !important;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.custom-toolbar button:hover,
+.custom-toolbar select:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF !important;
+  border-radius: 4px;
+}
+
+/* ✅ Active state styles for toggles (bold, italic, underline, etc.) */
+.custom-toolbar button.ql-active,
+.ql-toolbar button.ql-active {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  border-radius: 4px;
+}
+
+.custom-toolbar button.ql-active svg,
+.ql-toolbar button.ql-active svg {
+  color: #FFFFFF !important;
+}
+
+/* Adjust dropdowns */
+.custom-toolbar select.ql-font,
+.custom-toolbar select.ql-size,
+.custom-toolbar select.ql-color,
+.custom-toolbar select.ql-background {
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: #0B1739 !important;
+  color: #AEB9E1 !important;
+  border: none !important;
+}
+
+.custom-toolbar select option {
+  background: #0B1739;
+  color: #FFFFFF;
+}
+
+/* Icons */
+.custom-toolbar svg {
+  color: #AEB9E1;
+  stroke-width: 1.8;
+}
+
+.custom-toolbar button:hover svg {
+  color: #FFFFFF;
+}
+
+/* ============================= */
+/* Quill Default Picker Overrides */
+/* ============================= */
+.ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid #343B4F !important;
+  background: transparent !important;
+}
+
+.ql-toolbar .ql-picker {
+  color: #AEB9E1 !important;
+}
+
+.ql-toolbar .ql-picker-options {
+  background: #0B1739 !important;
+  border: 1px solid #343B4F !important;
+  border-radius: 4px;
+}
+
+.ql-toolbar .ql-picker-label::before {
+  color: #AEB9E1 !important;
+}
+
+/* List, Align, Script Buttons */
+.ql-toolbar button.ql-list,
+.ql-toolbar button.ql-align,
+.ql-toolbar button.ql-script {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom Buttons */
+.ql-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ql-pin:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+/* ============================= */
+/* Remove White Borders + Text Color */
+/* ============================= */
+.ql-container {
+  border: none !important;
+  background: transparent !important;
+}
+
+.ql-editor {
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  color: #FFFFFF !important; /* ✅ Default text is white */
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ✅ Placeholder text color */
+.ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-style: normal;
+}
+
+/* ============================= */
+/* Responsive                   */
+/* ============================= */
+@media (max-width: 768px) {
+  .custom-toolbar {
+    gap: 6px;
+    padding: 8px;
+    height: auto;
+  }
+  .custom-toolbar button,
+  .custom-toolbar select {
+    font-size: 12px;
+  }
+  .custom-toolbar svg {
+    width: 14px;
+    height: 14px;
+  }
+}

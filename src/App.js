@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useRef } from "react";
 import Sidebar from "./components/admin_panel/sidebar";
 import AdminHeader from "./components/admin_panel/admin_header";
-import Pagination from "./components/admin_panel/pagination";
 
 // Auth
 import SignIn from "./pages/admin_panel/auth/signin";
@@ -24,20 +24,27 @@ import Applications from "./pages/admin_panel/sections/applications";
 
 import "./index.css";
 
-
 export default function AdminApp() {
+  // Sidebar ref allows header to control sidebar
+  const sidebarRef = useRef();
+
+  const toggleSidebar = () => {
+    if (sidebarRef.current) sidebarRef.current.toggleSidebar();
+  };
+
   return (
     <Router>
       <div className="admin-layout">
-        {/* Sidebar + Header */}
-        <Sidebar />
+        {/* Sidebar with forwardRef */}
+        <Sidebar ref={sidebarRef} />
+
+        {/* Main content + Header */}
         <div className="admin-main">
-          <AdminHeader />
+          <AdminHeader onToggleSidebar={toggleSidebar} />
 
           {/* Routes */}
           <Routes>
             <Route path="/admin/signin" element={<SignIn />} />
-
             <Route path="/admin/product-selection" element={<ProductSelection />} />
             <Route path="/admin/client-review" element={<ClientReview />} />
             <Route path="/admin/team" element={<Team />} />
@@ -53,8 +60,6 @@ export default function AdminApp() {
             <Route path="/admin/posted-jobs" element={<PostedJobs />} />
             <Route path="/admin/applications" element={<Applications />} />
           </Routes>
-
-          {/* Example shared Pagination */}
         </div>
       </div>
     </Router>
