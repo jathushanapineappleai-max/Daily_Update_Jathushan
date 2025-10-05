@@ -1,260 +1,145 @@
-﻿/* Load Source Sans Pro */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+﻿/* src/styles/admin_panel/new_jobs.css */
 
-:root{
-  --form-bg: #0B1739;    /* requested background color for the form */
-  --muted: #9aa3c3;
-  --input-border: rgba(255,255,255,0.06);
-  --input-bg: rgba(255,255,255,0.02);
-  --accent: #93F02F;     /* light green button color */
-  --label-color: rgba(255,255,255,0.86);
-  --placeholder: rgba(255,255,255,0.35);
-  --divider: rgba(255,255,255,0.06);
-  --radius: 6px;
-}
-
-/* Title (kept position per spec) */
+/* Title */
 .nj-title {
-  position: absolute;
-  top: 135px;
-  left: 315px;
-  width: 83px;
-  height: 25px;
-  margin: 0;
-  font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  font-weight: 600;
-  font-style: normal;
+  /*margin-bottom: 20px; width: 83px; height: 25; top: 135px; left: 300px;*/
   font-size: 20px;
-  line-height: 100%;
-  letter-spacing: 0%;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-}
-
-/* --- REDUCED FORM SIZE --- */
-.nj-form-wrapper {
-  position: absolute;
-  top: 179px;
-  left: 315px;
-
-  width: 1100px;
-  height: 650px;
-  opacity: 1;
-
-  background: var(--form-bg);
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(2,6,23,0.5);
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.04); /* slightly stronger so bottom is visible */
-}
-
-/* Form inner layout */
-.nj-form {
-  position: relative;
-  box-sizing: border-box;
-  height: 100%;
+  margin: 0px 0 0px 0;
+  padding-left: 0px;
+  color: #d9e6f5;
   width: 100%;
-  padding: 28px 36px 96px; /* extra bottom padding so the post button doesn't overlap content */
+  max-width: 1220px;
+}
+
+/* scrollable wrapper: center the form and limit height */
+.nj-form-wrapper {
+  max-height: calc(100vh - 91px); /* Fix: Adjusted to account for 91px header */
+  overflow: auto;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  color: var(--label-color);
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 13px;
+  justify-content: flex-start; /* center form horizontally */
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  padding-left: 250px;
 }
 
-/* subtle bottom divider line (visible under the post button area) */
-.nj-bottom-border {
-  position: absolute;
-  left: 24px;            /* aligns with form inner padding */
-  right: 24px;
-  bottom: 72px;          /* sits a bit above the Post button */
-  height: 1px;
-  background: var(--divider);
-  border-radius: 1px;
-  pointer-events: none;
-  z-index: 1;
+/* form itself: constrained width so inputs align with textarea */
+.nj-form {
+  /*margin-left: 1px;*/
+  width: 100%;
+  max-width: 1220px; /* controls horizontal length of all fields -> adjust to taste */
+  background: #0B1739; /* requested background color */
+  border: 1px solid rgba(255, 255, 255, 0.08); /* visible form border */
+  border-radius: 12px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  box-sizing: border-box;
 }
 
-/* Generic field wrapper */
+/* Field layout */
 .nj-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 }
 
-/* Label */
+/* label and inputs */
 .nj-label {
   font-weight: 600;
-  color: var(--label-color);
   font-size: 13px;
+  color: #cbe1ff;
 }
 
-/* Inputs & textareas */
-#jobDescriptionInput,
+/* generic inputs */
+.nj-input,
+.nj-textarea {
+  background: #081028;
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #e6f2ff;
+  outline: none;
+  font-size: 14px;
+  /* width: 100%; full width within constrained form, so matches textarea */
+  max-width: 620px;
+  box-sizing: border-box;
+}
+
+/* textarea styling (same width as inputs) */
 .nj-textarea-desc {
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: var(--radius);
-  padding: 12px;
-  color: #ffffff;
-  min-height: 100px;
+  min-height: 110px;
   resize: vertical;
-  box-sizing: border-box;
-  width: 620px;                /* canonical width for description & the other fields */
-  max-width: calc(100% - 40px);
+  width: 100%;
 }
 
-#jobTitleInput,
-.nj-input-title {
-  height: 36px;
-  width: 300px;
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: var(--radius);
-  padding: 8px 10px;
-  color: #ffffff;
-  box-sizing: border-box;
+/* make divider more visible */
+.nj-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin-top: 10px;
 }
 
-/* Share the same width for skill/responsibility/benefit inputs */
-#skillsInput,
-.nj-input-skills,
-#responsibilitiesInput,
-.nj-input-responsibilities,
-#benefitsInput,
-.nj-input-benefits {
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: var(--radius);
-  padding: 8px 10px;
-  color: #ffffff;
-  box-sizing: border-box;
-  width: 620px;
-  max-width: calc(100% - 80px); /* leave space for the add button on smaller screens */
-}
-
-/* Placeholder color for inputs */
-.nj-input ::placeholder,
-.nj-textarea ::placeholder,
-#jobTitleInput::placeholder,
-#jobDescriptionInput::placeholder,
-#skillsInput::placeholder,
-#responsibilitiesInput::placeholder,
-#benefitsInput::placeholder {
-  color: var(--placeholder);
-}
-
-/* Layout for a row inside skills/responsibilities/benefits */
+/* row with items and the add icon */
 .nj-skill-row .nj-items {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* gap between stacked inputs */
+  gap: 10px;
+  margin-top: 8px;
 }
 
-/* Each item row that contains the input and (optionally) the add button */
+/* Each input + add button container */
 .nj-skill-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* Input inside item should stretch */
+/* make inputs flex-grow to take available space */
 .nj-skill-item .nj-input {
-  flex: 0 0 620px; /* keep the original fixed width */
-  max-width: calc(100% - 80px);
+  flex: 1;
 }
 
-/* Keep the original compact circular button size but larger + glyph */
-.nj-add-btn{
-  min-width: 34px;
-  height: 34px;
-  width: 34px;           /* ensure fixed square so circle is perfect */
-  border-radius: 50%;
+/* Add button — small round icon */
+.nj-add-btn {
+  background: transparent;
   border: none;
-  background: #9BE84B; /* bright green */
-  color: #072217;
-  font-weight: 700;
-
-  /* increase the visible '+' without changing button footprint */
-  font-size: 20px;      /* larger plus sign while button remains 34x34 */
-  line-height: 1;       /* centers the + vertically */
-
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(11,95,255,0.06);
+  transition: transform .12s ease;
   padding: 0;
 }
 
-/* Divider line under sections */
-.nj-divider {
-  margin-top: 12px;
-  width: 100%;
-  height: 1px;
-  background: var(--divider);
-  border-radius: 1px;
+/* scale on hover */
+.nj-add-btn:hover {
+  transform: scale(1.05);
 }
 
-/* Post button positioned bottom-right */
-.nj-post-button {
-  position: absolute;
-  right: 28px;
-  bottom: 24px;
-  padding: 12px 24px;
-  background: var(--accent);
-  color: #001100;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 8px 18px rgba(147,240,47,0.15);
-  width: 153px;
-  z-index: 2; /* above the bottom border */
+/* image inside add button */
+.add-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
-/* Hover and focus */
-.nj-post-button:hover { transform: translateY(-1px); }
-#jobTitleInput:focus,
-#jobDescriptionInput:focus,
-#skillsInput:focus,
-#responsibilitiesInput:focus,
-#benefitsInput:focus {
-  outline: none;
-  border-color: rgba(13, 13, 13, 0.65);
-  box-shadow: 0 0 0 1px rgba(147,240,47,0.06);
-}
-
-/* Responsive adjustments */
-@media (max-width: 900px) {
-  .nj-form-wrapper {
-    left: 24px;
-    width: calc(100% - 48px);
-  }
-
-  #jobDescriptionInput,
-  #skillsInput,
-  #responsibilitiesInput,
-  #benefitsInput {
-    width: 100%;
+/* responsive tweaks */
+@media (max-width: 920px) {
+  .nj-form {
+    padding: 16px;
     max-width: 100%;
   }
-
-  .nj-skill-line {
-    gap: 8px;
-  }
-
-  /* keep the add button proportionate on narrow screens */
-  .nj-add-btn {
-    width: 34px;
-    height: 34px;
-    font-size: 18px;
-  }
-
-  /* stack input + button nicely on very narrow */
-  .nj-skill-item {
-    align-items: flex-start;
+  .nj-title {
+    max-width: 100%;
   }
 }

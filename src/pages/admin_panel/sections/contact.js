@@ -19,7 +19,7 @@ export default function Contact() {
       email: "example@gmail.com",
       phone: "0757448876",
       service: "Web Development",
-      message: "Hello, I need support regarding my project.",
+      message: "Enjoys adventurous travel, seeks new cultures and offbeat destinations",
     },
     {
       name: "Jane Smith",
@@ -40,7 +40,7 @@ export default function Contact() {
       email: "sophia@creative.co",
       phone: "0755332211",
       service: "E-Commerce",
-      message: "Building an online store for fashion products.",
+      message: "Enjoys adventurous travel, seeks new cultures and offbeat destinations",
     },
     {
       name: "David Brown",

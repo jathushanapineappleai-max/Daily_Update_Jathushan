@@ -1,1 +1,460 @@
-﻿/* Styles for  Section */ .posted_jobs-section { padding:20px; }
+﻿/* posted_jobs.css (merged & updated)
+   - uses --page-left for left alignment
+   - exact box size for job-card
+   - footer pinned bottom-right
+   - remove animation for delete UI 
+   - added styles for edit modal and form based on new_jobs.css */
+
+/* Load Source Sans Pro */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+:root {
+  --page-left: 0px; /* adjust to line up with header (24 / 40 / 56 etc.) */
+  --form-bg: #0B1739;    /* requested background color for the form */
+  --muted: #9aa3c3;
+  --input-border: rgba(255,255,255,0.06);
+  --input-bg: rgba(255,255,255,0.02);
+  --accent: #93F02F;     /* light green button color */
+  --label-color: rgba(255,255,255,0.86);
+  --placeholder: rgba(255,255,255,0.35);
+  --divider: rgba(255,255,255,0.06);
+  --radius: 6px;
+}
+
+/* container */
+.posted_jobs-section {
+  padding: 32px;
+  color: #ffffff;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  padding-left: 258px;
+}
+
+/* CHANGE: left-aligned container */
+.posted_jobs-inner {
+  margin: 0;
+  margin-left: var(--page-left);
+  position: relative;         /* needed so footer can be absolutely placed inside */
+  padding-bottom: 120px;      /* leave room so the button doesn't overlap cards */
+}
+
+/* header */
+.posted_jobs-title {
+  /* margin-left: 1px; */
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 18px 0;
+  color: #ffffff;
+}
+
+.posted_jobs-empty {
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* list layout */
+.posted_jobs-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+/* ============================
+   JOB CARD (exact box size)
+   ============================ */
+.job-card {
+  width: 420px;           /* exact width */
+  height: 121px;          /* exact height */
+  box-sizing: border-box;
+  background: #0b1832;    /* dark navy */
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 28px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+
+  /* animation defaults */
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+/* removing animation state (call before removing from DOM) */
+.job-card.removing {
+  opacity: 0;
+  transform: translateY(8px) scale(0.985);
+}
+
+/* left side (title + date) */
+.job-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+/* title */
+.job-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* date */
+.job-date {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 4px;
+}
+
+/* right side actions - enforce left-to-right order */
+.job-actions {
+  display: flex;
+  flex-direction: row; /* ensure left->right order */
+  align-items: center;
+  gap: 12px;
+  justify-content: flex-end;
+  min-width: 80px;
+}
+
+/* generic icon button */
+.job-action-btn {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+
+/* ensure edit is first and delete second regardless */
+.job-action-btn.edit { order: 1; }
+.job-action-btn.delete { order: 2; }
+
+/* icon image size */
+.job-action-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* colored circular backgrounds */
+.job-action-btn.edit {
+  background: rgba(124, 255, 53, 0.12); /* subtle green bg */
+  box-shadow: none;
+}
+.job-action-btn.delete {
+  background: rgba(255, 84, 84, 0.12); /* subtle red bg */
+}
+
+/* small responsive tweaks */
+@media (max-width: 480px) {
+  .job-card {
+    width: 100%;
+    height: auto;
+    padding: 14px;
+    border-radius: 16px;
+  }
+  .job-title {
+    font-size: 20px;
+  }
+}
+
+/* Footer pinned bottom-right inside posted_jobs-inner */
+.posted_jobs-footer {
+  position: absolute;
+  right: 32px; /* adjust to match design */
+  bottom: 24px; /* adjust to match design (how far from bottom) */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Responsive fallback: center footer on small screens */
+@media (max-width: 720px) {
+  .posted_jobs-footer {
+    position: static;
+    margin-top: 18px;
+    justify-content: center;
+  }
+}
+
+/* Edit Modal Styles (adapted from new_jobs.css) */
+.ej-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* --- REDUCED FORM SIZE --- */
+.ej-form-wrapper {
+  position: absolute;
+  top: 80px;
+  left: 260px;
+  max-width: 1100px;
+  width: 1100px;
+  height: auto;
+  max-height: 650px;
+  opacity: 1;
+  background: var(--form-bg);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(2,6,23,0.5);
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* Title (adjusted to be on top with relative positioning) */
+.ej-title {
+  font-family: "Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  margin: 20px 36px 10px 36px;
+}
+
+/* Form inner layout */
+.ej-form {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 36px 36px 36px; /* Reduced padding-bottom */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--label-color);
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 13px;
+}
+
+/* Generic field wrapper */
+.ej-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Label */
+.ej-label {
+  font-weight: 600;
+  color: var(--label-color);
+  font-size: 13px;
+}
+
+/* Inputs & textareas */
+#jobDescriptionInput,
+.ej-textarea-desc {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  padding: 12px;
+  color: #ffffff;
+  min-height: 100px;
+  resize: vertical;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 620px;
+}
+
+#jobTitleInput,
+.ej-input-title {
+  height: 36px;
+  width: 100%;
+  max-width: 620px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Share the same width for skill/responsibility/benefit inputs */
+#skillsInput,
+.ej-input-skills,
+#responsibilitiesInput,
+.ej-input-responsibilities,
+#benefitsInput,
+.ej-input-benefits {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  color: #ffffff;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 620px;
+}
+
+/* Placeholder color for inputs */
+.ej-input ::placeholder,
+.ej-textarea ::placeholder,
+#jobTitleInput::placeholder,
+#jobDescriptionInput::placeholder,
+#skillsInput::placeholder,
+#responsibilitiesInput::placeholder,
+#benefitsInput::placeholder {
+  color: var(--placeholder);
+}
+
+/* Layout for a row inside skills/responsibilities/benefits */
+.ej-skill-row .ej-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* gap between stacked inputs */
+}
+
+/* Each item row that contains the input and the remove button */
+.ej-skill-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Input inside item should stretch */
+.ej-skill-item .ej-input {
+  flex: 1;
+  max-width: 620px;
+}
+
+/* Remove button */
+.ej-remove-btn{
+  min-width: 34px;
+  height: 34px;
+  width: 34px;           /* ensure fixed square so circle is perfect */
+  border-radius: 50%;
+  border: none;
+  background: none; /* remove background to let image provide it */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255,11,11,0.06);
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.ej-remove-btn:hover {
+  transform: translateY(-1px);
+}
+
+.remove-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* Divider line under sections */
+.ej-divider {
+  margin-top: 12px;
+  width: 100%;
+  height: 1px;
+  background: var(--divider);
+  border-radius: 1px;
+}
+
+/* Update row */
+.ej-update-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 4px;
+}
+
+/* Update button (no longer absolute) */
+.ej-update-button {
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #001100;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(147,240,47,0.15);
+  width: 153px;
+  pointer-events: auto;
+}
+
+/* Hover and focus */
+.ej-update-button:hover { transform: translateY(-1px); }
+#jobTitleInput:focus,
+#jobDescriptionInput:focus,
+#skillsInput:focus,
+#responsibilitiesInput:focus,
+#benefitsInput:focus {
+  outline: none;
+  border-color: rgba(13, 13, 13, 0.65);
+  box-shadow: 0 0 0 1px rgba(147,240,47,0.06);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .ej-form-wrapper {
+    left: 24px;
+    width: calc(100% - 48px);
+  }
+
+  #jobDescriptionInput,
+  .ej-textarea-desc,
+  #skillsInput,
+  .ej-input-skills,
+  #responsibilitiesInput,
+  .ej-input-responsibilities,
+  #benefitsInput,
+  .ej-input-benefits {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #jobTitleInput,
+  .ej-input-title {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ej-skill-item {
+    gap: 8px;
+  }
+
+  /* keep the remove button proportionate on narrow screens */
+  .ej-remove-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .remove-icon {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* stack input + button nicely on very narrow */
+  .ej-skill-item {
+    align-items: flex-start;
+  }
+
+  .ej-form {
+    padding: 0 36px 36px 36px; /* Keep aligned padding for small screens */
+  }
+}

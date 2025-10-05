@@ -5,13 +5,13 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 220px;
+  width: 250px; /* Scaled from 220px */
   min-height: 100vh;
   background-color: var(--sidebar-background, #081028);
   color: var(--sidebar-foreground, #AEB9E1);
   display: flex;
   flex-direction: column;
-  padding: 12px;
+  padding: 14px; /* Scaled from 12px */
   border-right: 2px solid #0B1739;
   transition: left 0.3s ease;
   overflow-y: auto;
@@ -24,20 +24,20 @@
 .ap-sidebar-logo {
   position: relative;
   width: 100%;
-  max-width: 196px;
+  max-width: 222px; /* Scaled from 196px */
   min-width: 0;
-  height: 50px;
-  margin-bottom: 12px;
+  height: 57px; /* Scaled from 50px */
+  margin-bottom: 14px; /* Scaled from 12px */
   display: flex;
   align-items: center;
   gap: 2px;
-  padding-left: 16px;
-  padding-top: 20px;
+  padding-left: 18px; /* Scaled from 16px */
+  padding-top: 23px; /* Scaled from 20px */
 }
 
 .ap-sidebar-logo img {
-  width: 32px;
-  height: 32px;
+  width: 36px; /* Scaled from 32px */
+  height: 36px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -45,15 +45,15 @@
 .ap-sidebar-logo h1 {
   font-family: 'Raleway', sans-serif;
   font-weight: 900;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 23px; /* Scaled from 20px */
+  line-height: 27px; /* Scaled from 24px */
   margin: 0;
   background: linear-gradient(92.76deg, #7EBE39 6.05%, #93F02F 68.09%, #3A581A 98.88%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
-  padding-top: 4px;
+  padding-top: 5px; /* Scaled from 4px */
   flex-shrink: 1;
   min-width: 0;
   overflow: hidden;
@@ -64,9 +64,9 @@
 .ap-sidebar-logo-divider {
   width: 140%;
   height: 0;
-  border-bottom: 2px solid #0B1739;
-  margin-top: 4px;
-  margin-left: -20px;
+  border-bottom: 2px solid #343B4F;
+  margin-top: 4px; /* Scaled from 4px */
+  margin-left: -23px; /* Scaled from -20px */
 }
 
 /* =============================== */
@@ -76,8 +76,8 @@
   flex-direction: column;
   gap: 1px;
   width: 100%;
-  max-width: 196px;
-  margin-top: 8px;
+  max-width: 222px; /* Scaled from 196px */
+  margin-top: 9px; /* Scaled from 8px */
   box-sizing: border-box;
 }
 
@@ -91,13 +91,13 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 11px; /* Scaled from 10px */
+  padding: 11px 18px; /* Scaled from 10px 16px */
   width: 100%;
   background: none;
   border: none;
   color: var(--pineapple-text-secondary, #AEB9E1);
-  font-size: 0.95rem;
+  font-size: 1rem; /* Scaled from 0.95rem */
   cursor: pointer;
   border-radius: 7px;
   text-align: left;
@@ -115,8 +115,8 @@
 
 /* Nav Icon */
 .ap-nav-icon {
-  width: 20px;
-  height: 20px;
+  width: 23px; /* Scaled from 20px */
+  height: 23px;
   flex-shrink: 0;
 }
 
@@ -124,9 +124,9 @@
 /* Dropdown Arrow */
 .ap-dropdown-icon {
   position: absolute;
-  width: 7px;
-  height: 11px;
-  right: 16px;
+  width: 8px; /* Scaled from 7px */
+  height: 13px; /* Scaled from 11px */
+  right: 18px; /* Scaled from 16px */
   top: 50%;
   transform: translateY(-50%) rotate(0deg);
   transition: transform 0.3s ease, opacity 0.3s ease;
@@ -143,9 +143,9 @@
 .ap-dropdown {
   display: flex;
   flex-direction: column;
-  padding-left: 12px;
+  padding-left: 14px; /* Scaled from 12px */
   margin-top: 3px;
-  gap: 4px;
+  gap: 5px; /* Scaled from 4px */
   animation: dropdownFade 0.25s ease;
 }
 
@@ -161,14 +161,14 @@
 }
 
 .ap-dropdown-item {
-  padding: 6px 14px;
+  padding: 7px 16px; /* Scaled from 6px 14px */
   background: var(--pineapple-bg-tertiary, #0A1330);
   border: none;
   color: var(--pineapple-text-secondary, #AEB9E1);
   text-align: left;
   cursor: pointer;
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 0.95rem; /* Scaled from 0.9rem */
   position: relative;
   transition: background 0.2s, color 0.2s;
 }
@@ -198,7 +198,7 @@
 /* =============================== */
 /* Scrollbar Styling */
 .ap-sidebar::-webkit-scrollbar {
-  width: 5px;
+  width: 6px; /* Scaled from 5px */
 }
 
 .ap-sidebar::-webkit-scrollbar-thumb {
@@ -232,34 +232,34 @@
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .ap-sidebar {
-    width: 200px;
+    width: 227px; /* Scaled from 200px */
   }
 
   .ap-sidebar-nav {
     width: 100%;
-    max-width: 180px;
+    max-width: 204px; /* Scaled from 180px */
   }
 
   .ap-sidebar-logo h1 {
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 20px; /* Scaled from 18px */
+    line-height: 25px; /* Scaled from 22px */
   }
 
   .ap-nav-item {
-    padding: 8px 10px;
-    font-size: 0.9rem;
+    padding: 9px 11px; /* Scaled from 8px 10px */
+    font-size: 0.95rem; /* Scaled from 0.9rem */
   }
 
   .ap-dropdown-item {
-    padding: 5px 10px;
-    font-size: 0.85rem;
+    padding: 6px 11px; /* Scaled from 5px 10px */
+    font-size: 0.9rem; /* Scaled from 0.85rem */
   }
 }
 
 @media (max-width: 768px) {
   .ap-sidebar {
-    width: 220px;
-    left: -230px;
+    width: 250px; /* Keep at 250px for consistency */
+    left: -260px; /* Scaled from -230px */
   }
 
   .ap-sidebar.open {
@@ -267,28 +267,28 @@
   }
 
   .ap-sidebar-logo h1 {
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 18px; /* Scaled from 16px */
+    line-height: 23px; /* Scaled from 20px */
   }
 }
 
 @media (max-width: 480px) {
   .ap-sidebar {
-    width: 200px;
+    width: 227px; /* Scaled from 200px */
   }
 
   .ap-sidebar-logo img {
-    width: 28px;
-    height: 28px;
+    width: 32px; /* Scaled from 28px */
+    height: 32px;
   }
 
   .ap-nav-item {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 7px 11px; /* Scaled from 6px 10px */
+    font-size: 0.9rem; /* Scaled from 0.85rem */
   }
 
   .ap-dropdown-item {
-    padding: 5px 10px;
-    font-size: 0.8rem;
+    padding: 6px 11px; /* Scaled from 5px 10px */
+    font-size: 0.85rem; /* Scaled from 0.8rem */
   }
 }

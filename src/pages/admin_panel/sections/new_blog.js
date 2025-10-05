@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import "../../../styles/admin_panel/new_blog.css";
-import "../../../styles/admin_panel/custom_toolbar.css"; // Toolbar styling
+import "../../../styles/admin_panel/custom_toolbar.css";
 import CustomToolbar from "../../../components/admin_panel/CustomToolbar";
 import PostButton from "../../../components/admin_panel/buttons/post_button";
 

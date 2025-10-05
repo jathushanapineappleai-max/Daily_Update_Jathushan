@@ -3,38 +3,39 @@
 .contact-wrapper {
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  margin-left: 220px; /* Matches sidebar width */
-  margin-top: 80px; /* Matches header height */
-  min-height: calc(100vh - 80px); /* Adjusts for header */
-  width: calc(100% - 220px); /* Spreads to remaining space */
+  padding: 14px; /* Scaled from 12px */
+  margin-left: 250px; /* Scaled from 220px */
+  margin-top: 91px; /* Scaled from 80px */
+  min-height: calc(100vh - 91px); /* Adjusts for header */
+  width: calc(100% - 250px); /* Spreads to remaining space */
   transition: margin-left 0.3s ease, width 0.3s ease;
   box-sizing: border-box;
+  padding-right: 40px;
 }
 
 /* =============================== */
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .contact-wrapper {
-    margin-left: 200px; /* Matches sidebar width */
-    width: calc(100% - 200px); /* Spreads to remaining space */
+    margin-left: 227px; /* Scaled from 200px */
+    width: calc(100% - 227px); /* Spreads to remaining space */
   }
 }
 
 @media (max-width: 768px) {
   .contact-wrapper {
     margin-left: 0; /* Sidebar hidden off-screen */
-    margin-top: 60px; /* Matches mobile header height */
+    margin-top: 68px; /* Scaled from 60px */
     width: 100%; /* Full width */
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 68px);
   }
 }
 
 @media (max-width: 480px) {
   .contact-wrapper {
-    margin-top: 55px; /* Matches smaller header height */
-    min-height: calc(100vh - 55px);
-    padding: 8px;
+    margin-top: 62px; /* Scaled from 55px */
+    min-height: calc(100vh - 62px);
+    padding: 9px; /* Scaled from 8px */
   }
 }
 
@@ -43,10 +44,10 @@
 .contact-page-heading {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: 20px; /* Scaled from 18px */
+  line-height: 25px; /* Scaled from 22px */
   color: #FFFFFF;
-  margin-bottom: 12px;
+  margin-bottom: 14px; /* Scaled from 12px */
 }
 
 /* =============================== */
@@ -55,8 +56,8 @@
   background: #0B1739;
   border: 0.6px solid #343B4F;
   box-shadow: 1px 1px 1px rgba(16, 25, 52, 0.4);
-  border-radius: 10px;
-  padding: 16px;
+  border-radius: 11px; /* Scaled from 10px */
+  padding: 18px; /* Scaled from 16px */
   width: 100%; /* Full width of wrapper */
   box-sizing: border-box;
   overflow-x: auto;
@@ -68,8 +69,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding-bottom: 8px;
+  margin-bottom: 11px; /* Scaled from 10px */
+  padding-bottom: 9px; /* Scaled from 8px */
   border-bottom: 2px solid #343B4F;
 }
 
@@ -77,7 +78,7 @@
 .contact-header {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 17px; /* Scaled from 15px */
   color: #FFFFFF;
   margin: 0;
 }
@@ -87,12 +88,12 @@
   font-family: 'Source Sans Pro', sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 16px; /* Scaled from 14px */
+  line-height: 20px; /* Scaled from 18px */
   text-align: right;
   color: #93F02F;
-  width: 97.72px;
-  height: 18px;
+  width: 111px; /* Scaled from 97.72px */
+  height: 20px; /* Scaled from 18px */
 }
 
 /* =============================== */
@@ -101,9 +102,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 8px 0;
+  padding: 9px 0; /* Scaled from 8px */
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 13px;
+  font-size: 15px; /* Scaled from 13px */
   color: #AEB9E1;
   border-bottom: none;
   transition: background 0.3s ease;
@@ -115,17 +116,17 @@
 /* Alternate background for even-numbered rows */
 .alt-row {
   background: #0A1330;
-  width: calc(100% + 32px); /* Offset .contact-section padding */
-  margin-left: -16px; /* Align with container edge */
-  margin-right: -16px; /* Align with container edge */
-  padding: 8px 16px; /* Restore padding for content alignment */
+  width: calc(100% + 36px); /* Scaled from 32px */
+  margin-left: -18px; /* Scaled from -16px */
+  margin-right: -18px; /* Scaled from -16px */
+  padding: 9px 18px; /* Scaled from 8px 16px */
 }
 
 /* Header row */
 .header-row {
   font-weight: 600;
   font-style: normal;
-  font-size: 13px;
+  font-size: 15px; /* Scaled from 13px */
   line-height: 100%;
   letter-spacing: 0px;
   color: #FFFFFF;
@@ -139,55 +140,55 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px; /* Accommodate 24px icons */
+  gap: 9px; /* Scaled from 8px */
   word-break: break-word;
   overflow: hidden;
   flex: 1; /* Equal distribution by default */
-  padding: 0 8px; /* Consistent padding for alignment */
+  padding: 0 9px; /* Scaled from 8px */
 }
 
 /* Adjusted column widths to scale dynamically */
 .header-row .contact-column:nth-child(1),
 .contact-row .contact-column:nth-child(1) {
   flex: 1 0 12%; /* Name, ~12% of available width */
-  min-width: 100px; /* Minimum for readability */
+  min-width: 114px; /* Scaled from 100px */
 }
 
 .header-row .contact-column:nth-child(2),
 .contact-row .contact-column:nth-child(2) {
   flex: 1 0 18%; /* Email, ~18% */
-  min-width: 140px;
+  min-width: 159px; /* Scaled from 140px */
 }
 
 .header-row .contact-column:nth-child(3),
 .contact-row .contact-column:nth-child(3) {
   flex: 1 0 12%; /* Phone Number, ~12% */
-  min-width: 100px;
+  min-width: 114px; /* Scaled from 100px */
 }
 
 .header-row .contact-column:nth-child(4),
 .contact-row .contact-column:nth-child(4) {
   flex: 1 0 14%; /* Services, ~14% */
-  min-width: 120px;
+  min-width: 136px; /* Scaled from 120px */
 }
 
 .header-row .contact-column:nth-child(5),
 .contact-row .contact-column:nth-child(5) {
   flex: 2 0 34%; /* Message, ~34% */
-  min-width: 200px;
+  min-width: 227px; /* Scaled from 200px */
 }
 
 .header-row .contact-column:nth-child(6),
 .contact-row .contact-column:nth-child(6) {
   flex: 0 0 12%; /* Action, ~12% */
-  min-width: 80px;
+  min-width: 91px; /* Scaled from 80px */
   justify-content: center; /* Center align title and buttons */
 }
 
 /* Sort icon beside column headings */
 .column-icon {
-  width: 24px;
-  height: 24px;
+  width: 27px; /* Scaled from 24px */
+  height: 27px; /* Scaled from 24px */
   object-fit: contain;
   cursor: pointer;
 }
@@ -198,7 +199,7 @@
   display: flex;
   align-items: center;
   justify-content: center; /* Center align buttons */
-  gap: 10px;
+  gap: 11px; /* Scaled from 10px */
 }
 
 .icon-btn {
@@ -213,8 +214,8 @@
 }
 
 .icon-btn img {
-  width: 20px;
-  height: 20px;
+  width: 23px; /* Scaled from 20px */
+  height: 23px; /* Scaled from 20px */
   object-fit: contain;
 }
 
@@ -227,16 +228,16 @@
 /* Responsive Styles */
 @media (max-width: 1024px) {
   .contact-counter {
-    font-size: 13px;
-    width: 90px;
+    font-size: 15px; /* Scaled from 13px */
+    width: 102px; /* Scaled from 90px */
   }
 
   .contact-column {
-    padding: 0 10px; /* Slightly more padding for readability */
+    padding: 0 11px; /* Scaled from 10px */
   }
 
   .alt-row {
-    padding: 8px 10px; /* Match column padding */
+    padding: 9px 11px; /* Scaled from 8px 10px */
   }
 }
 
@@ -244,24 +245,24 @@
   .contact-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px; /* Better spacing */
-    padding: 12px; /* Card padding */
-    margin-bottom: 12px; /* Space between cards */
+    gap: 5px; /* Scaled from 4px */
+    padding: 14px; /* Scaled from 12px */
+    margin-bottom: 14px; /* Scaled from 12px */
     width: 100%; /* Full width */
     background: #0B1739; /* Match .contact-section for regular rows */
     border: 1px solid #343B4F;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
-    animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Micro-interaction */
+    border-radius: 9px; /* Scaled from 8px */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Unchanged */
+    animation: fadeIn 0.5s ease-in-out; /* Unchanged */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Unchanged */
   }
 
   .alt-row {
     background: #0A1330; /* Alternate card background */
-    width: calc(100% + 32px); /* Offset .contact-section padding */
-    margin-left: -16px;
-    margin-right: -16px;
-    padding: 12px; /* Match regular cards */
+    width: calc(100% + 36px); /* Scaled from 32px */
+    margin-left: -18px; /* Scaled from -16px */
+    margin-right: -18px; /* Scaled from -16px */
+    padding: 14px; /* Scaled from 12px */
   }
 
   .header-row {
@@ -270,10 +271,10 @@
 
   .contact-column {
     width: 100%;
-    font-size: 13px; /* Readable */
+    font-size: 15px; /* Scaled from 13px */
     flex: none; /* Override flex */
-    padding: 6px 10px; /* Better spacing */
-    gap: 7px; /* For 24px icons */
+    padding: 7px 11px; /* Scaled from 6px 10px */
+    gap: 8px; /* Scaled from 7px */
     text-overflow: ellipsis; /* Handle overflow */
     white-space: normal; /* Allow wrapping */
     position: relative;
@@ -284,66 +285,66 @@
     content: "Name: ";
     font-weight: 600;
     color: #FFFFFF;
-    margin-right: 5px;
+    margin-right: 6px; /* Scaled from 5px */
   }
 
   .contact-column:nth-child(2)::before {
     content: "Email: ";
     font-weight: 600;
     color: #FFFFFF;
-    margin-right: 5px;
+    margin-right: 6px; /* Scaled from 5px */
   }
 
   .contact-column:nth-child(3)::before {
     content: "Phone Number: ";
     font-weight: 600;
     color: #FFFFFF;
-    margin-right: 5px;
+    margin-right: 6px; /* Scaled from 5px */
   }
 
   .contact-column:nth-child(4)::before {
     content: "Services: ";
     font-weight: 600;
     color: #FFFFFF;
-    margin-right: 5px;
+    margin-right: 6px; /* Scaled from 5px */
   }
 
   .contact-column:nth-child(5)::before {
     content: "Message: ";
     font-weight: 600;
     color: #FFFFFF;
-    margin-right: 5px;
+    margin-right: 6px; /* Scaled from 5px */
   }
 
   .contact-column:nth-child(6)::before {
     content: "Actions: ";
     font-weight: 600;
     color: #FFFFFF;
-    margin-right: 5px;
+    margin-right: 6px; /* Scaled from 5px */
   }
 
   .contact-actions {
     flex-wrap: wrap;
-    gap: 8px; /* Touch-friendly */
+    gap: 9px; /* Scaled from 8px */
     justify-content: flex-start; /* Left-align */
   }
 
   .icon-btn {
-    min-width: 48px; /* WCAG touch target */
-    min-height: 48px;
+    min-width: 55px; /* Scaled from 48px */
+    min-height: 55px; /* Scaled from 48px */
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .icon-btn img {
-    width: 20px;
-    height: 20px;
+    width: 23px; /* Scaled from 20px */
+    height: 23px; /* Scaled from 20px */
   }
 
   .contact-counter {
-    font-size: 13px;
-    width: 90px;
+    font-size: 15px; /* Scaled from 13px */
+    width: 102px; /* Scaled from 90px */
     position: static;
     text-align: right;
     margin-left: auto;
@@ -353,86 +354,86 @@
     flex-direction: row; /* Side-by-side */
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 9px; /* Scaled from 8px */
   }
 
   /* For long Message column */
   .contact-column:nth-child(5) {
-    max-height: 150px;
+    max-height: 170px; /* Scaled from 150px */
     overflow-y: auto; /* Scroll if too long */
     white-space: normal;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(11px); } /* Scaled from 10px */
     to { opacity: 1; transform: translateY(0); }
   }
 
   .contact-row:active {
-    transform: scale(0.98); /* Touch feedback */
+    transform: scale(0.98); /* Unchanged */
     box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
 }
 
 @media (max-width: 480px) {
   .contact-section {
-    padding: 12px;
+    padding: 14px; /* Scaled from 12px */
   }
 
   .contact-header {
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 16px; /* Scaled from 14px */
+    margin-bottom: 9px; /* Scaled from 8px */
   }
 
   .contact-page-heading {
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 18px; /* Scaled from 16px */
+    line-height: 23px; /* Scaled from 20px */
   }
 
   .contact-column {
-    font-size: 12px;
-    padding: 5px 8px;
-    gap: 6px;
+    font-size: 14px; /* Scaled from 12px */
+    padding: 6px 9px; /* Scaled from 5px 8px */
+    gap: 7px; /* Scaled from 6px */
   }
 
   .icon-btn img {
-    width: 18px;
-    height: 18px;
+    width: 20px; /* Scaled from 18px */
+    height: 20px; /* Scaled from 18px */
   }
 
   .icon-btn {
-    min-width: 44px; /* WCAG compliant */
-    min-height: 44px;
+    min-width: 50px; /* Scaled from 44px */
+    min-height: 50px; /* Scaled from 44px */
   }
 
   .contact-counter {
-    font-size: 12px;
-    width: 80px;
+    font-size: 14px; /* Scaled from 12px */
+    width: 91px; /* Scaled from 80px */
   }
 
   .alt-row {
-    width: calc(100% + 24px); /* Offset reduced padding */
-    margin-left: -12px;
-    margin-right: -12px;
-    padding: 10px; /* Match regular cards */
+    width: calc(100% + 28px); /* Scaled from 24px */
+    margin-left: -14px; /* Scaled from -12px */
+    margin-right: -14px; /* Scaled from -12px */
+    padding: 11px; /* Scaled from 10px */
   }
 
   .contact-row {
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 11px; /* Scaled from 10px */
+    margin-bottom: 11px; /* Scaled from 10px */
   }
 
   .contact-column:nth-child(5) {
-    max-height: 120px;
+    max-height: 136px; /* Scaled from 120px */
   }
 
   .contact-column::before {
-    font-size: 13px;
+    font-size: 15px; /* Scaled from 13px */
   }
 
   .contact-header-wrapper {
     flex-direction: column; /* Stack for small screens */
     align-items: flex-start;
-    gap: 2px;
+    gap: 2px; /* Unchanged, small enough */
   }
 }

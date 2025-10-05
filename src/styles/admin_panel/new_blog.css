@@ -1,43 +1,38 @@
-﻿.new-blog-wrapper {
+﻿/* ============================= */
+/* Main Wrapper */
+.new-blog-wrapper {
   display: flex;
   flex-direction: column;
-  margin-left: 300px;
-  padding: 16px;
-  transition: margin-left 0.3s ease;
+  margin-left: 250px; /* Matches sidebar width */
+  margin-top: 91px; /* Matches header height */
+  padding: 10px; /* Scaled from 12px */
+  padding-right: 40px;
+  width: calc(100% - 250px); /* Matches contact page */
+  transition: margin-left 0.3s ease, width 0.3s ease, margin-top 0.3s ease;
+  min-height: calc(100vh - 91px); /* Adjusts for header */
+  box-sizing: border-box;
 }
 
-@media (max-width: 1024px) {
-  .new-blog-wrapper {
-    margin-left: 220px;
-  }
-}
-
-@media (max-width: 768px) {
-  .new-blog-wrapper {
-    margin-left: 0;
-  }
-}
-
+/* ============================= */
 /* Page Heading */
 .new-blog-heading {
   position: relative;
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
-  font-size: 20px;
-  line-height: 25px;
+  font-size: 24px; /* Preserved */
+  line-height: 18px; /* Preserved */
   color: #FFFFFF;
-  margin-bottom: 20px;
+  margin-bottom: 13px; /* Scaled from 16px */
 }
 
 /* Container Box */
 .new-blog-section {
   background: #0B1739;
   border: 0.6px solid #343B4F;
-  box-shadow: 0px 2px 12px rgba(11, 22, 44, 0.05);
-  border-radius: 12px;
-  padding: 24px;
-  width: 100%;
-  max-width: 1363px;
+  box-shadow: 0px 2px 10px rgba(11, 22, 44, 0.05); /* Scaled shadow */
+  border-radius: 8px; /* Scaled from 10px */
+  padding: 32px; /* Matches contact page */
+  width: 100%; /* Fill wrapper, matches contact page */
   box-sizing: border-box;
 }
 
@@ -45,23 +40,27 @@
 .form-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 33px; /* Preserved */
+  margin-bottom: 17px; /* Scaled from 20px */
+  justify-content: space-between; /* Distribute fields evenly */
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  width: 320px;
+  width: 300px; /* Preserved */
+  min-width: 200px; /* Ensure readability */
 }
 
 .form-label {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
-  font-size: 15px;
-  line-height: 19px;
+  font-size: 15px; /* Preserved */
+  line-height: 100%; /* Preserved */
   color: #FFFFFF;
-  margin-bottom: 8px;
+  margin-bottom: 5px; /* Scaled from 6px */
 }
 
 .form-input,
@@ -69,10 +68,12 @@
   background: #081028;
   border: 0.6px solid #343B4F;
   border-radius: 4px;
-  padding: 10px 14px;
+  padding: 7px 10px; /* Preserved */
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 15px;
+  font-size: 15px; /* Preserved */
   color: #AEB9E1;
+  height: 48px;
+  width: 100%; /* Preserved */
 }
 
 .form-input::placeholder,
@@ -80,39 +81,44 @@
   color: #AEB9E1;
 }
 
+/* Tags Section */
 .form-textarea {
   background: #081028;
   border: 0.6px solid #343B4F;
   border-radius: 4px;
-  padding: 16px;
+  padding: 7px 10px !important; /* Fix: Match .form-input padding */
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 15px;
+  font-size: 15px; /* Preserved */
   color: #AEB9E1;
   resize: none;
-  min-height: 95px;
+  min-height: 95px; /* Preserved */
+  width: 100% !important; /* Ensure responsiveness */
 }
 
 .form-textarea::placeholder {
   color: #AEB9E1;
 }
 
-/* Full Width Input/Editor */
+/* Full Width Input/Editor (Tags Container) */
 .full-width {
-  width: 100%;
+  width: 633px !important; /* Fix: Align with second field’s end (663px - 30px) */
+  padding-left: 0; /* Preserved */
 }
 
-/* ================================ */
+/* ============================= */
 /* Editor Outer Container */
 .editor-outer-container {
   background: #081028;
-  border: 1px solid #343B4F; /* only outer border */
+  border: 1px solid #343B4F;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-height: 300px;
+  width: 100%; /* Preserved */
+  min-height: 233px; /* Scaled from 280px */
   box-sizing: border-box;
-  margin-top: 16px;
+  margin-top: 10px; /* Scaled from 12px */
+  margin-left: 0; /* Preserved */
+  margin-right: 0; /* Preserved */
 }
 
 /* Toolbar inside editor */
@@ -121,11 +127,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10px 8px;
+  padding: 7px 5px; /* Scaled from 8px 6px */
   width: 100%;
-  height: 67px;
+  height: 50px; /* Scaled from 60px */
   background: #081028;
-  border-bottom: 1px solid #343B4F; /* only bottom border */
+  border-bottom: 1px solid #343B4F;
   border-radius: 4px 4px 0 0;
 }
 
@@ -133,13 +139,13 @@
 .blog-editor {
   flex: 1;
   background: #081028;
-  border: none !important; /* remove any Quill borders */
-  box-shadow: none !important; /* remove Quill shadow */
+  border: none !important;
+  box-shadow: none !important;
   color: #FFFFFF;
   font-family: 'Source Sans Pro', sans-serif;
   border-radius: 0 0 4px 4px;
-  padding: 10px;
-  min-height: 200px;
+  padding: 7px; /* Scaled from 8px */
+  min-height: 150px; /* Scaled from 160px */
 }
 
 /* Remove Quill container borders */
@@ -165,7 +171,7 @@
   border: none;
   cursor: pointer;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 14px;
+  font-size: 11px; /* Scaled from 13px */
 }
 
 #custom-toolbar button:hover {
@@ -176,28 +182,138 @@
   background: #081028;
   border: 0.6px solid #343B4F;
   border-radius: 4px;
-  padding: 2px 6px;
+  padding: 2px 4px; /* Scaled from 2px 5px */
   color: #AEB9E1;
 }
 
-/* ================================ */
+/* ============================= */
+/* Form Actions */
+.form-actions {
+  margin-top: 13px; /* Scaled from 16px */
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 30px; /* Preserved */
+}
+
+/* ============================= */
 /* Responsive */
 @media (max-width: 1024px) {
+  .new-blog-wrapper {
+    margin-left: 227px; /* Adjusted from 270px */
+    width: calc(100% - 227px); /* Matches contact page */
+    padding-right: 10px; /* Preserved */
+  }
+
   .form-grid {
     flex-direction: column;
-    gap: 16px;
+    gap: 10px; /* Scaled from 12px */
+    padding-left: 0; /* Preserved */
+    padding-right: 0; /* Preserved */
   }
 
   .form-group,
   .full-width,
   .editor-outer-container {
-    width: 100%;
+    width: 100% !important; /* Ensure full width */
+    margin-left: 0; /* Preserved */
+    margin-right: 0; /* Preserved */
+  }
+
+  .form-input,
+  .form-input select,
+  .form-textarea {
+    width: 100% !important; /* Ensure full width */
+  }
+
+  .new-blog-section {
+    width: 100%; /* Matches contact page */
+  }
+
+  .form-actions {
+    padding-right: 0; /* Preserved */
   }
 }
 
 @media (max-width: 768px) {
+  .new-blog-wrapper {
+    margin-left: 0; /* Sidebar hidden */
+    margin-top: 68px; /* Adjusted from 60px */
+    width: 100%; /* Full width */
+    min-height: calc(100vh - 68px);
+    padding: 7px; /* Preserved */
+  }
+
   #custom-toolbar {
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 4px; /* Scaled from 5px */
+  }
+
+  .new-blog-heading {
+    font-size: 18px; /* Preserved */
+    line-height: 17px; /* Preserved */
+  }
+
+  .new-blog-section {
+    padding: 13px; /* Scaled from 16px */
+  }
+}
+
+@media (max-width: 480px) {
+  .new-blog-wrapper {
+    margin-top: 62px; /* Adjusted from 55px */
+    min-height: calc(100vh - 62px);
+    padding: 7px; /* Scaled from 8px */
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .form-label {
+    font-size: 13px; /* Preserved */
+    line-height: 13px; /* Preserved */
+  }
+
+  .form-input,
+  .form-input select,
+  .form-textarea {
+    font-size: 13px; /* Preserved */
+    padding: 5px 8px; /* Scaled from 6px 10px */
+    width: 100% !important; /* Ensure full width */
+  }
+
+  .form-textarea {
+    min-height: 58px; /* Preserved */
+  }
+
+  .editor-outer-container {
+    min-height: 216px; /* Scaled from 260px */
+    margin-left: 0; /* Preserved */
+    margin-right: 0; /* Preserved */
+  }
+
+  .blog-editor {
+    min-height: 133px; /* Scaled from 160px */
+  }
+
+  .form-grid {
+    gap: 10px; /* Matches ≤1024px for consistency */
+    padding-left: 0; /* Preserved */
+    padding-right: 0; /* Preserved */
+  }
+
+  .form-actions {
+    padding-right: 0; /* Preserved */
+  }
+
+  #custom-toolbar {
+    height: 42px; /* Scaled from 50px */
+    padding: 5px 3px; /* Scaled from 6px 4px */
+  }
+
+  #custom-toolbar button,
+  #custom-toolbar select,
+  #custom-toolbar input {
+    font-size: 10px; /* Scaled from 12px */
   }
 }
