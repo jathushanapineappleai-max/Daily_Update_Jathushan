@@ -1,4 +1,5 @@
-﻿/* posted_jobs.css (merged & updated)
+﻿/* Styles for  Section  .posted_jobs-section { padding:20px; }*/
+/* posted_jobs.css (merged & updated)
    - uses --page-left for left alignment
    - exact box size for job-card
    - footer pinned bottom-right
@@ -64,7 +65,7 @@
    JOB CARD (exact box size)
    ============================ */
 .job-card {
-  width: 420px;           /* exact width */
+  width: 388px;           /* exact width */
   height: 121px;          /* exact height */
   box-sizing: border-box;
   background: #0b1832;    /* dark navy */

@@ -7,10 +7,51 @@ import CustomToolbar from "../../../components/admin_panel/CustomToolbar";
 import PostButton from "../../../components/admin_panel/buttons/post_button";
 
 export default function NewBlog() {
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [author, setAuthor] = useState("");
+  const [tags, setTags] = useState("");
   const [editorContent, setEditorContent] = useState("");
 
   const handleEditorChange = (content) => {
     setEditorContent(content);
+  };
+
+  const handlePost = () => {
+    if (!title || !category || !author) {
+      alert("Please fill all required fields!");
+      return;
+    }
+
+    const newBlog = {
+      id: Date.now(),
+      title,
+      category,
+      author,
+      date: new Date().toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+      tags,
+      content: editorContent,
+    };
+
+    // Get existing blogs
+    const existingBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+    // Add new one
+    const updatedBlogs = [...existingBlogs, newBlog];
+    // Save to localStorage
+    localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+
+    alert("Blog saved successfully!");
+
+    // Reset form
+    setTitle("");
+    setCategory("");
+    setAuthor("");
+    setTags("");
+    setEditorContent("");
   };
 
   return (
@@ -20,49 +61,56 @@ export default function NewBlog() {
       <div className="new-blog-section">
         {/* First Row */}
         <div className="form-grid">
-          {/* Blog Title */}
           <div className="form-group">
             <label className="form-label">Blog Title</label>
             <input
               type="text"
               placeholder="Add a blog title"
               className="form-input"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
-          {/* Category */}
           <div className="form-group">
             <label className="form-label">Category</label>
-            <select className="form-input">
+            <select
+              className="form-input"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
               <option value="">Choose a category</option>
-              <option value="web">Web Development</option>
-              <option value="app">App Development</option>
-              <option value="uiux">UI/UX Design</option>
-              <option value="ai">AI/ML Development</option>
+              <option value="Web Development">Web Development</option>
+              <option value="App Development">App Development</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="AI/ML Development">AI/ML Development</option>
             </select>
           </div>
 
-          {/* Author */}
           <div className="form-group">
             <label className="form-label">Author</label>
             <input
               type="text"
               placeholder="Add an author name"
               className="form-input"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
             />
           </div>
         </div>
 
-        {/* Second Row - Description / Tags */}
+        {/* Tags */}
         <div className="form-group full-width">
           <label className="form-label">Tags</label>
           <textarea
             className="form-textarea"
             placeholder="Write blog description..."
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
           ></textarea>
         </div>
 
-        {/* Editor Container */}
+        {/* Editor */}
         <div className="editor-outer-container">
           <CustomToolbar />
           <ReactQuill
@@ -97,7 +145,7 @@ export default function NewBlog() {
 
         {/* Post Button */}
         <div className="form-actions">
-          <PostButton />
+          <PostButton onClick={handlePost} />
         </div>
       </div>
     </div>

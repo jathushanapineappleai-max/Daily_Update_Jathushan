@@ -1,16 +1,34 @@
 // team.js
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../../../styles/admin_panel/team.css";
 import UpdateButton from "./../../../components/admin_panel/buttons/update_button"; // don't change this file
 import dropIconSrc from "../../../assets/icons/Group 1000005456.png";
 import avatarIconSrc from "../../../assets/icons/04.png";
 import editIconSrc from "../../../assets/icons/Frame.png";
 import deleteIconSrc from "../../../assets/icons/Vector.png";
+import Pagination from "../../../components/admin_panel/pagination";
+import leftImg from "../../../assets/icons/leftArrow.png";
+import rightImg from "../../../assets/icons/rightArrow.png";
+import sortIcon from "../../../assets/icons/sort_arrows.png";
+import Popup from "../../../components/admin_panel/popups/success"; // Assuming this path; adjust as needed
 
 function getInitials(name) {
   const parts = name.split(/[\s.]+/).filter(Boolean);
   const initials = parts.map(p => p[0]?.toUpperCase()).join('.');
   return initials.slice(0, 3) || '??';
+}
+
+/**
+ * computeRange: returns { start, end } for display
+ * Ensures 0-0 when total === 0
+ */
+function computeRange({ currentPage = 1, rowsPerPage = 10, total = 0 }) {
+  const safePage = Math.max(1, Number(currentPage) || 1);
+  const safeRows = Math.max(1, Number(rowsPerPage) || 10);
+  const startIndex = (safePage - 1) * safeRows;
+  const start = total > 0 ? startIndex + 1 : 0;
+  const end = total > 0 ? Math.min(startIndex + safeRows, total) : 0;
+  return { start, end };
 }
 
 export default function TeamPage() {
@@ -22,12 +40,17 @@ export default function TeamPage() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const fileInputRef = useRef(null);
   const [employees, setEmployees] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Modal-specific states
   const [showEditModal, setShowEditModal] = useState(false);
   const [modalEditingId, setModalEditingId] = useState(null);
+
+  // Popup states
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupTitle, setPopupTitle] = useState("Success");
+  const [popupMessage, setPopupMessage] = useState("");
 
   const positions = [
     "Choose your job position",
@@ -39,6 +62,12 @@ export default function TeamPage() {
     "HR",
     "UI/UX Engineer"
   ];
+
+  useEffect(() => {
+    if (!popupVisible) return undefined;
+    const t = setTimeout(() => setPopupVisible(false), 3000);
+    return () => clearTimeout(t);
+  }, [popupVisible]);
 
   function handleFile(file) {
     if (!file) return;
@@ -80,10 +109,11 @@ export default function TeamPage() {
     const employeeData = { name, position, linkedin, description, photoUrl: previewUrl || null };
     const newEmployees = [...employees, { ...employeeData, id: Date.now() }];
     setEmployees(newEmployees);
-    const newTotalPages = Math.ceil(newEmployees.length / rowsPerPage);
-    setCurrentPage(newTotalPages);
+    const lastPage = Math.ceil(newEmployees.length / rowsPerPage);
+    setPage(lastPage);
     resetForm();
-    alert("Employee added (frontend-only).");
+    setPopupMessage("Employee added successfully.");
+    setPopupVisible(true);
   }
 
   // Edit from list: open modal and prefill fields
@@ -107,21 +137,15 @@ export default function TeamPage() {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       const newEmployees = employees.filter(e => e.id !== id);
       setEmployees(newEmployees);
-      const newTotalPages = Math.ceil(newEmployees.length / rowsPerPage);
-      if (currentPage > newTotalPages) {
-        setCurrentPage(newTotalPages || 1);
+      const maxPage = Math.ceil(newEmployees.length / rowsPerPage) || 1;
+      if (page > maxPage) {
+        setPage(maxPage);
       }
       // close modal if deleting the currently edited one
       if (modalEditingId === id) {
         closeEditModal();
       }
     }
-  }
-
-  function handleRowsPerPageChange(e) {
-    const newRows = Number(e.target.value);
-    setRowsPerPage(newRows);
-    setCurrentPage(1);
   }
 
   // Update employee from modal
@@ -139,7 +163,8 @@ export default function TeamPage() {
     setShowEditModal(false);
     setModalEditingId(null);
     resetForm();
-    alert("Employee updated (frontend-only).");
+    setPopupMessage("Employee updated successfully.");
+    setPopupVisible(true);
   }
 
   function closeEditModal() {
@@ -148,18 +173,10 @@ export default function TeamPage() {
     resetForm();
   }
 
-  const indexOfLast = currentPage * rowsPerPage;
-  const indexOfFirst = indexOfLast - rowsPerPage;
-  const currentEmployees = employees.slice(indexOfFirst, indexOfLast);
-  const totalPages = Math.ceil(employees.length / rowsPerPage);
-
-  function nextPage() {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  }
-
-  function prevPage() {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  }
+  // Compute paginated employees and the display range
+  const total = employees.length;
+  const currentEmployees = employees.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const { start, end } = computeRange({ currentPage: page, rowsPerPage, total });
 
   return (
     <div className="team-page-root">
@@ -280,16 +297,34 @@ export default function TeamPage() {
         <div className="team-list">
           <div className="list-header">
             <h3>All Team Members</h3>
-            <span>{employees.length ? `${indexOfFirst + 1} - ${Math.min(indexOfLast, employees.length)} of ${employees.length}` : `0 of 0`}</span>
+
+            {/* NUMBER OF ITEMS BAR (top-right) */}
+            <div className="cr-list-meta" aria-hidden>
+              <span className="cr-range">{start} - {end}</span>
+              <span className="cr-muted"> of {total}</span>
+            </div>
           </div>
+
           <table className="team-table">
             <thead>
               <tr>
-                <th>Name ↓</th>
-                <th>Position ↓</th>
-                <th>LinkedIn ↓</th>
-                <th>Short Description ↓</th>
-                <th>Action</th>
+                <th id="th-name" className="th-header th-name">
+                  Name <img src={sortIcon} alt="sort" className="sort-icon" />
+                </th>
+
+                <th id="th-position" className="th-header th-position">
+                  Position <img src={sortIcon} alt="sort" className="sort-icon" />
+                </th>
+
+                <th id="th-linkedin" className="th-header th-linkedin">
+                  LinkedIn <img src={sortIcon} alt="sort" className="sort-icon" />
+                </th>
+
+                <th id="th-description" className="th-header th-description">
+                  Short Description <img src={sortIcon} alt="sort" className="sort-icon" />
+                </th>
+
+                <th id="th-action" className="th-header th-action">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -332,23 +367,21 @@ export default function TeamPage() {
           </table>
         </div>
 
-        <div className="pagination-bar">
-          <span className="page-info">{employees.length ? `${indexOfFirst + 1} - ${Math.min(indexOfLast, employees.length)} of ${employees.length}` : "0 of 0"}</span>
-          <div className="pagination-right">
-            <div className="rows-per-page">
-              <span>Rows per page: </span>
-              <select className="rows-select" value={rowsPerPage} onChange={handleRowsPerPageChange}>
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
-            <div className="page-arrows">
-              <button onClick={prevPage} disabled={currentPage === 1}>←</button>
-              <button onClick={nextPage} disabled={currentPage === totalPages}>→</button>
-            </div>
-          </div>
+        <div className="pagination-box">
+          <Pagination
+            currentPage={page}
+            total={employees.length}
+            rowsPerPage={rowsPerPage}
+            onPageChange={(p) => setPage(p)}
+            onRowsPerPageChange={(size) => {
+              setRowsPerPage(size);
+              // optional: reset page to 1 when rowsPerPage changes (if your pagination component doesn't already handle it)
+              // setPage(1);
+            }}
+            leftIcon={leftImg}
+            rightIcon={rightImg}
+            resetPageOnRowsChange={true}
+          />
         </div>
       </div>
 
@@ -474,6 +507,18 @@ export default function TeamPage() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Success Popup */}
+      {popupVisible && (
+        <div
+          className="success-popup-container"
+          role="dialog"
+          aria-live="polite"
+          aria-modal="false"
+        >
+          <Popup title={popupTitle} message={popupMessage} />
         </div>
       )}
     </div>

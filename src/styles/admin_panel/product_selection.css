@@ -1,1 +1,351 @@
-﻿/* Styles for  Section */ .product_selection-section { padding:20px; }
+﻿:root{
+  --card-bg: #343B4F;
+  --page-bg: #071028;
+  --input-bg: rgba(0,0,0,0.12);
+  --muted: rgba(255,255,255,0.6);
+  --green: #8CF21A;
+}
+
+* { box-sizing: border-box; }
+
+.product-section {
+  max-width: 1320px;
+  margin: 24px auto;
+  margin-left: 16%;
+  padding: 0 18px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #E7EEF9;
+}
+
+/* Section Title */
+.ps-section-title {
+  font-style: source-sans-pro;
+  font-size: 20px;
+  font-weight: 600;
+  color: #EAF2FF;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+
+/* form area (form-only) */
+.ps-form {
+  background: #0B1739;
+  border-radius: 12px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* three-column row */
+.ps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: end;
+}
+
+/* field */
+.ps-field { display: flex; flex-direction: column; gap: 8px; }
+.ps-label { font-size: 13px; color: rgba(255,255,255,0.6); padding-left: 6px; font-weight: 600; }
+
+/* inputs */
+.ps-input {
+  height: 44px;
+  background: #081028;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 10px 14px;
+  color: #EAF2FF;
+  outline: none;
+  font-size: 14px;
+}
+.ps-input::placeholder { color: rgba(255,255,255,0.45); }
+
+/* file upload wrapper */
+.file-wrap {
+  position: relative;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.04);
+  background: #081028;
+  padding: 6px 10px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* hide actual file input but keep it accessible */
+.file-wrap input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* placeholder text inside file-wrap */
+.file-placeholder {
+  flex: 1;
+  font-size: 14px;
+  padding-left: 6px;
+  color: rgba(255,255,255,0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* upload button with icon at right */
+.upload-icon {
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* thin hr line */
+.ps-hr {
+  border-top: 1px solid rgba(255,255,255,0.03);
+  margin: 6px 0 0 0;
+}
+
+/* actions row */
+.ps-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 8px;
+  gap: 12px;
+}
+
+/* post button */
+.ps-post {
+  margin-left: 9.7%;
+  height: 50px;
+  width: 150px;
+  background: var(--green);
+  color: #071028;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  transition: transform .08s ease;
+}
+.ps-post:active { transform: translateY(1px); }
+
+/* -----------------------
+   Product list styles
+   ----------------------- */
+.product-list {
+  margin-top: 22px;
+}
+
+/* card that holds the list + header */
+.pl-card {
+  background: #061229;
+  border-radius: 12px;
+  padding: 0; /* inner sections define padding */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* top header inside card (matches your example) */
+.pl-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  background: linear-gradient(180deg, rgba(11,23,57,0.9), rgba(8,18,40,0.95));
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+.pl-card-title {
+  margin: 0;
+  font-size: 18px;
+  color: #EAF2FF;
+  font-weight: 600;
+}
+.pl-meta {
+  color: #EAF2FF;
+  font-weight: 400;
+  font-size: 13px;
+}
+.pl-range {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* table-like layout */
+.pl-table { display: flex; flex-direction: column; gap: 8px; padding: 12px; }
+
+/* header row */
+.pl-row { display: grid; grid-template-columns: 2fr 3fr 1fr; gap: 16px; align-items: center; padding: 12px 10px; border-radius: 8px; }
+.pl-head { font-weight: 700; color: rgba(234,242,255,0.9); border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 10px; background: transparent; margin-top: 6px; }
+.pl-empty { padding: 18px; color: rgba(255,255,255,0.5); justify-items: center; }
+
+/* columns */
+.pl-col { display: flex; align-items: center; gap: 12px; }
+.pl-col-name { }
+.pl-col-website { justify-content: center; }
+.pl-col-action { justify-content: flex-end; }
+
+/* item inside name col */
+.pl-item { display: flex; align-items: center; gap: 12px; }
+.pl-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(11,23,57,0.6), rgba(3,10,28,0.6));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.pl-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pl-initials { font-weight: 700; color: #8CF21A; font-size: 14px; }
+
+.pl-item-text { display:flex; flex-direction: column; gap:2px; }
+.pl-name { color: #EAF2FF; font-weight: 600; }
+.pl-filename { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+/* website cell */
+.pl-website { color: rgba(234,242,255,0.85); text-decoration: none; text-align: center; width: 100%; }
+.pl-no-website { color: rgba(255,255,255,0.35); font-style: italic; }
+
+/* actions */
+.pl-actions { display:flex; gap: 8px; align-items:center; }
+
+/* button base */
+.pl-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* icon images inside buttons */
+.pl-btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+}
+
+/* keep original color classes for fallback/spacing if needed */
+.pl-delete { }
+.pl-edit { }
+
+/* empty text styling (neutral, not green) */
+.pl-empty-text { color: rgba(255,255,255,0.55); }
+
+/* pagination wrapper (separate box) */
+.pl-pagination-wrapper {
+  background: #061229;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.02);
+  margin-top: 16px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #0B1739;
+  border-radius: 12px;
+  padding: 26px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content .ps-row {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-content .ps-field {
+  padding-right: 0px;
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+  justify-content: space-between;
+}
+
+.modal-content .ps-label {
+  min-width: 80px;
+  margin-top: 3%;
+  text-align: left;
+  padding-left: 0%;
+  color: rgba(255,255,255,0.6);
+}
+
+.modal-content .ps-input{
+  width: 320px;
+}
+.modal-content .file-wrap {
+  width: 320px;
+}
+
+.modal-content .ps-actions {
+  justify-content: center;
+  padding-left:70%;
+  margin-top: 30px;
+}
+
+/* responsiveness */
+@media (max-width: 980px) {
+  .ps-row { grid-template-columns: repeat(2,1fr); }
+  .pl-row { grid-template-columns: 1fr 1fr; }
+  .pl-col-action { grid-column: 2 / 3; justify-self: end; }
+}
+@media (max-width: 640px) {
+  .ps-row { grid-template-columns: 1fr; }
+  .ps-actions { justify-content: center; }
+  .pl-row { grid-template-columns: 1fr; gap: 10px; }
+  .pl-col-action { justify-content: flex-end; }
+}
+
+/* wrapper that will be blurred when modal is open */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  transition: filter 180ms ease, opacity 180ms ease;
+}
+
+.content-wrapper.blurred {
+  filter: blur(5px); /* your requested blur level */
+  pointer-events: none;
+  user-select: none;
+}
+
+/* keep modal overlay above blur */
+.modal-overlay {
+  /* z-index already set to 1000 above; kept here for clarity */
+  z-index: 1000;
+}

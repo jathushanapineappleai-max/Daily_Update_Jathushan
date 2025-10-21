@@ -1,11 +1,17 @@
-﻿:root{
+﻿/* team.css */
+
+:root{
   --bg:#071028;
   --panel:#0c2034;
   --accent:#1fb6ff;
-  --muted:#94a3b8;
+  --muted:#94a3b8; 
   --input:#081827;
-  --text:#e6eef8;
+  --text: #FFFFFF;
   --green:#a6ff3d;
+
+  /* added for client-review style metadata */
+  --cr-green: #8CF21A;             /* green for the numeric range */
+  --cr-muted: rgba(255,255,255,0.6); /* muted/grey for "of X" */
 }
 
 /* wrapper that will be blurred when modal is open */
@@ -30,13 +36,15 @@
 }
 
 .team-title{
-  margin-left: 18.23%;
+  /*margin-left: 18.23%;*/
+  margin-left: 16%;
   margin-bottom: 12px;
   font-weight: 600;
+  
 }
 
 .team-container{
-  margin-left: 18.23%;
+  margin-left: 16%;
   margin-right: 2.89%;
   background: rgba(11,30,52,0.45);
   border: 2px solid rgba(31,182,255,0.12);
@@ -273,6 +281,7 @@
   gap: 12px;
   align-items: center;
   justify-content: flex-end;
+  
 }
 
 .add-employee-btn {
@@ -302,43 +311,35 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2,6,12,0.6);
+  
   display: flex;
   align-items: flex-start;
   justify-content: center;
   z-index: 1200;
+  margin-top: 7%;
 }
 
-.edit-modal {
-  position: absolute;
-  width: 532px;
-  height: auto;
-  left: calc(50% - 266px);
+.editmodal {
   top: 9.75%;
-  background: rgba(11,30,52,0.98);
-  border: 2px solid rgba(31,182,255,0.12);
-  padding: 20px 22px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  color: var(--text);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-  overflow: auto;
+
 }
 
 .modal-content {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 10px;
+  
 }
 
 .form-details {
-  width: 488px;
+  
+  
+  width: 650px;
   height: 455px;
   display: flex;
   flex-direction: column;
   gap: 30px;
-  margin-left: 6px;
-  
+  margin-left: 0%;
  
 }
 
@@ -377,9 +378,7 @@
 }
 
 .row-field.photo-block .field-label {
-  margin-top: 25px;
   width: 103px;
-  height: 20px;
 }
 
 .photo-block {
@@ -438,6 +437,8 @@
 .modal-actions {
   justify-content: flex-end;
   display: flex;
+ 
+ 
   gap: 8px;
 }
 
@@ -451,12 +452,12 @@
 }
 
 .spacer {
-  width: 66px;
+  width: 50px;
 }
 
 /* Team list */
 .team-list {
-  margin-left: 18.23%;
+  margin-left: 16%;
   margin-right: 2.89%;
   background: rgba(11,30,52,0.45);
   border: 2px solid rgba(31,182,255,0.12);
@@ -471,6 +472,7 @@
   align-items: center;
   margin-bottom: 16px;
   color: var(--text);
+  gap: 12px;
 }
 
 .list-header h3 {
@@ -479,22 +481,75 @@
   margin: 0;
 }
 
+/* metadata container in the top-right of the list card */
+.cr-list-meta {
+  font-size: 13px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  /* small visual nudge so it sits aligned with title center-line */
+  transform: translateY(1px);
+}
+
+/* numeric range (e.g. "0 - 0") — highlighted green */
+.cr-range {
+  color: var(--cr-green);
+  font-weight: 700;
+}
+
+/* the "of 0" part — muted/grey color */
+.cr-muted {
+  color: var(--cr-muted);
+  font-weight: 400;
+}
+
+/* Team table styles */
 .team-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
+  color: #FFFFFF;
 }
 
 .team-table th,
 .team-table td {
   padding: 12px 16px;
-  text-align: left;
+  /*text-align: left;*/
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 
 .team-table th {
   color: var(--muted);
   font-weight: 500;
+}
+
+/* Separate styles for each header title */
+.th-name {
+  /*width: 25%;*/
+  text-align: left;
+}
+
+.th-position {
+  width: 15%;
+  text-align: left;
+}
+
+.th-linkedin {
+  width: 20%;
+  text-align: left;
+}
+
+.th-description {
+  width: 30%;
+  text-align: left;
+}
+
+.th-action {
+  width: 10%;
+  text-align: right;
+  
 }
 
 .name-cell {
@@ -530,8 +585,8 @@
   padding: 6px 8px;
   margin: 0 4px;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  align-items: right;
+  justify-content: right;
   transition: opacity 0.2s;
 }
 
@@ -544,69 +599,26 @@
   height: 16px;
   object-fit: contain;
   display: block;
+  align-items: right;
+  justify-content: right;
 }
 
 .action-btn.edit .action-icon {
   filter: brightness(0) saturate(100%) invert(87%) sepia(10%) saturate(1844%) hue-rotate(39deg) brightness(102%) contrast(106%);
+  align-items: right;
+  justify-content: right;
 }
 
 .action-btn.delete .action-icon {
   filter: brightness(0) saturate(100%) invert(51%) sepia(92%) saturate(2481%) hue-rotate(334deg) brightness(101%) contrast(101%);
+  align-items: right;
+  justify-content: right;
 }
 
-.pagination-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 18.23%;
+/* Pagination box */
+.pagination-box {
+  margin-left: 16%;
   margin-right: 2.89%;
-  margin-top: 10px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.page-info {
-  color: var(--text);
-}
-
-.pagination-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.rows-per-page {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.rows-select {
-  background: var(--input);
-  border: 1px solid rgba(255,255,255,0.03);
-  color: var(--text);
-  padding: 4px 24px 4px 8px;
-  border-radius: 4px;
-  appearance: none;
-  position: relative;
-}
-
-.page-arrows {
-  display: flex;
-  gap: 8px;
-}
-
-.page-arrows button {
-  background: none;
-  border: none;
-  color: var(--accent);
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.page-arrows button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* responsive */
@@ -657,4 +669,122 @@
     align-items: flex-start;
     gap: 8px;
   }
+
+  .team-list {
+    margin: 10px;
+  }
+
+  .pagination-box {
+    margin: 10px;
+  }
+
+  .list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* Fullscreen backdrop — used to detect outside clicks and ensure z-index coverage */
+.success-popup-backdrop {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  z-index: 9999;
+  pointer-events: auto;
+  /* no visible background; change if you want dimming */
+}
+
+/* Popup wrapper positioned top-center (inside the backdrop) */
+.success-popup-container {
+  position: fixed;
+  top: 16px; /* distance from top; tweak if needed */
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none; /* let inner popup handle clicks */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px;
+  animation: success-popup-slide 220ms ease-out;
+  z-index: 9999;
+}
+
+/* Actual popup box */
+.success-popup {
+  pointer-events: auto; /* enable interactions */
+  min-width: 260px;
+  max-width: 94vw;
+  background: #1f2937;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* Icon styling to match the green check circle in the picture */
+.success-popup .popup-icon {
+  width: 24px;
+  height: 24px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* content layout */
+.success-popup .popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.success-popup .popup-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+.success-popup .popup-message {
+  font-size: 13px;
+  line-height: 1.2;
+  color: #94a3b8;
+}
+
+/* close button (small X) */
+.success-popup .popup-close {
+  margin-left: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px;
+  color: #94a3b8;
+}
+
+/* entrance animation */
+@keyframes success-popup-slide {
+  from { transform: translateX(-50%) translateY(-8px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* responsive tweak */
+@media (max-width: 420px) {
+  .success-popup-container { top: 10px; padding: 6px; }
+  .success-popup { min-width: 220px; padding: 10px; }
+}
+
+/* Sort icon styles */
+.sort-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  vertical-align: middle;
+  object-fit: contain;
 }

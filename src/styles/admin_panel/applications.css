@@ -1,1 +1,350 @@
-﻿/* Styles for  Section */ .applications-section { padding:20px; }
+﻿/* Make sure box sizing is predictable */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Root font size */
+:root {
+  font-size: 16px;
+}
+
+/* Outer section */
+.applications-section {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+/* When modal is open: blur background content (but not the modal) */
+.applications-section.modal-open .applications-inner,
+.applications-section.modal-open .applications-title,
+.applications-section.modal-open .applications-content,
+.applications-section.modal-open .application-footer {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 180ms ease;
+  /* reduce opacity slightly to accentuate modal */
+  opacity: 0.98;
+}
+
+/* Inner wrapper keeps content width manageable */
+.applications-inner {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  padding: 0 16px;
+}
+
+/* Title */
+.applications-title {
+  margin: 0;
+  line-height: 1.12;
+  font-weight: 600;
+  font-size: clamp(20px, 2.6vw, 32px);
+  color: #e6eef8;
+  padding-left: 4px;
+  margin-left: 6.2%;
+}
+
+/* Cards grid */
+.applications-content {
+  margin-top: 4px;
+  padding: 22px;
+  border-radius: 10px;
+  background: rgba(23, 10, 10, 0.02);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 80px;
+  align-items: start;
+  width: 100%;
+  margin-left: 5%;
+}
+
+/* Footer alignment */
+.application-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 14px 5% 14px 0;
+  margin-top: 8px;
+  width: 100%;
+  margin-left: 53%;
+}
+
+/* Responsive fallback */
+@media (max-width: 720px) {
+  .applications-inner { padding: 0 12px; }
+  .applications-content {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 14px;
+    margin-left: 0;
+  }
+  .application-footer {
+    justify-content: center;
+    padding: 14px 0;
+    margin-left: 0;
+  }
+}
+
+/* card basics */
+.application-card {
+  width: 388px;
+  min-height: 120px;
+  box-sizing: border-box;
+  background: #0b1832;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 28px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.application-card h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #fff;
+}
+
+.application-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #cfd9e6;
+}
+
+.expand-icon {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  transform: rotate(5deg);
+  margin-bottom: 10%;
+}
+
+.application-card a { color: #7db7ff; text-decoration: none; }
+.application-card a:hover { text-decoration: underline; }
+
+/* -----------------------
+   Modal styles (updated)
+   ----------------------- */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Big rounded panel */
+.modal-content {
+  position: relative;
+  background: linear-gradient(180deg, #07102a 0%, #0b1739 100%);
+  margin: 0 auto;
+  padding: 32px;
+  border: 1px solid rgba(255,255,255,0.04);
+  width: 92%;
+  max-width: 600px;
+  max-height: 724px;
+  border-radius: 18px;
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(3,6,22,0.6);
+  transform-origin: center;
+  animation: modal-pop 160ms ease;
+}
+
+/* small pop animation */
+@keyframes modal-pop {
+  from { transform: translateY(-8px) scale(0.995); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Close button top-right */
+.modal-close {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+.modal-close:hover { color: #fff; background: rgba(255,255,255,0.02); }
+
+/* Grid layout for label/value rows */
+.modal-grid {
+  display: grid;
+  gap: 14px;
+}
+
+/* Each row: label left, value right */
+.modal-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+/* Label style */
+.modal-label {
+  color: #c7d7ee;
+  font-weight: 600;
+  font-size: 14px;
+  padding-left: 6px;
+}
+
+/* Value looks like an input field (read-only) */
+.modal-value {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #d7e3f5;
+  font-size:14px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+  max-width: 320px;
+  max-height: 42px;
+}
+
+/* When the value contains a link */
+.modal-link {
+  color: #97c8ff;
+  text-decoration: none;
+  word-break: break-word;
+}
+.modal-link:hover { text-decoration: underline; }
+
+/* ---------- Divider ----------
+   visually separates fields from actions */
+.modal-divider {
+  width: 100%;
+  height: 0px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  margin: 12px 0 4px 0;
+  border-radius: 2px;
+  border: 0.6px #343B4F solid;
+  align-self: stretch;
+}
+
+/* Actions row - aligns the download button to right */
+.modal-row.modal-actions {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+
+/* Container for action buttons on the right */
+.modal-value--actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Download CV button (REPLACED: now uses an image) */
+.cv-download-btn {
+  width: 173px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 0;
+  border-radius: 0px;
+  
+  
+}
+
+/* Image inside the anchor */
+.cv-download-img {
+  width: 173px;
+  height: 52px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 6px 14px rgba(3,6,22,0.45);
+  margin-top: 0;
+  margin-right: 40%;
+  margin-left: 0%;
+}
+
+/* Slight focus outline for accessibility */
+.cv-download-btn:focus {
+  outline: 0px solid rgba(236, 239, 242, 0.25);
+  outline-offset: 3px;
+}
+
+/* Small tweaks for the actions row if no CV 
+.modal-actions .modal-label { /* keep the label column empty visually  }*/
+
+/* Responsive: stack rows on small screens */
+@media (max-width: 720px) {
+  .modal-content {
+    padding: 20px;
+    max-width: 720px;
+  }
+  .modal-row {
+    grid-template-columns: 1fr;
+  }
+  .modal-label {
+    padding-left: 0;
+    margin-bottom: 6px;
+    color: #cbd7ea;
+  }
+  .modal-value {
+    min-height: 46px;
+    max-width: 100%;
+  }
+  .modal-row.modal-actions {
+    grid-template-columns: 1fr;
+  }
+  .modal-divider {
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+  .modal-value--actions {
+    justify-content: center;
+  }
+}
+
+/* Visually-hidden helper for screen readers */
+.sr-only {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+  border: 0; padding: 0; margin: -1px;
+}
