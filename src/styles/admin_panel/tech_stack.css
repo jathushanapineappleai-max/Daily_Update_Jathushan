@@ -1,1 +1,404 @@
-﻿/* Styles for  Section */ .tech_stack-section { padding:20px; }
+﻿/* ========================================================= */
+/* TECH STACK - Figma Accurate & Fully Functional Styling     */
+/* ========================================================= */
+
+/* -------------------- Layout Wrapper -------------------- */
+.main-content {
+  margin-left: 300px;
+  padding: 20px;
+  width: calc(100% - 300px);
+  box-sizing: border-box;
+}
+
+/* -------------------- Heading + Wrapper -------------------- */
+.tech-stack-wrapper {
+  color: #e5e7eb;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.tech-stack-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/* ========================================================= */
+/* FORM CONTAINER BOX                                        */
+/* ========================================================= */
+.tech-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 28px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Form Grid */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.category-tag {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ccc;
+}
+
+/* ========================================================= */
+/* INPUT + SELECT FIELDS                                     */
+/* ========================================================= */
+.tech-input {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #e5e7eb;
+  font-size: 14px;
+  transition: border-color 0.25s ease;
+  height: 45px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "Source Sans Pro", sans-serif; /* ✅ same font in input */
+}
+
+.tech-input:focus {
+  outline: none;
+  border-color: #ffffff;
+}
+
+/* ========================================================= */
+/* PLACEHOLDER FONT FIX (Source Sans Pro)                    */
+/* ========================================================= */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  font-family: "Source Sans Pro", sans-serif !important;
+  color: #9ca3af;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+
+/* ========================================================= */
+/* FILE UPLOAD BOX                                           */
+/* ========================================================= */
+.upload-box {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9ca3af;
+  cursor: pointer;
+  height: 45px;
+  width: 100%;
+  max-width: 300px;
+  transition: border-color 0.25s ease, transform 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.upload-box:hover,
+.upload-box:focus-within {
+  border-color: #ffffff;
+  transform: scale(1.01);
+}
+
+.upload-placeholder {
+  font-size: 14px;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.upload-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================================= */
+/* DIVIDER + BUTTON                                          */
+/* ========================================================= */
+.form-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin: 25px 0 5px 0;
+  width: 100%;
+  opacity: 0.6;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+/* ========================================================= */
+/* TABLE SECTION                                             */
+/* ========================================================= */
+.second-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 24px;
+  box-shadow: 0 0 0 1px #1e293b inset;
+  overflow-x: auto;
+}
+
+.table-heading {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+/* Table Styling */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+.services-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e5e7eb;
+  font-size: 14px;
+  table-layout: fixed;
+  border-spacing: 0;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.services-table th,
+.services-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #1e293b;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.services-table th {
+  color: #9ca3af;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.services-table tbody tr:hover {
+  background: #112349;
+  transition: background 0.2s ease;
+}
+
+.services-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ================= ALIGN ACTION COLUMN RIGHT ================= */
+.services-table th:last-child,
+.services-table td:last-child {
+  text-align: right !important;
+  width: 120px;
+}
+
+/* Icon cell */
+.service-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tech-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ========================================================= */
+/* ACTION BUTTONS (EDIT + DELETE)                            */
+/* ========================================================= */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end !important;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.action-icon {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease;
+}
+
+.icon-btn:hover .action-icon {
+  transform: scale(1.15);
+}
+
+/* ========================================================= */
+/* MODAL (EDIT TECH)                                         */
+/* ========================================================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal {
+  background: #0b1739;
+  border-radius: 10px;
+  padding: 28px;
+  width: 520px;
+  color: #e5e7eb;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  font-family: "Source Sans Pro", sans-serif;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Modal Heading */
+.modal-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* Modal Fields */
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.modal-field label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.modal-field input,
+.modal-field select {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
+  padding: 10px 14px;
+  height: 45px;
+  transition: border-color 0.25s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.modal-field input:focus,
+.modal-field select:focus {
+  border-color: #ffffff;
+}
+
+/* Upload box in modal */
+.modal .upload-box {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.modal-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin: 20px 0;
+  opacity: 0.6;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-actions button {
+  background: #b4ff2b;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s ease;
+}
+
+.modal-actions button:hover {
+  background: #c7ff5a;
+}
+
+/* Fade Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================================= */
+/* RESPONSIVE DESIGN                                         */
+/* ========================================================= */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .tech-container,
+  .second-container {
+    width: 100%;
+  }
+
+  .tech-input,
+  .upload-box {
+    width: 100%;
+  }
+
+  .action-buttons {
+    justify-content: center !important;
+  }
+
+  .modal {
+    width: 90%;
+  }
+}

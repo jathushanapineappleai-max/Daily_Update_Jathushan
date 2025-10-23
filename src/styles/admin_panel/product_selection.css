@@ -19,7 +19,6 @@
 
 /* Section Title */
 .ps-section-title {
-  font-style: source-sans-pro;
   font-size: 20px;
   font-weight: 600;
   color: #EAF2FF;
@@ -43,7 +42,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
-  align-items: end;
+  align-items: start;
 }
 
 /* field */
@@ -348,4 +347,112 @@
 .modal-overlay {
   /* z-index already set to 1000 above; kept here for clarity */
   z-index: 1000;
+}
+
+/* Popup wrapper positioned top-center */
+.ps-popup-container {
+  position: fixed;
+  top: 16px; /* distance from top; tweak if needed */
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none; /* let inner popup handle clicks */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px;
+  animation: ps-popup-slide 220ms ease-out;
+  z-index: 9999;
+}
+
+/* Actual popup box */
+.ps-popup {
+  pointer-events: auto; /* enable interactions */
+  min-width: 260px;
+  max-width: 94vw;
+  background: #0B1739;
+  color: #EAF2FF;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Icon styling to match the green check circle in the picture */
+.ps-popup .popup-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #071028;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* content layout */
+.ps-popup .popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ps-popup .popup-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+.ps-popup .popup-message {
+  font-size: 13px;
+  line-height: 1.2;
+  color: rgba(255,255,255,0.6);
+}
+
+/* close button (small X) */
+.ps-popup .popup-close {
+  margin-left: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* entrance animation */
+@keyframes ps-popup-slide {
+  from { transform: translateX(-50%) translateY(-8px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* responsive tweak */
+@media (max-width: 420px) {
+  .ps-popup-container { top: 10px; padding: 6px; }
+  .ps-popup { min-width: 220px; padding: 10px; }
+}
+
+/* validation-utils.css */
+
+/* field error text */
+.field-error {
+  color: #ff6b6b;             /* matches your --error */
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+}
+
+/* input with error state (works for <input>, <select>, <textarea>) */
+.ps-input.error,
+.input-error {
+  border-color: #ff6b6b !important;
+  box-shadow: 0 0 0 3px rgba(255,107,107,0.06);
+}
+
+/* file wrap error */
+.file-wrap.error {
+  border-color: #ff6b6b !important;
 }

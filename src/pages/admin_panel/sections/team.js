@@ -38,6 +38,7 @@ export default function TeamPage() {
   const [description, setDescription] = useState("");
   const [photoFile, setPhotoFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
   const [employees, setEmployees] = useState([]);
   const [page, setPage] = useState(1);
@@ -102,10 +103,47 @@ export default function TeamPage() {
     setLinkedin("");
     setDescription("");
     removePhoto();
+    setErrors({});
   }
+
+  const validateForm = () => {
+    let errs = {};
+    if (!name.trim()) {
+      errs.name = "Name is required";
+    }
+    if (!position) {
+      errs.position = "Position is required";
+    }
+    if (!linkedin.trim()) {
+      errs.linkedin = "LinkedIn URL is required";
+    } else {
+      let urlStr = linkedin;
+      if (!urlStr.startsWith("http://") && !urlStr.startsWith("https://")) {
+        urlStr = "https://" + urlStr;
+      }
+      try {
+        const url = new URL(urlStr);
+        const hostname = url.hostname.toLowerCase();
+        if (hostname !== "linkedin.com" && hostname !== "www.linkedin.com") {
+          errs.linkedin = "Must be a valid LinkedIn URL";
+        }
+      } catch (e) {
+        errs.linkedin = "Invalid LinkedIn URL";
+      }
+    }
+    if (!description.trim()) {
+      errs.description = "Short description is required";
+    }
+    if (!previewUrl) {
+      errs.photo = "Employee photo is required";
+    }
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
 
   function submitForm(e) {
     e.preventDefault();
+    if (!validateForm()) return;
     const employeeData = { name, position, linkedin, description, photoUrl: previewUrl || null };
     const newEmployees = [...employees, { ...employeeData, id: Date.now() }];
     setEmployees(newEmployees);
@@ -151,6 +189,7 @@ export default function TeamPage() {
   // Update employee from modal
   function updateEmployeeFromModal() {
     if (!modalEditingId) return;
+    if (!validateForm()) return;
     const updated = {
       name,
       position,
@@ -190,17 +229,18 @@ export default function TeamPage() {
             <label className="field">
               <span className="field-label">Name</span>
               <input
-                className="input"
+                className={`input ${errors.name ? "error" : ""}`}
                 placeholder="Add employee name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+              {errors.name && <span className="field-error">{errors.name}</span>}
             </label>
 
             <label className="field">
               <span className="field-label">Position</span>
               <select
-                className={`input select ${position ? 'has-value' : ''}`}
+                className={`input select ${position ? "has-value" : ""} ${errors.position ? "error" : ""}`}
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
               >
@@ -210,16 +250,18 @@ export default function TeamPage() {
                   </option>
                 ))}
               </select>
+              {errors.position && <span className="field-error">{errors.position}</span>}
             </label>
 
             <label className="field">
               <span className="field-label">LinkedIn</span>
               <input
-                className="input"
+                className={`input ${errors.linkedin ? "error" : ""}`}
                 placeholder="Add Linked URL"
                 value={linkedin}
                 onChange={(e) => setLinkedin(e.target.value)}
               />
+              {errors.linkedin && <span className="field-error">{errors.linkedin}</span>}
             </label>
           </div>
 
@@ -245,7 +287,7 @@ export default function TeamPage() {
             </div>
 
             <div
-              className="photo-drop"
+              className={`photo-drop ${errors.photo ? "error" : ""}`}
               onDrop={onDrop}
               onDragOver={onDragOver}
               onClick={() => fileInputRef.current && fileInputRef.current.click()}
@@ -264,15 +306,17 @@ export default function TeamPage() {
 
             <div className="field empty-field" />
           </div>
+          {errors.photo && <span className="field-error">{errors.photo}</span>}
 
           <label className="field fullwidth description-field">
             <span className="field-label">Short Description</span>
             <textarea
-              className="textarea"
+              className={`textarea ${errors.description ? "error" : ""}`}
               placeholder="Write a short bio about employee"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            {errors.description && <span className="field-error">{errors.description}</span>}
           </label>
 
           <div className="divider" />
@@ -347,7 +391,8 @@ export default function TeamPage() {
                     </a>
                   </td>
                   <td>{emp.description}</td>
-                  <td>
+                  <td className="td-action">
+                  <div className="action-group">
                     {/* EDIT button opens modal with prefilled fields */}
                     <button className="action-btn edit" onClick={() => handleEdit(emp.id)}>
                       <img src={editIconSrc} alt="Edit" className="action-icon" />
@@ -357,6 +402,7 @@ export default function TeamPage() {
                     <button className="action-btn delete" onClick={() => handleDelete(emp.id)}>
                       <img src={deleteIconSrc} alt="Delete" className="action-icon" />
                     </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -402,31 +448,37 @@ export default function TeamPage() {
                 <div className="row-field name-row">
                   <label className="field-label" htmlFor="modal-name">Name</label>
                   <div className="spacer"></div>
-                  <input
-                    id="modal-name"
-                    className="input"
-                    placeholder="Add employee name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
+                  <div className="input-wrapper">
+                    <input
+                      id="modal-name"
+                      className={`input ${errors.name ? "error" : ""}`}
+                      placeholder="Add employee name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                    {errors.name && <span className="field-error">{errors.name}</span>}
+                  </div>
                 </div>
 
                 {/* 2. Position */}
                 <div className="row-field position-row">
                   <label className="field-label" htmlFor="modal-position">Position</label>
                   <div className="spacer"></div>
-                  <select
-                    id="modal-position"
-                    className={`input select ${position ? 'has-value' : ''}`}
-                    value={position}
-                    onChange={(e) => setPosition(e.target.value)}
-                  >
-                    {positions.map((p) => (
-                      <option key={p} value={p === positions[0] ? "" : p} disabled={p === positions[0]}>
-                        {p}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="input-wrapper">
+                    <select
+                      id="modal-position"
+                      className={`input select ${position ? "has-value" : ""} ${errors.position ? "error" : ""}`}
+                      value={position}
+                      onChange={(e) => setPosition(e.target.value)}
+                    >
+                      {positions.map((p) => (
+                        <option key={p} value={p === positions[0] ? "" : p} disabled={p === positions[0]}>
+                          {p}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.position && <span className="field-error">{errors.position}</span>}
+                  </div>
                 </div>
 
                 {/* 3. Employee Photo (avatar + drop area) */}
@@ -453,7 +505,7 @@ export default function TeamPage() {
                     </div>
 
                     <div
-                      className="photo-drop modal-drop"
+                      className={`photo-drop modal-drop ${errors.photo ? "error" : ""}`}
                       onDrop={onDrop}
                       onDragOver={onDragOver}
                       onClick={() => fileInputRef.current && fileInputRef.current.click()}
@@ -471,31 +523,38 @@ export default function TeamPage() {
                     </div>
                   </div>
                 </div>
+                {errors.photo && <span className="field-error">{errors.photo}</span>}
 
                 {/* 4. LinkedIn */}
                 <div className="row-field linkedin-row">
                   <label className="field-label" htmlFor="modal-linkedin">LinkedIn</label>
                   <div className="spacer"></div>
-                  <input
-                    id="modal-linkedin"
-                    className="input"
-                    placeholder="Add Linked URL"
-                    value={linkedin}
-                    onChange={(e) => setLinkedin(e.target.value)}
-                  />
+                  <div className="input-wrapper">
+                    <input
+                      id="modal-linkedin"
+                      className={`input ${errors.linkedin ? "error" : ""}`}
+                      placeholder="Add Linked URL"
+                      value={linkedin}
+                      onChange={(e) => setLinkedin(e.target.value)}
+                    />
+                    {errors.linkedin && <span className="field-error">{errors.linkedin}</span>}
+                  </div>
                 </div>
 
                 {/* 5. Short Description */}
                 <div className="row-field description-field desc-row">
                   <label className="field-label" htmlFor="modal-description">Short Description</label>
                   <div className="spacer"></div>
-                  <textarea
-                    id="modal-description"
-                    className="textarea"
-                    placeholder="Write a short bio about employee"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
+                  <div className="input-wrapper">
+                    <textarea
+                      id="modal-description"
+                      className={`textarea ${errors.description ? "error" : ""}`}
+                      placeholder="Write a short bio about employee"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                    />
+                    {errors.description && <span className="field-error">{errors.description}</span>}
+                  </div>
                 </div>
               </div>
 

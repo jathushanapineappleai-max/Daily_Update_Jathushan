@@ -12,6 +12,9 @@
   /* added for client-review style metadata */
   --cr-green: #8CF21A;             /* green for the numeric range */
   --cr-muted: rgba(255,255,255,0.6); /* muted/grey for "of X" */
+
+  /* added for error validation */
+  --error: #ff6b6b;
 }
 
 /* wrapper that will be blurred when modal is open */
@@ -54,6 +57,7 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  min-width: 1250px;
 }
 
 .row{
@@ -222,6 +226,10 @@
   cursor: pointer;
 }
 
+.photo-drop.error {
+  border-color: var(--error);
+}
+
 .drop-inner{
   display: flex;
   flex-direction: column;
@@ -358,15 +366,15 @@
 }
 
 .name-row, .position-row, .linkedin-row {
-  height: 42px;
+  min-height: 42px;
 }
 
 .photo-row {
-  height: 127px;
+  min-height: 127px;
 }
 
 .desc-row {
-  height: 82px;
+  min-height: 82px;
 }
 
 .row-field.description-field {
@@ -409,6 +417,10 @@
   flex: none;
   border-radius: 4px;
   border: 0.6px dashed rgba(36,161,88,0.2);
+}
+
+.modal-drop.error {
+  border-color: var(--error);
 }
 
 .edit-modal .avatar {
@@ -464,6 +476,7 @@
   padding: 28px;
   border-radius: 6px;
   margin-top: 40px;
+  min-width: 1250px;
 }
 
 .list-header {
@@ -549,7 +562,24 @@
 .th-action {
   width: 10%;
   text-align: right;
-  
+  padding-right: 0px;
+}
+.team-table td.td-action { /* cell */
+  width: 80px;         /* match header */
+  padding-right: 0px;  /* tighten right padding */
+  padding-left: 58px;   /* optional: reduce left padding too */
+}
+.action-group {
+  display: inline-flex;      /* keep it sized to its content */
+  gap: 4px;                  /* <-- reduce this number to tighten spacing (e.g. 4px or 2px) */
+  align-items: right;
+  justify-content: right; /* keeps buttons aligned to the right edge of the cell */
+}
+
+/* ensure action buttons themselves don't add extra margin */
+.action-group .action-btn {
+  margin: 0;                 /* override any global margin */
+  padding: 4px;              /* slightly tighter touch area; increase if you need larger click target */
 }
 
 .name-cell {
@@ -601,6 +631,7 @@
   display: block;
   align-items: right;
   justify-content: right;
+  
 }
 
 .action-btn.edit .action-icon {
@@ -613,6 +644,7 @@
   filter: brightness(0) saturate(100%) invert(51%) sepia(92%) saturate(2481%) hue-rotate(334deg) brightness(101%) contrast(101%);
   align-items: right;
   justify-content: right;
+  
 }
 
 /* Pagination box */
@@ -787,4 +819,23 @@
   margin-left: 4px;
   vertical-align: middle;
   object-fit: contain;
+}
+
+/* Validation error styles */
+.input.error,
+.select.error,
+.textarea.error {
+  border-color: var(--error);
+}
+
+.field-error {
+  color: var(--error);
+  font-size: 12px;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
 }

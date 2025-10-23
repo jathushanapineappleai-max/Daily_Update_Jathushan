@@ -1,5 +1,5 @@
 ﻿// client_review.js
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../../../styles/admin_panel/client_review.css"; // adjust path if needed
 import UploadIcon from "../../../assets/icons/uploadIcon.png";
 import editIconSrc from "../../../assets/icons/Frame.png";
@@ -10,7 +10,7 @@ import sort from "../../../assets/icons/sort_arrows.png";
 import PostButton from "../../../components/admin_panel/buttons/post_button";
 import UpdateButton from "../../../components/admin_panel/buttons/update_button";
 import PaginationBar from "../../../components/admin_panel/pagination";
-
+import Popup from "../../../components/admin_panel/popups/success"; // Assuming this path for the success popup
 
 const ClientReview = ({ externalOnSubmit }) => {
   const [clientName, setClientName] = useState("");
@@ -21,6 +21,14 @@ const ClientReview = ({ externalOnSubmit }) => {
   const [reviews, setReviews] = useState([]);
   const [editingId, setEditingId] = useState(null);
 
+  // Errors for add form
+  const [errors, setErrors] = useState({
+    clientName: null,
+    clientRole: null,
+    reviewText: null,
+    clientPhoto: null,
+  });
+
   // Modal states
   const [showModal, setShowModal] = useState(false);
   const [editClientName, setEditClientName] = useState("");
@@ -29,35 +37,115 @@ const ClientReview = ({ externalOnSubmit }) => {
   const [editFileName, setEditFileName] = useState("");
   const [editFileObj, setEditFileObj] = useState(null);
 
+  // Errors for edit modal
+  const [editErrors, setEditErrors] = useState({
+    clientName: null,
+    clientRole: null,
+    reviewText: null,
+    clientPhoto: null,
+  });
+
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  // Popup state
+  const [visible, setVisible] = useState(false);
+
   const fileInputRef = useRef(null);
   const editFileInputRef = useRef(null);
 
-  // handle file selection for add form
-  const handleFileChange = (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (f) {
-      setFileName(f.name);
-      setFileObj(f);
-    } else {
-      setFileName("");
-      setFileObj(null);
-    }
+  // Popup auto-hide effect
+  useEffect(() => {
+    if (!visible) return undefined;
+    const t = setTimeout(() => setVisible(false), 3000);
+    return () => clearTimeout(t);
+  }, [visible]);
+
+  // Validation functions
+  const validateName = (name) => {
+    const s = (name || "").trim();
+    if (!s) return "Name is required";
+    if (/\d/.test(s)) return "Name cannot contain numbers";
+    if (!/^[\p{L}\p{M}\s'.\-]+$/u.test(s)) return "Name contains invalid characters";
+    return null;
   };
 
-  // handle file selection for edit modal
-  const handleEditFileChange = (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (f) {
-      setEditFileName(f.name);
-      setEditFileObj(f);
-    } else {
-      setEditFileName("");
-      setEditFileObj(null);
+  const validateRole = (role) => {
+    const s = (role || "").trim();
+    if (!s) return "Role is required";
+    if (s.length < 2) return "Role must be at least 2 characters";
+    if (s.length > 120) return "Role is too long";
+    if (!/^[\p{L}\p{M}\s'.\-\d]+$/u.test(s)) return "Role contains invalid characters";
+    return null;
+  };
+
+  const validateReview = (text) => {
+    const s = (text || "").trim();
+    if (!s) return "Review is required";
+    if (s.length > 2000) return "Review is too long";
+    return null;
+  };
+
+  const validatePhotoSync = ({ file = null, previewUrl = null, required = true, maxSizeBytes = 5 * 1024 * 1024 }) => {
+    if (!file && !previewUrl) {
+      return required ? "Client photo is required" : null;
     }
+    if (file) {
+      if (!file.type || !file.type.startsWith("image/")) return "File must be an image (PNG/JPG/etc.)";
+      if (file.size > maxSizeBytes) return `File too large (max ${(maxSizeBytes / (1024 * 1024)).toFixed(1)} MB)`;
+    }
+    return null;
+  };
+
+  // Handle file selection for add form
+  const handleFileChange = (e) => {
+    const f = e.target.files?.[0] ?? null;
+    setFileName(f ? f.name : "");
+    setFileObj(f);
+    const err = validatePhotoSync({ file: f, previewUrl: fileName, required: true });
+    setErrors((prev) => ({ ...prev, clientPhoto: err }));
+  };
+
+  // Handle file selection for edit modal
+  const handleEditFileChange = (e) => {
+    const f = e.target.files?.[0] ?? null;
+    setEditFileName(f ? f.name : editFileName);
+    setEditFileObj(f);
+    const err = validatePhotoSync({ file: f, previewUrl: editFileName, required: true });
+    setEditErrors((prev) => ({ ...prev, clientPhoto: err }));
+  };
+
+  // Blur handlers for add form
+  const handleNameBlur = () => {
+    const err = validateName(clientName);
+    setErrors((prev) => ({ ...prev, clientName: err }));
+  };
+
+  const handleRoleBlur = () => {
+    const err = validateRole(clientRole);
+    setErrors((prev) => ({ ...prev, clientRole: err }));
+  };
+
+  const handleReviewBlur = () => {
+    const err = validateReview(reviewText);
+    setErrors((prev) => ({ ...prev, reviewText: err }));
+  };
+
+  // Blur handlers for edit modal
+  const handleEditNameBlur = () => {
+    const err = validateName(editClientName);
+    setEditErrors((prev) => ({ ...prev, clientName: err }));
+  };
+
+  const handleEditRoleBlur = () => {
+    const err = validateRole(editClientRole);
+    setEditErrors((prev) => ({ ...prev, clientRole: err }));
+  };
+
+  const handleEditReviewBlur = () => {
+    const err = validateReview(editReviewText);
+    setEditErrors((prev) => ({ ...prev, reviewText: err }));
   };
 
   // reset add form
@@ -68,17 +156,31 @@ const ClientReview = ({ externalOnSubmit }) => {
     setFileName("");
     setFileObj(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+    setErrors({
+      clientName: null,
+      clientRole: null,
+      reviewText: null,
+      clientPhoto: null,
+    });
   };
 
   // submit for add (top form)
   const handleAddSubmit = (e) => {
     e.preventDefault();
-    if (!clientName.trim()) {
-      alert("Please enter a client name.");
-      return;
-    }
-    if (!reviewText.trim()) {
-      alert("Please write a review.");
+
+    const nameError = validateName(clientName);
+    const roleError = validateRole(clientRole);
+    const reviewError = validateReview(reviewText);
+    const photoError = validatePhotoSync({ file: fileObj, previewUrl: fileName, required: true });
+
+    setErrors({
+      clientName: nameError,
+      clientRole: roleError,
+      reviewText: reviewError,
+      clientPhoto: photoError,
+    });
+
+    if (nameError || roleError || reviewError || photoError) {
       return;
     }
 
@@ -114,6 +216,7 @@ const ClientReview = ({ externalOnSubmit }) => {
     }
 
     resetForm();
+    setVisible(true); // Show success popup
   };
 
   // Open edit modal
@@ -127,21 +230,47 @@ const ClientReview = ({ externalOnSubmit }) => {
     setEditFileObj(null); // Reset file obj, user can re-upload if needed
     setEditingId(id);
     setShowModal(true);
+    // Reset edit errors
+    setEditErrors({
+      clientName: null,
+      clientRole: null,
+      reviewText: null,
+      clientPhoto: null,
+    });
   };
 
   // Submit for edit (modal)
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    if (!editClientName.trim()) {
-      alert("Please enter a client name.");
-      return;
-    }
-    if (!editReviewText.trim()) {
-      alert("Please write a review.");
+
+    const nameError = validateName(editClientName);
+    const roleError = validateRole(editClientRole);
+    const reviewError = validateReview(editReviewText);
+    const photoError = validatePhotoSync({
+      file: editFileObj,
+      previewUrl: editFileObj ? null : editFileName,
+      required: true,
+    });
+
+    setEditErrors({
+      clientName: nameError,
+      clientRole: roleError,
+      reviewText: reviewError,
+      clientPhoto: photoError,
+    });
+
+    if (nameError || roleError || reviewError || photoError) {
       return;
     }
 
-    const fileUrl = editFileObj ? URL.createObjectURL(editFileObj) : reviews.find((x) => x.id === editingId)?.fileUrl || null;
+    const oldReview = reviews.find((x) => x.id === editingId);
+    let fileUrl = oldReview?.fileUrl || null;
+    if (editFileObj) {
+      if (oldReview?.fileUrl) {
+        URL.revokeObjectURL(oldReview.fileUrl);
+      }
+      fileUrl = URL.createObjectURL(editFileObj);
+    }
 
     const updatedReview = {
       id: editingId,
@@ -184,6 +313,10 @@ const ClientReview = ({ externalOnSubmit }) => {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
     setReviews((prev) => {
+      const toDelete = prev.find((x) => x.id === id);
+      if (toDelete?.fileUrl) {
+        URL.revokeObjectURL(toDelete.fileUrl);
+      }
       const newReviews = prev.filter((r) => r.id !== id);
       const newTotalPages = Math.max(1, Math.ceil(newReviews.length / rowsPerPage));
       if (currentPage > newTotalPages) {
@@ -237,14 +370,16 @@ const ClientReview = ({ externalOnSubmit }) => {
               </label>
               <input
                 id="clientName"
-                className="cr-input"
+                className={`cr-input ${errors.clientName ? 'error' : ''}`}
                 placeholder="Add client name"
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
+                onBlur={handleNameBlur}
                 name="clientName"
                 type="text"
                 autoComplete="off"
               />
+              {errors.clientName && <span className="field-error">{errors.clientName}</span>}
             </div>
 
             <div className="cr-field">
@@ -253,13 +388,15 @@ const ClientReview = ({ externalOnSubmit }) => {
               </label>
               <input
                 id="clientRole"
-                className="cr-input"
+                className={`cr-input ${errors.clientRole ? 'error' : ''}`}
                 placeholder="Add client role"
                 value={clientRole}
                 onChange={(e) => setClientRole(e.target.value)}
+                onBlur={handleRoleBlur}
                 name="clientRole"
                 type="text"
               />
+              {errors.clientRole && <span className="field-error">{errors.clientRole}</span>}
             </div>
 
             <div className="cr-field">
@@ -268,7 +405,7 @@ const ClientReview = ({ externalOnSubmit }) => {
               </label>
 
               <div
-                className="cr-file-wrap"
+                className={`cr-file-wrap ${errors.clientPhoto ? 'error' : ''}`}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -284,6 +421,7 @@ const ClientReview = ({ externalOnSubmit }) => {
                   <img src={UploadIcon} alt="upload" />
                 </span>
               </div>
+              {errors.clientPhoto && <span className="field-error">{errors.clientPhoto}</span>}
             </div>
           </div>
 
@@ -294,13 +432,15 @@ const ClientReview = ({ externalOnSubmit }) => {
               </label>
               <textarea
                 id="reviewText"
-                className="cr-textarea"
+                className={`cr-textarea ${errors.reviewText ? 'error' : ''}`}
                 placeholder="Write a review"
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
+                onBlur={handleReviewBlur}
                 name="reviewText"
                 rows={4}
               />
+              {errors.reviewText && <span className="field-error">{errors.reviewText}</span>}
             </div>
           </div>
 
@@ -390,51 +530,62 @@ const ClientReview = ({ externalOnSubmit }) => {
                 <label className="cr-modal-label" htmlFor="editClientName">
                   Name
                 </label>
-                <input
-                  id="editClientName"
-                  className="cr-modal-input"
-                  placeholder="Add client name"
-                  value={editClientName}
-                  onChange={(e) => setEditClientName(e.target.value)}
-                  type="text"
-                  autoComplete="off"
-                />
+                <div style={{ flex: 1 }}>
+                  <input
+                    id="editClientName"
+                    className={`cr-modal-input ${editErrors.clientName ? 'error' : ''}`}
+                    placeholder="Add client name"
+                    value={editClientName}
+                    onChange={(e) => setEditClientName(e.target.value)}
+                    onBlur={handleEditNameBlur}
+                    type="text"
+                    autoComplete="off"
+                  />
+                  {editErrors.clientName && <span className="field-error">{editErrors.clientName}</span>}
+                </div>
               </div>
 
               <div className="cr-modal-row">
                 <label className="cr-modal-label" htmlFor="editClientRole">
                   Role
                 </label>
-                <input
-                  id="editClientRole"
-                  className="cr-modal-input"
-                  placeholder="Add client role"
-                  value={editClientRole}
-                  onChange={(e) => setEditClientRole(e.target.value)}
-                  type="text"
-                />
+                <div style={{ flex: 1 }}>
+                  <input
+                    id="editClientRole"
+                    className={`cr-modal-input ${editErrors.clientRole ? 'error' : ''}`}
+                    placeholder="Add client role"
+                    value={editClientRole}
+                    onChange={(e) => setEditClientRole(e.target.value)}
+                    onBlur={handleEditRoleBlur}
+                    type="text"
+                  />
+                  {editErrors.clientRole && <span className="field-error">{editErrors.clientRole}</span>}
+                </div>
               </div>
 
               <div className="cr-modal-row">
                 <label className="cr-modal-label" htmlFor="editClientPhoto">
                   Client Photo
                 </label>
-                <div
-                  className="cr-file-wrap"
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      editFileInputRef.current && editFileInputRef.current.click();
-                    }
-                  }}
-                >
-                  <input ref={editFileInputRef} id="editClientPhoto" type="file" accept="image/*" onChange={handleEditFileChange} />
-                  <span className="cr-file-placeholder">{editFileName || "Upload client photo"}</span>
-                  <span className="cr-upload-icon">
-                    <img src={UploadIcon} alt="upload" />
-                  </span>
+                <div style={{ flex: 1 }}>
+                  <div
+                    className={`cr-file-wrap ${editErrors.clientPhoto ? 'error' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        editFileInputRef.current && editFileInputRef.current.click();
+                      }
+                    }}
+                  >
+                    <input ref={editFileInputRef} id="editClientPhoto" type="file" accept="image/*" onChange={handleEditFileChange} />
+                    <span className="cr-file-placeholder">{editFileObj ? editFileObj.name : editFileName || "Upload client photo"}</span>
+                    <span className="cr-upload-icon">
+                      <img src={UploadIcon} alt="upload" />
+                    </span>
+                  </div>
+                  {editErrors.clientPhoto && <span className="field-error">{editErrors.clientPhoto}</span>}
                 </div>
               </div>
 
@@ -442,14 +593,18 @@ const ClientReview = ({ externalOnSubmit }) => {
                 <label className="cr-modal-label" htmlFor="editReviewText">
                   Review
                 </label>
-                <textarea
-                  id="editReviewText"
-                  className="cr-modal-textarea"
-                  placeholder="Write a review"
-                  value={editReviewText}
-                  onChange={(e) => setEditReviewText(e.target.value)}
-                  rows={4}
-                />
+                <div style={{ flex: 1 }}>
+                  <textarea
+                    id="editReviewText"
+                    className={`cr-modal-textarea ${editErrors.reviewText ? 'error' : ''}`}
+                    placeholder="Write a review"
+                    value={editReviewText}
+                    onChange={(e) => setEditReviewText(e.target.value)}
+                    onBlur={handleEditReviewBlur}
+                    rows={4}
+                  />
+                  {editErrors.reviewText && <span className="field-error">{editErrors.reviewText}</span>}
+                </div>
               </div>
 
               <div className="cr-modal-actions">
@@ -457,6 +612,18 @@ const ClientReview = ({ externalOnSubmit }) => {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Success Popup */}
+      {visible && (
+        <div
+          className="cr-popup-container"
+          role="dialog"
+          aria-live="polite"
+          aria-modal="false"
+        >
+          <Popup title="Success" message="Review posted successfully." />
         </div>
       )}
     </div>

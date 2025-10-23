@@ -1,5 +1,4 @@
-﻿// src/components/admin_panel/Signin.js
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import "../../../styles/admin_panel/signin.css";
 import eyeIcon from "../../../assets/icons/eye.png";
 import pineappleai from "../../../assets/icons/pineappleai.png";
@@ -33,6 +32,11 @@ export default function SignIn() {
     }
     if (!password) {
       setError("Please enter your password.");
+      return;
+    }
+    // Check for hardcoded admin credentials
+    if (email.trim() !== "admin" || password !== "admin") {
+      setError("Invalid username or password.");
       return;
     }
     try {
@@ -72,7 +76,7 @@ export default function SignIn() {
             <input
               id="email"
               name="email"
-              type="email"
+              type="text"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -96,7 +100,6 @@ export default function SignIn() {
               aria-required="true"
             />
 
-            {/* Use the imported asset here so webpack can resolve it reliably */}
             <button
               type="button"
               className="eye-button"

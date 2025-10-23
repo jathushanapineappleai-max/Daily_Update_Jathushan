@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useRef } from "react";
 import Sidebar from "./components/admin_panel/sidebar";
 import AdminHeader from "./components/admin_panel/admin_header";
@@ -34,34 +34,43 @@ export default function AdminApp() {
 
   return (
     <Router>
-      <div className="admin-layout">
-        {/* Sidebar with forwardRef */}
-        <Sidebar ref={sidebarRef} />
+      <Routes>
+        {/* Sign-in route without sidebar and header */}
+        <Route path="/admin/signin" element={<SignIn />} />
 
-        {/* Main content + Header */}
-        <div className="admin-main">
-          <AdminHeader onToggleSidebar={toggleSidebar} />
-
-          {/* Routes */}
-          <Routes>
-            <Route path="/admin/signin" element={<SignIn />} />
-            <Route path="/admin/product-selection" element={<ProductSelection />} />
-            <Route path="/admin/client-review" element={<ClientReview />} />
-            <Route path="/admin/team" element={<Team />} />
-            <Route path="/admin/main-services" element={<MainServices />} />
-            <Route path="/admin/tech-stack" element={<TechStack />} />
-            <Route path="/admin/industry" element={<Industry />} />
-            <Route path="/admin/company-projects" element={<CompanyProjects />} />
-            <Route path="/admin/clients-projects" element={<ClientsProjects />} />
-            <Route path="/admin/new-blog" element={<NewBlog />} />
-            <Route path="/admin/posted-blogs" element={<PostedBlogs />} />
-            <Route path="/admin/contact" element={<Contact />} />
-            <Route path="/admin/new-jobs" element={<NewJobs />} />
-            <Route path="/admin/posted-jobs" element={<PostedJobs />} />
-            <Route path="/admin/applications" element={<Applications />} />
-          </Routes>
-        </div>
-      </div>
+        {/* Other routes with sidebar and header */}
+        <Route
+          path="/admin/*"
+          element={
+            <div className="admin-layout">
+              <Sidebar ref={sidebarRef} />
+              <div className="admin-main">
+                <AdminHeader onToggleSidebar={toggleSidebar} />
+                <Routes>
+                  <Route path="product-selection" element={<ProductSelection />} />
+                  <Route path="client-review" element={<ClientReview />} />
+                  <Route path="team" element={<Team />} />
+                  <Route path="main-services" element={<MainServices />} />
+                  <Route path="tech-stack" element={<TechStack />} />
+                  <Route path="industry" element={<Industry />} />
+                  <Route path="company-projects" element={<CompanyProjects />} />
+                  <Route path="clients-projects" element={<ClientsProjects />} />
+                  <Route path="new-blog" element={<NewBlog />} />
+                  <Route path="posted-blogs" element={<PostedBlogs />} />
+                  <Route path="contact" element={<Contact />} />
+                  <Route path="new-jobs" element={<NewJobs />} />
+                  <Route path="posted-jobs" element={<PostedJobs />} />
+                  <Route path="applications" element={<Applications />} />
+                  {/* Redirect root /admin to signin if not authenticated */}
+                  <Route path="/" element={<Navigate to="/admin/signin" replace />} />
+                </Routes>
+              </div>
+            </div>
+          }
+        />
+        {/* Redirect any unmatched route to signin */}
+        <Route path="*" element={<Navigate to="/admin/signin" replace />} />
+      </Routes>
     </Router>
   );
 }

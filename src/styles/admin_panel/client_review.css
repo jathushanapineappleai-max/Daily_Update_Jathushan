@@ -47,7 +47,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
-  align-items: end;
+  align-items: start;
 }
 
 .cr-row-bottom {
@@ -374,7 +374,7 @@
 
 .cr-modal-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   /* Gap between left side (label) and right side (input) of modal */
   gap: 45px; /* Proper gap between labels and inputs as per design */
 }
@@ -385,6 +385,7 @@
   font-size: 13px;
   color: rgba(255,255,255,0.6);
   font-weight: 600;
+  margin-top: 10px;
 }
 
 .cr-modal-input {
@@ -504,4 +505,127 @@
     text-align: left;
     width: auto;
   }
+}
+
+/* Fullscreen backdrop — used to detect outside clicks and ensure z-index coverage */
+.cr-popup-backdrop {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  z-index: 9999;
+  pointer-events: auto;
+  /* no visible background; change if you want dimming */
+}
+
+/* Popup wrapper positioned top-center (inside the backdrop) */
+.cr-popup-container {
+  position: fixed;
+  top: 16px; /* distance from top; tweak if needed */
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none; /* let inner popup handle clicks */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px;
+  animation: cr-popup-slide 220ms ease-out;
+  z-index: 9999;
+}
+
+/* Actual popup box */
+.cr-popup {
+  pointer-events: auto; /* enable interactions */
+  min-width: 260px;
+  max-width: 94vw;
+  background: #1f2937;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* Icon styling to match the green check circle in the picture */
+.cr-popup .popup-icon {
+  width: 24px;
+  height: 24px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* content layout */
+.cr-popup .popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cr-popup .popup-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+.cr-popup .popup-message {
+  font-size: 13px;
+  line-height: 1.2;
+  color: #94a3b8;
+}
+
+/* close button (small X) */
+.cr-popup .popup-close {
+  margin-left: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px;
+  color: #94a3b8;
+}
+
+/* entrance animation */
+@keyframes cr-popup-slide {
+  from { transform: translateX(-50%) translateY(-8px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* responsive tweak */
+@media (max-width: 420px) {
+  .cr-popup-container { top: 10px; padding: 6px; }
+  .cr-popup { min-width: 220px; padding: 10px; }
+}
+
+/* validation-utils.css */
+
+/* field error text */
+.field-error {
+  color: #ff6b6b;             /* matches your --error */
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+}
+
+/* input with error state (works for <input>, <select>, <textarea>) */
+.cr-input.error,
+.cr-modal-input.error,
+.input-error {
+  border-color: #ff6b6b !important;
+}
+
+/* textarea with error */
+.cr-textarea.error,
+.cr-modal-textarea.error {
+  border-color: #ff6b6b !important;
+}
+
+/* file wrap error */
+.cr-file-wrap.error {
+  border-color: #ff6b6b !important;
 }

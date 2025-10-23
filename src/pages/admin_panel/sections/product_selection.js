@@ -8,6 +8,73 @@ import Pagination from "../../../components/admin_panel/pagination";
 /*import leftImg from "../../../assets/icons/leftArrow.png";
 import rightImg from "../../../assets/icons/rightArrow.png";*/
 import sort from "../../../assets/icons/sort_arrows.png";
+import Popup from "../../../components/admin_panel/popups/success";
+
+// --------- Name validation (sync) ---------
+// Returns null when valid, otherwise returns an error message string.
+function validateName(name) {
+  const s = (name || "").trim();
+  if (!s) return "Name is required";
+  if (s.length < 2) return "Name must be at least 2 characters";
+  if (s.length > 120) return "Name is too long";
+  // Reject digits as a simple rule; adjust if you need numbers allowed.
+  if (/\d/.test(s)) return "Name cannot contain numbers";
+  // Allow most punctuation used in names (.,-', spaces). Keep this conservative.
+  // If you need full Unicode support, relax or remove this regex check.
+  if (!/^[\p{L}\p{M}\s'.\-]+$/u.test(s)) return "Name contains invalid characters";
+  return null;
+}
+
+// --------- Website validation (sync) ---------
+function validateWebsite(website) {
+  const s = (website || "").trim();
+  if (!s) return "Website is required";
+  let u = s;
+  if (!u.startsWith('http://') && !u.startsWith('https://')) {
+    u = 'https://' + u;
+  }
+  try {
+    new URL(u);
+    return null;
+  } catch {
+    return "Invalid website URL";
+  }
+}
+
+// --------- Photo validation (sync) ---------
+// Quick checks: presence, file type and size.
+// Accepts either a File object or a previewUrl (string) when a previously uploaded image exists.
+// Returns null when valid, otherwise returns error string.
+function validatePhotoSync({ file = null, previewUrl = null, required = true, maxSizeBytes = 5 * 1024 * 1024 }) {
+  if (!file && !previewUrl) {
+    return required ? "Product photo is required" : null;
+  }
+  if (file) {
+    if (!file.type || !file.type.startsWith("image/")) return "File must be an image (PNG/JPG/etc.)";
+    if (file.size > maxSizeBytes) return `File too large (max ${(maxSizeBytes / (1024 * 1024)).toFixed(1)} MB)`;
+  }
+  return null;
+}
+
+// --------- Small helpers to wire file input / drag-drop into a form (React-friendly) ---------
+// Usage: pass setFile, setPreviewUrl, setErrors from your component state.
+function handleFileSelect(e, { setFile, setFileName, setErrors, maxSizeBytes }) {
+  const f = e.target.files?.[0] ?? null;
+  if (!f) return;
+  const err = validatePhotoSync({ file: f, required: true, maxSizeBytes });
+  if (err) {
+    setErrors(prev => ({ ...prev, photo: err }));
+    return;
+  }
+  setErrors(prev => ({ ...prev, photo: null }));
+  setFile(f);
+  setFileName(f.name);
+}
+
+// Call this when you remove a preview to avoid memory leaks
+function revokePreview(previewUrl) {
+  try { if (previewUrl) URL.revokeObjectURL(previewUrl); } catch(_) {}
+}
 
 export default function ProductSelection({ onSubmit: externalOnSubmit }) {
   const [productName, setProductName] = useState('');
@@ -30,6 +97,13 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
   const [modalFileName, setModalFileName] = useState('');
   const [modalFileObj, setModalFileObj] = useState(null);
 
+  // errors for main form and modal
+  const [errors, setErrors] = useState({ name: null, website: null, photo: null });
+  const [modalErrors, setModalErrors] = useState({ name: null, website: null, photo: null });
+
+  // success popup state
+  const [successVisible, setSuccessVisible] = useState(false);
+
   const totalProducts = products.length;
 
   // paginated products for display
@@ -51,35 +125,54 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
       setModalWebsite(editingProduct.website);
       setModalFileName(editingProduct.fileName || '');
       setModalFileObj(null);
+      setModalErrors({ name: null, website: null, photo: null });
     }
   }, [editingProduct]);
 
+  // Auto-hide success popup after 3000ms
+  useEffect(() => {
+    if (!successVisible) return undefined;
+    const t = setTimeout(() => setSuccessVisible(false), 3000);
+    return () => clearTimeout(t);
+  }, [successVisible]);
+
   const handleFileChange = (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (f) {
-      setFileName(f.name);
-      setFileObj(f);
-    } else {
-      setFileName('');
-      setFileObj(null);
-    }
+    handleFileSelect(e, { setFile: setFileObj, setFileName, setErrors, maxSizeBytes: 5 * 1024 * 1024 });
   };
 
   const handleModalFileChange = (e) => {
-    const f = e.target.files && e.target.files[0];
-    if (f) {
-      setModalFileName(f.name);
-      setModalFileObj(f);
-    } else {
-      setModalFileName(editingProduct?.fileName || '');
-      setModalFileObj(null);
-    }
+    handleFileSelect(e, { setFile: setModalFileObj, setFileName: setModalFileName, setErrors: setModalErrors, maxSizeBytes: 5 * 1024 * 1024 });
+  };
+
+  const handleNameBlur = () => {
+    const err = validateName(productName);
+    setErrors(prev => ({ ...prev, name: err }));
+  };
+
+  const handleWebsiteBlur = () => {
+    const err = validateWebsite(productWebsite);
+    setErrors(prev => ({ ...prev, website: err }));
+  };
+
+  const handleModalNameBlur = () => {
+    const err = validateName(modalName);
+    setModalErrors(prev => ({ ...prev, name: err }));
+  };
+
+  const handleModalWebsiteBlur = () => {
+    const err = validateWebsite(modalWebsite);
+    setModalErrors(prev => ({ ...prev, website: err }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!productName.trim()) {
-      alert('Please enter a product name.');
+
+    const nameError = validateName(productName);
+    const websiteError = validateWebsite(productWebsite);
+    const photoError = validatePhotoSync({ file: fileObj, required: true });
+
+    if (nameError || websiteError || photoError) {
+      setErrors({ name: nameError, website: websiteError, photo: photoError });
       return;
     }
 
@@ -121,6 +214,10 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
     setProductWebsite('');
     setFileName('');
     setFileObj(null);
+    setErrors({ name: null, website: null, photo: null });
+
+    // show success popup
+    setSuccessVisible(true);
   };
 
   // delete product
@@ -147,8 +244,17 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
   // handle update in modal
   const handleUpdate = (e) => {
     e.preventDefault();
-    if (!modalName.trim()) {
-      alert('Please enter a product name.');
+
+    const nameError = validateName(modalName);
+    const websiteError = validateWebsite(modalWebsite);
+    const photoError = validatePhotoSync({
+      file: modalFileObj,
+      previewUrl: modalFileObj ? null : editingProduct?.fileUrl,
+      required: true // Require photo in edit as well; if no previous, must upload
+    });
+
+    if (nameError || websiteError || photoError) {
+      setModalErrors({ name: nameError, website: websiteError, photo: photoError });
       return;
     }
 
@@ -168,6 +274,7 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
     setProducts(prev => prev.map(p => p.id === updatedProduct.id ? updatedProduct : p));
     setShowModal(false);
     setEditingProduct(null);
+    setModalErrors({ name: null, website: null, photo: null });
   };
 
   // Calculate the display range
@@ -187,34 +294,38 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
               <label className="ps-label" htmlFor="productName">Product Name</label>
               <input
                 id="productName"
-                className="ps-input"
+                className={`ps-input ${errors.name ? 'error' : ''}`}
                 placeholder="Add product name"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
+                onBlur={handleNameBlur}
                 name="productName"
                 type="text"
                 autoComplete="off"
               />
+              {errors.name && <span className="field-error">{errors.name}</span>}
             </div>
 
             <div className="ps-field">
               <label className="ps-label" htmlFor="productWebsite">Product Website</label>
               <input
                 id="productWebsite"
-                className="ps-input"
+                className={`ps-input ${errors.website ? 'error' : ''}`}
                 placeholder="Add product website URL"
                 value={productWebsite}
                 onChange={(e) => setProductWebsite(e.target.value)}
+                onBlur={handleWebsiteBlur}
                 name="productWebsite"
                 type="url"
               />
+              {errors.website && <span className="field-error">{errors.website}</span>}
             </div>
 
             <div className="ps-field">
               <label className="ps-label" htmlFor="productPhoto">Product Photo</label>
 
               <div
-                className="file-wrap"
+                className={`file-wrap ${errors.photo ? 'error' : ''}`}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -236,6 +347,7 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
                   <img src={UploadIcon} alt="upload" style={{ width: 20, height: 20, display: 'block' }} />
                 </span>
               </div>
+              {errors.photo && <span className="field-error">{errors.photo}</span>}
 
             </div>
           </div>
@@ -351,30 +463,34 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
                   <label className="ps-label" htmlFor="modalProductName">Product Name</label>
                   <input
                     id="modalProductName"
-                    className="ps-input"
+                    className={`ps-input ${modalErrors.name ? 'error' : ''}`}
                     placeholder="Add product name"
                     value={modalName}
                     onChange={(e) => setModalName(e.target.value)}
+                    onBlur={handleModalNameBlur}
                     type="text"
                   />
+                  {modalErrors.name && <span className="field-error">{modalErrors.name}</span>}
                 </div>
 
                 <div className="ps-field">
                   <label className="ps-label" htmlFor="modalProductWebsite">Product Website</label>
                   <input
                     id="modalProductWebsite"
-                    className="ps-input"
+                    className={`ps-input ${modalErrors.website ? 'error' : ''}`}
                     placeholder="Add product website URL"
                     value={modalWebsite}
                     onChange={(e) => setModalWebsite(e.target.value)}
+                    onBlur={handleModalWebsiteBlur}
                     type="url"
                   />
+                  {modalErrors.website && <span className="field-error">{modalErrors.website}</span>}
                 </div>
 
                 <div className="ps-field">
                   <label className="ps-label" htmlFor="modalProductPhoto">Product Photo</label>
                   <div
-                    className="file-wrap"
+                    className={`file-wrap ${modalErrors.photo ? 'error' : ''}`}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
@@ -396,6 +512,7 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
                       <img src={UploadIcon} alt="upload" style={{ width: 20, height: 20, display: 'block' }} />
                     </span>
                   </div>
+                  {modalErrors.photo && <span className="field-error">{modalErrors.photo}</span>}
                 </div>
               </div>
 
@@ -406,6 +523,18 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Success Popup */}
+      {successVisible && (
+        <div
+          className="ps-popup-container"
+          role="dialog"
+          aria-live="polite"
+          aria-modal="false"
+        >
+          <Popup title="Success" message="Product added successfully." />
         </div>
       )}
     </div>

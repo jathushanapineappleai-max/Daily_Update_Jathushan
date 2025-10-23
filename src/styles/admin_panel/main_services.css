@@ -1,1 +1,417 @@
-﻿/* Styles for  Section */ .main_services-section { padding:20px; }
+﻿/* ========================================================= */
+/* MAIN SERVICES (Figma Accurate ERP Design)                 */
+/* ========================================================= */
+
+/* -------------------- Layout Wrapper -------------------- */
+.main-services-section .main-content {
+  margin-left: 300px;
+  padding: 20px;
+  width: calc(100% - 300px);
+  box-sizing: border-box;
+}
+
+/* -------------------- Heading -------------------- */
+.main-services-section .main-services-wrapper {
+  font-family: "Source Sans Pro", sans-serif;
+  color: #e5e7eb;
+}
+
+.main-services-section .main-services-heading {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+/* ========================================================= */
+/* FORM CONTAINER                                            */
+/* ========================================================= */
+.main-services-section .big-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 28px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Form rows */
+.main-services-section .form-row {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+.main-services-section .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 280px;
+}
+
+.main-services-section .category-tag {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ccc;
+}
+
+/* ========================================================= */
+/* INPUT + TEXTAREA                                          */
+/* ========================================================= */
+.main-services-section .service-input,
+.main-services-section .description-input {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
+  padding: 10px 14px;
+  transition: border-color 0.25s ease;
+  font-family: "Source Sans Pro", sans-serif; /* ✅ ensure same font inside inputs */
+}
+
+.main-services-section .service-input:focus,
+.main-services-section .description-input:focus {
+  border-color: #ffffff;
+  outline: none;
+}
+
+.main-services-section .service-input {
+  width: 100%;
+  height: 45px;
+}
+
+.main-services-section .description-input {
+  width: 100%;
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* ========================================================= */
+/* PLACEHOLDER FONT FIX (Source Sans Pro)                    */
+/* ========================================================= */
+.main-services-section input::placeholder,
+.main-services-section textarea::placeholder {
+  font-family: "Source Sans Pro", sans-serif !important;
+  color: #9ca3af;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+}
+
+/* ========================================================= */
+/* UPLOAD FIELD                                              */
+/* ========================================================= */
+.main-services-section .upload-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 10px 14px;
+  width: 300px;
+  height: 45px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.main-services-section .upload-box:hover {
+  border-color: #ffffff;
+  transform: scale(1.01);
+}
+
+.main-services-section .upload-placeholder {
+  font-size: 14px;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.main-services-section .upload-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================================= */
+/* DIVIDER + BUTTONS                                         */
+/* ========================================================= */
+.main-services-section .form-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin: 25px 0 5px;
+  width: 100%;
+  opacity: 0.6;
+}
+
+.main-services-section .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+/* ========================================================= */
+/* TABLE SECTION                                             */
+/* ========================================================= */
+.main-services-section .second-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 24px;
+  overflow-x: auto;
+  box-shadow: 0 0 0 1px #1e293b inset;
+}
+
+.main-services-section .table-heading {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.main-services-section .table-wrapper {
+  max-height: 400px;
+  border-radius: 6px;
+  overflow-y: auto;
+}
+
+/* Table core */
+.main-services-section .services-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e5e7eb;
+  font-size: 14px;
+  table-layout: fixed;
+}
+
+/* Table headers & cells */
+.main-services-section .services-table th,
+.main-services-section .services-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #1e293b;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Header design */
+.main-services-section .services-table th {
+  color: #9ca3af;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Table row hover */
+.main-services-section .services-table tbody tr:hover {
+  background: #112349;
+  transition: background 0.2s ease;
+}
+
+.main-services-section .services-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Adjusted Column Widths */
+.main-services-section .services-table th:nth-child(1),
+.main-services-section .services-table td:nth-child(1) {
+  width: 30%;
+}
+
+.main-services-section .services-table th:nth-child(2),
+.main-services-section .services-table td:nth-child(2) {
+  width: 60%;
+}
+
+.main-services-section .services-table th:nth-child(3),
+.main-services-section .services-table td:nth-child(3) {
+  width: 10%;
+  text-align: center;
+}
+
+/* Icon and action cells */
+.main-services-section .service-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.main-services-section .service-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ========================================================= */
+/* ACTION BUTTONS                                            */
+/* ========================================================= */
+.main-services-section .action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.main-services-section .icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.main-services-section .action-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.main-services-section .icon-btn:hover .action-icon {
+  transform: scale(1.15);
+}
+
+/* ========================================================= */
+/* EDIT MODAL                                                */
+/* ========================================================= */
+.main-services-section .modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.main-services-section .modal {
+  background: #0b1739;
+  border-radius: 10px;
+  padding: 28px;
+  width: 520px;
+  color: #e5e7eb;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  font-family: "Source Sans Pro", sans-serif;
+  animation: fadeIn 0.25s ease;
+}
+
+.main-services-section .modal-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.main-services-section .modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.main-services-section .modal-field label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.main-services-section .modal-field input,
+.main-services-section .modal-field textarea {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
+  padding: 10px 14px;
+  height: 45px;
+  transition: border-color 0.25s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.main-services-section .modal-field input:focus,
+.main-services-section .modal-field textarea:focus {
+  border-color: #ffffff;
+}
+
+/* Upload inside modal */
+.main-services-section .modal .upload-box {
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Divider inside modal */
+.main-services-section .modal-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin: 20px 0;
+  opacity: 0.6;
+}
+
+/* Modal action buttons */
+.main-services-section .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.main-services-section .modal-actions button {
+  background: #b4ff2b;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.2s ease;
+}
+
+.main-services-section .modal-actions button:hover {
+  background: #c7ff5a;
+}
+
+/* ========================================================= */
+/* ANIMATIONS                                                */
+/* ========================================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================================= */
+/* RESPONSIVE DESIGN                                         */
+/* ========================================================= */
+@media (max-width: 768px) {
+  .main-services-section .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .main-services-section .form-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .main-services-section .big-container,
+  .main-services-section .second-container {
+    width: 100%;
+  }
+
+  .main-services-section .upload-box,
+  .main-services-section .service-input,
+  .main-services-section .description-input {
+    width: 100%;
+  }
+
+  .main-services-section .modal {
+    width: 90%;
+  }
+}

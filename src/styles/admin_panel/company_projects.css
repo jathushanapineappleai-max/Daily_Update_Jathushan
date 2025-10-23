@@ -1,1 +1,447 @@
-﻿/* Styles for  Section */ .company_projects-section { padding:20px; }
+﻿/* ========================================================= */
+/* COMPANY PROJECTS — Compact ERP Design + Fixed Popups       */
+/* ========================================================= */
+
+.cp-content {
+  margin-left: 300px;
+  padding: 20px;
+  width: calc(100% - 300px);
+  color: #e5e7eb;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+/* -------------------- Heading -------------------- */
+.cp-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/* ========================================================= */
+/* FORM CONTAINER                                            */
+/* ========================================================= */
+.cp-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* -------------------- Form Grid -------------------- */
+.cp-form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.cp-form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 260px;
+}
+
+.cp-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ccc;
+}
+
+/* -------------------- Inputs -------------------- */
+.cp-input,
+.cp-textarea {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 13px;
+  padding: 10px 14px; /* ⬅️ Increased padding for better placeholder spacing */
+  outline: none;
+  transition: border-color 0.25s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-input:focus,
+.cp-textarea:focus {
+  border-color: #ffffff;
+}
+
+.cp-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* -------------------- Upload Box -------------------- */
+.cp-upload-box {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px 14px; /* ⬅️ slightly wider for consistency */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9ca3af;
+  cursor: pointer;
+  height: 42px;
+  transition: border-color 0.25s ease, transform 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-upload-box:hover,
+.cp-upload-box.active,
+.cp-upload-box:focus-within {
+  border-color: #ffffff;
+  transform: scale(1.01);
+}
+
+.cp-upload-placeholder {
+  font-size: 13px;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-upload-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* -------------------- Divider + Submit -------------------- */
+.cp-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin-top: 20px;
+  opacity: 0.6;
+}
+
+.cp-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  margin-top: 8px;
+}
+
+/* ========================================================= */
+/* TABLE SECTION                                             */
+/* ========================================================= */
+.cp-second-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 22px;
+  box-shadow: 0 0 0 1px #1e293b inset;
+}
+
+.cp-table-heading {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.cp-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e5e7eb;
+  font-size: 13px;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-table th,
+.cp-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #1e293b;
+  text-align: left;
+}
+
+.cp-table th {
+  color: #9ca3af;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.6);
+  position: sticky;
+  top: 0;
+}
+
+.cp-table tbody tr:hover {
+  background: #112349;
+  transition: background 0.2s ease;
+}
+
+/* ========================================================= */
+/* ACTION BUTTONS                                            */
+/* ========================================================= */
+.cp-action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.cp-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.cp-action-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.cp-icon-btn:hover .cp-action-icon {
+  transform: scale(1.12);
+}
+
+/* ========================================================= */
+/* MODAL (EDIT PROJECT - SMALL FIT SCREEN)                   */
+/* ========================================================= */
+.cp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.cp-modal {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 16px 18px;
+  width: 280px;
+  color: #e5e7eb;
+  font-family: "Source Sans Pro", sans-serif;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.25s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.cp-modal-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.cp-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.cp-modal-field label {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.cp-modal-field input,
+.cp-modal-field textarea {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 12.5px;
+  padding: 8px 12px; /* ⬅️ increased padding for modal input spacing */
+  height: 34px;
+  transition: border-color 0.25s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-modal-field textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.cp-modal-field input:focus,
+.cp-modal-field textarea:focus {
+  border-color: #ffffff;
+  outline: none;
+}
+
+.cp-upload-box {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: #9ca3af;
+  height: 34px;
+  transition: border-color 0.25s ease, transform 0.2s ease;
+}
+
+.cp-upload-box:hover,
+.cp-upload-box:focus-within {
+  border-color: #ffffff;
+  transform: scale(1.01);
+}
+
+.cp-upload-placeholder {
+  font-size: 12.5px;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-upload-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.cp-modal-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin: 10px 0;
+  opacity: 0.6;
+}
+
+.cp-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cp-modal-actions button {
+  background: #b4ff2b;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cp-modal-actions button:hover {
+  background: #c7ff5a;
+}
+
+/* ========================================================= */
+/* SUCCESS & DELETE POPUPS (Top Position + Animation)         */
+/* ========================================================= */
+.success-popup,
+.delete-popup {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0b1739;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 14px 28px;
+  color: #e5e7eb;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 14px;
+  z-index: 4000;
+  animation: popupSlide 0.35s ease forwards;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Green highlight for success */
+.success-popup {
+  border-left: 4px solid #b4ff2b;
+}
+
+/* Red highlight for delete */
+.delete-popup {
+  border-left: 4px solid #ff5757;
+}
+
+/* Popup Animation */
+@keyframes popupSlide {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ========================================================= */
+/* ANIMATION                                                 */
+/* ========================================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================================= */
+/* PLACEHOLDER FONT FIX                                      */
+/* ========================================================= */
+input::placeholder,
+textarea::placeholder {
+  font-family: "Source Sans Pro", sans-serif !important;
+  color: #9ca3af;
+  font-size: 13.5px; /* ⬅️ slightly larger for better clarity */
+  letter-spacing: 0.4px;
+}
+
+input,
+textarea {
+  font-family: "Source Sans Pro", sans-serif;
+  color: #e5e7eb;
+}
+
+/* ========================================================= */
+/* RESPONSIVE DESIGN                                         */
+/* ========================================================= */
+@media (max-width: 768px) {
+  .cp-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .cp-form-grid {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cp-upload-box,
+  .cp-input,
+  .cp-textarea {
+    width: 100%;
+  }
+
+  .cp-second-container {
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  .cp-modal {
+    width: 85%;
+    padding: 14px;
+  }
+
+  .success-popup,
+  .delete-popup {
+    top: 40px;
+    font-size: 13px;
+    padding: 12px 22px;
+  }
+}

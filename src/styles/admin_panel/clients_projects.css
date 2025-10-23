@@ -1,1 +1,506 @@
-﻿/* Styles for  Section */ .clients_projects-section { padding:20px; }
+﻿/* ========================================================= */
+/*                CLIENT PROJECTS (Figma Accurate)            */
+/* ========================================================= */
+
+.cp-client-content {
+  margin-left: 300px;
+  padding: 20px;
+  width: calc(100% - 300px);
+  color: #e5e7eb;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+/* Heading */
+.cp-client-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/* ========================================================= */
+/* MAIN FORM CONTAINER                                        */
+/* ========================================================= */
+
+.cp-client-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 28px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========================================================= */
+/* FORM GRID                                                  */
+/* ========================================================= */
+
+.cp-client-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.cp-client-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cp-client-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.website-field {
+  grid-column: 1 / span 1;
+  max-width: 330px;
+}
+
+.description-field {
+  grid-column: 1 / span 3;
+}
+
+/* ========================================================= */
+/* INPUT / SELECT / TEXTAREA STYLING                          */
+/* ========================================================= */
+
+.cp-client-input,
+.cp-client-textarea {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.25s ease;
+  height: 45px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-client-input:focus,
+.cp-client-textarea:focus {
+  border-color: #ffffff;
+}
+
+.cp-client-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* ========================================================= */
+/* CATEGORY DROPDOWN FONT FIX (Source Sans Pro)               */
+/* ========================================================= */
+
+select.cp-client-input,
+select.cp-client-input option {
+  font-family: "Source Sans Pro", sans-serif !important;
+  color: #e5e7eb;
+  font-size: 14px;
+  background-color: #0f172a;
+}
+
+select.cp-client-input option[value=""][disabled] {
+  color: #9ca3af;
+}
+
+/* Dropdown arrow */
+select.cp-client-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='white' height='10' viewBox='0 0 24 24' width='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+  padding-right: 35px;
+  line-height: 1.4;
+}
+
+/* ========================================================= */
+/* UPLOAD BOX                                                 */
+/* ========================================================= */
+
+.cp-client-upload-box {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9ca3af;
+  cursor: pointer;
+  height: 45px;
+  transition: border-color 0.25s ease, transform 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-client-upload-box:hover,
+.cp-client-upload-box.active,
+.cp-client-upload-box:focus-within {
+  border-color: #ffffff;
+  transform: scale(1.01);
+}
+
+.cp-client-upload-placeholder {
+  font-size: 14px;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-client-upload-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================================= */
+/* DIVIDER + SUBMIT BUTTON                                    */
+/* ========================================================= */
+
+.cp-client-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin-top: 25px;
+  width: 100%;
+  opacity: 0.6;
+}
+
+.cp-client-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+}
+
+/* ========================================================= */
+/* SECOND CONTAINER (TABLE SECTION)                           */
+/* ========================================================= */
+
+.cp-client-table-container {
+  background: #0b1739;
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 1000px;
+  box-shadow: 0 0 0 1px #1e293b inset;
+}
+
+/* Align table heading properly */
+.cp-table-heading {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+/* ========================================================= */
+/* TABLE LAYOUT (GRID + FLEX-END ACTION COLUMN)               */
+/* ========================================================= */
+
+.cp-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+.cp-client-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e5e7eb;
+  font-size: 14px;
+  font-family: "Source Sans Pro", sans-serif;
+  table-layout: fixed;
+}
+
+/* Convert table to grid for flex-end Action alignment */
+.cp-client-table thead tr {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.2fr 2fr auto; /* Adjust ratios for balance */
+  align-items: center;
+}
+
+.cp-client-table tbody tr {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.2fr 2fr auto;
+  align-items: center;
+}
+
+.cp-client-table th,
+.cp-client-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #1e293b;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.cp-client-table th {
+  color: #9ca3af;
+  font-weight: 600;
+  background: rgba(15, 23, 42, 0.6);
+}
+
+/* ✅ Push Action heading and cells fully to the right */
+.cp-client-table th:last-child,
+.cp-client-table td:last-child {
+  justify-self: flex-end;
+  text-align: right;
+}
+
+/* Hover effect */
+.cp-client-table tbody tr:hover {
+  background: #112349;
+  transition: background 0.2s ease;
+}
+
+/* Project name + logo */
+.cp-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cp-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ========================================================= */
+/* ACTION ICONS (EDIT + DELETE)                               */
+/* ========================================================= */
+
+.cp-action-buttons {
+  display: flex;
+  justify-content: flex-end; /* ✅ moved from center to flex-end */
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.cp-action-icon {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease;
+}
+
+.cp-icon-btn:hover .cp-action-icon {
+  transform: scale(1.15);
+}
+
+/* ========================================================= */
+/* MODAL (EDIT CLIENT PROJECT - Figma Style)                  */
+/* ========================================================= */
+
+.cp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.cp-modal {
+  background: #0b1739;
+  border-radius: 10px;
+  padding: 28px;
+  width: 420px;
+  color: #e5e7eb;
+  font-family: "Source Sans Pro", sans-serif;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.25s ease;
+}
+
+.cp-modal-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.cp-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.cp-modal-field label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.cp-modal-field input,
+.cp-modal-field textarea,
+.cp-modal-field select {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e5e7eb;
+  font-size: 14px;
+  padding: 10px 14px;
+  height: 45px;
+  transition: border-color 0.25s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-modal-field input:focus,
+.cp-modal-field textarea:focus,
+.cp-modal-field select:focus {
+  border-color: #ffffff;
+  outline: none;
+}
+
+.cp-upload-box {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: #9ca3af;
+  height: 45px;
+  transition: border-color 0.25s ease, transform 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-upload-box:hover,
+.cp-upload-box:focus-within {
+  border-color: #ffffff;
+  transform: scale(1.01);
+}
+
+.cp-upload-placeholder {
+  font-size: 14px;
+  color: #9ca3af;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cp-upload-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.cp-modal-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin: 20px 0;
+  opacity: 0.6;
+}
+
+.cp-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cp-modal-actions button {
+  background: #b4ff2b;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.cp-modal-actions button:hover {
+  background: #c7ff5a;
+}
+
+/* ========================================================= */
+/* PLACEHOLDER + FONT FIX (Source Sans Pro)                  */
+/* ========================================================= */
+
+input,
+textarea,
+select {
+  font-family: "Source Sans Pro", sans-serif;
+  color: #e5e7eb;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-family: "Source Sans Pro", sans-serif !important;
+  color: #9ca3af;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+body {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+/* ========================================================= */
+/* ANIMATION + RESPONSIVE                                    */
+/* ========================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .cp-client-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .cp-client-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .website-field,
+  .description-field {
+    max-width: 100%;
+  }
+
+  .cp-client-table thead tr,
+  .cp-client-table tbody tr {
+    grid-template-columns: 1.3fr 1fr 1fr 1.8fr auto; /* Adjusted for smaller screens */
+  }
+
+  .cp-client-table th,
+  .cp-client-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .cp-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cp-modal {
+    width: 90%;
+    padding: 20px;
+  }
+}
