@@ -7,9 +7,9 @@ import SummitButton from "../../../components/admin_panel/buttons/summit_button"
 import UpdateButton from "../../../components/admin_panel/buttons/update_button";
 
 // ✅ Popups
-import Popup from "../../../components/admin_panel/popups/success"; // Green popup
-import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm"; // Confirm box
-import DeletePopup from "../../../components/admin_panel/popups/delete"; // Red popup
+import Popup from "../../../components/admin_panel/popups/success";
+import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
+import DeletePopup from "../../../components/admin_panel/popups/delete";
 
 export default function MainServices() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -17,7 +17,10 @@ export default function MainServices() {
   const [description, setDescription] = useState("");
   const [services, setServices] = useState([]);
 
-  // === Popup states ===
+  // === Validation Errors ===
+  const [errors, setErrors] = useState({});
+
+  // === Popups ===
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
@@ -33,25 +36,33 @@ export default function MainServices() {
   const mainFileInputRef = useRef(null);
   const editFileInputRef = useRef(null);
 
+  /* ========================== VALIDATION ========================== */
+  const validateForm = () => {
+    const newErrors = {};
+    if (!serviceName.trim()) newErrors.serviceName = "Service name is required.";
+    if (!description.trim()) newErrors.description = "Description is required.";
+    if (!selectedFile) newErrors.icon = "Please upload an icon.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   /* ========================== ADD SERVICE ========================== */
   const handleAddService = () => {
-    if (!serviceName || !description) return;
+    if (!validateForm()) return;
 
     const newService = {
       id: Date.now(),
       name: serviceName,
       description,
-      icon: selectedFile
-        ? URL.createObjectURL(selectedFile)
-        : "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+      icon: URL.createObjectURL(selectedFile),
     };
 
     setServices((prev) => [...prev, newService]);
     setServiceName("");
     setDescription("");
     setSelectedFile(null);
+    setErrors({});
 
-    // ✅ Show success popup
     setShowSuccessPopup(true);
     setTimeout(() => setShowSuccessPopup(false), 2500);
   };
@@ -68,7 +79,6 @@ export default function MainServices() {
       setShowDeletePopup(false);
       setDeleteTarget(null);
 
-      // ✅ Show delete success popup
       setShowDeleteSuccess(true);
       setTimeout(() => setShowDeleteSuccess(false), 2500);
     }
@@ -88,6 +98,8 @@ export default function MainServices() {
   };
 
   const handleUpdate = () => {
+    if (!editName.trim() || !editDescription.trim()) return;
+
     const updatedServices = services.map((srv) =>
       srv.id === editService.id
         ? {
@@ -117,14 +129,19 @@ export default function MainServices() {
                 <label className="category-tag">Service</label>
                 <input
                   type="text"
-                  className="service-input"
-                  placeholder="Add service"
+                  className={`service-input ${
+                    errors.serviceName ? "input-error" : ""
+                  }`}
+                  placeholder="Enter service name"
                   value={serviceName}
                   onChange={(e) => setServiceName(e.target.value)}
                 />
+                {errors.serviceName && (
+                  <small className="error-text">{errors.serviceName}</small>
+                )}
               </div>
 
-              {/* Icon Upload */}
+              {/* Upload Icon */}
               <div className="form-group">
                 <label className="category-tag">Icon</label>
                 <input
@@ -139,7 +156,7 @@ export default function MainServices() {
                   }}
                 />
                 <div
-                  className="upload-box"
+                  className={`upload-box ${errors.icon ? "upload-error" : ""}`}
                   onClick={() =>
                     mainFileInputRef.current && mainFileInputRef.current.click()
                   }
@@ -149,6 +166,9 @@ export default function MainServices() {
                   </span>
                   <img src={uploadIcon} alt="Upload" className="upload-icon" />
                 </div>
+                {errors.icon && (
+                  <small className="error-text">{errors.icon}</small>
+                )}
               </div>
             </div>
 
@@ -156,14 +176,18 @@ export default function MainServices() {
             <div className="form-group">
               <label className="category-tag">Description</label>
               <textarea
-                className="description-input"
+                className={`description-input ${
+                  errors.description ? "input-error" : ""
+                }`}
                 placeholder="Write a description about the service"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
+              {errors.description && (
+                <small className="error-text">{errors.description}</small>
+              )}
             </div>
 
-            {/* Divider & Submit */}
             <hr className="form-divider" />
             <div className="form-actions">
               <SummitButton label="Submit" onClick={handleAddService} />
@@ -210,7 +234,7 @@ export default function MainServices() {
                           <button
                             className="icon-btn"
                             title="Delete"
-                            onClick={() => handleDeleteClick(service.id)} // ✅ open confirmation
+                            onClick={() => handleDeleteClick(service.id)}
                           >
                             <img
                               src={deleteIcon}
@@ -246,7 +270,6 @@ export default function MainServices() {
             </div>
           )}
 
-          {/* ================== DELETE CONFIRMATION ================== */}
           {showDeletePopup && (
             <DeleteConfirmPopup
               onClose={handleCancelDelete}

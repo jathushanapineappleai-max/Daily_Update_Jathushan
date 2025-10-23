@@ -70,7 +70,7 @@
   font-size: 14px;
   padding: 10px 14px;
   transition: border-color 0.25s ease;
-  font-family: "Source Sans Pro", sans-serif; /* ✅ ensure same font inside inputs */
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .main-services-section .service-input:focus,
@@ -199,7 +199,6 @@
   vertical-align: middle;
 }
 
-/* Header design */
 .main-services-section .services-table th {
   color: #9ca3af;
   font-weight: 600;
@@ -209,7 +208,6 @@
   z-index: 1;
 }
 
-/* Table row hover */
 .main-services-section .services-table tbody tr:hover {
   background: #112349;
   transition: background 0.2s ease;
@@ -219,7 +217,7 @@
   border-bottom: none;
 }
 
-/* Adjusted Column Widths */
+/* Column widths */
 .main-services-section .services-table th:nth-child(1),
 .main-services-section .services-table td:nth-child(1) {
   width: 30%;
@@ -236,7 +234,6 @@
   text-align: center;
 }
 
-/* Icon and action cells */
 .main-services-section .service-cell {
   display: flex;
   align-items: center;
@@ -336,13 +333,11 @@
   border-color: #ffffff;
 }
 
-/* Upload inside modal */
 .main-services-section .modal .upload-box {
   width: 100%;
   margin-top: 4px;
 }
 
-/* Divider inside modal */
 .main-services-section .modal-divider {
   border: none;
   border-top: 1px solid #475569;
@@ -350,7 +345,6 @@
   opacity: 0.6;
 }
 
-/* Modal action buttons */
 .main-services-section .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -384,6 +378,27 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* ========================================================= */
+/* VALIDATION STYLES                                         */
+/* ========================================================= */
+.input-error,
+.upload-error,
+.description-input.input-error {
+  border: 1px solid #f44336 !important;
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 12px;
+  margin-top: 3px;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.upload-box.upload-error {
+  border: 1px dashed #f44336;
 }
 
 /* ========================================================= */

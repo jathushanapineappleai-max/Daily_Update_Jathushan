@@ -72,7 +72,7 @@
   height: 45px;
   width: 100%;
   box-sizing: border-box;
-  font-family: "Source Sans Pro", sans-serif; /* ✅ same font in input */
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .tech-input:focus {
@@ -81,7 +81,7 @@
 }
 
 /* ========================================================= */
-/* PLACEHOLDER FONT FIX (Source Sans Pro)                    */
+/* PLACEHOLDER FONT FIX                                      */
 /* ========================================================= */
 input::placeholder,
 textarea::placeholder,
@@ -213,14 +213,14 @@ select::placeholder {
   border-bottom: none;
 }
 
-/* ================= ALIGN ACTION COLUMN RIGHT ================= */
+/* Align Action Column */
 .services-table th:last-child,
 .services-table td:last-child {
   text-align: right !important;
   width: 120px;
 }
 
-/* Icon cell */
+/* Icon Cell */
 .service-cell {
   display: flex;
   align-items: center;
@@ -235,7 +235,7 @@ select::placeholder {
 }
 
 /* ========================================================= */
-/* ACTION BUTTONS (EDIT + DELETE)                            */
+/* ACTION BUTTONS                                            */
 /* ========================================================= */
 .action-buttons {
   display: flex;
@@ -323,7 +323,7 @@ select::placeholder {
   border-color: #ffffff;
 }
 
-/* Upload box in modal */
+/* Upload in Modal */
 .modal .upload-box {
   width: 100%;
   margin-top: 4px;
@@ -358,7 +358,9 @@ select::placeholder {
   background: #c7ff5a;
 }
 
-/* Fade Animation */
+/* ========================================================= */
+/* ANIMATIONS                                                */
+/* ========================================================= */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -368,6 +370,31 @@ select::placeholder {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* ========================================================= */
+/* VALIDATION STYLES (FIXED FOR SELECT DROPDOWN)             */
+/* ========================================================= */
+.input-error {
+  border: 1px solid #f44336 !important;
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+select.input-error {
+  background-color: #0f172a !important; /* Keeps dropdown dark */
+  border: 1px solid #f44336 !important;
+}
+
+.upload-error {
+  border: 1px dashed #f44336 !important;
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 12px;
+  margin-top: 3px;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 /* ========================================================= */
