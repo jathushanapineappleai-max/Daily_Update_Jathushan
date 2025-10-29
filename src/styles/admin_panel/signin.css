@@ -2,7 +2,7 @@
 
 /* Page container: two-column layout (left hero / right card) */
 .signin-page {
-  /* min-height: 100vh; */
+  min-height: 100vh; 
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -14,9 +14,9 @@
 
 /* LEFT PANEL: brand + hero text */
 .left-panel {
-  flex: 1 1 62%;
-  max-width: 62%;
-  padding-left: 240px;
+  flex: 1 1 52%;
+  min-width: 52%;
+  padding-left: 60px;
   box-sizing: border-box;
   color: #06231a; /* text contrast on image */
   text-shadow: 0 1px 0 rgba(255,255,255,0.02);
@@ -32,15 +32,15 @@
 
 /* logo image */
 .brand-icon {
-  width: 42px;
-  height: 42px;
+  width: 62px;
+  height: 62px;
   object-fit: contain;
   -webkit-user-drag: none;
 }
 
 /* PineappleAI text */
 .brand-name {
-  font-size: 20px;
+  font-size: 40px;
   font-weight: 800;
   color: rgba(2, 33, 24, 0.95); /* dark on image */
   letter-spacing: -0.01em;
@@ -51,7 +51,7 @@
   margin: 8px 0 0 0;
   font-family: "Playfair Display", serif;
   font-weight: 700;
-  font-size: 68px;
+  font-size: 98px;
   line-height: 0.95;
   color: rgba(9, 38, 33, 0.95);
   margin-bottom: 12px;

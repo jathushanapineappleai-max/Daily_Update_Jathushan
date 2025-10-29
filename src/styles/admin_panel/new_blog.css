@@ -47,6 +47,7 @@
   padding-right: 30px;
 }
 
+/* Form Group */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -66,7 +67,7 @@
 .form-input,
 .form-input select {
   background: #081028;
-  border: 0.6px solid #343B4F;
+  border: 0.6px solid #343B4F !important;
   border-radius: 4px;
   padding: 7px 10px; /* Preserved */
   font-family: 'Source Sans Pro', sans-serif;
@@ -84,9 +85,9 @@
 /* Tags Section */
 .form-textarea {
   background: #081028;
-  border: 0.6px solid #343B4F;
+  border: 0.6px solid #343B4F !important;
   border-radius: 4px;
-  padding: 7px 10px !important; /* Fix: Match .form-input padding */
+  padding: 7px 10px !important; /* Match .form-input padding */
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 15px; /* Preserved */
   color: #AEB9E1;
@@ -101,8 +102,9 @@
 
 /* Full Width Input/Editor (Tags Container) */
 .full-width {
-  width: 633px !important; /* Fix: Align with second field’s end (663px - 30px) */
-  padding-left: 0; /* Preserved */
+  width: 633px !important; /* Align with second field’s end (663px - 30px) */
+  padding-left: 30px; /* Match .form-grid */
+  padding-right: 30px; /* Match .form-grid */
 }
 
 /* ============================= */
@@ -113,12 +115,12 @@
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  width: 100%; /* Preserved */
+  width: 95% !important; /* Preserved */
   min-height: 233px; /* Scaled from 280px */
   box-sizing: border-box;
   margin-top: 10px; /* Scaled from 12px */
-  margin-left: 0; /* Preserved */
-  margin-right: 0; /* Preserved */
+  margin-left: 30px; /* Preserved */
+  margin-right: 30px; /* Preserved */
 }
 
 /* Toolbar inside editor */
@@ -127,9 +129,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 7px 5px; /* Scaled from 8px 6px */
+  padding: 7px 10px; /* Preserved */
   width: 100%;
-  height: 50px; /* Scaled from 60px */
+  min-height: 50px; /* Preserved */
   background: #081028;
   border-bottom: 1px solid #343B4F;
   border-radius: 4px 4px 0 0;
@@ -153,13 +155,15 @@
   border: none !important;
   box-shadow: none !important;
   border-radius: 0 0 4px 4px;
+  width: 100% !important; /* Ensure full width */
 }
 
 /* Remove editor default borders */
 .ql-editor {
   border: none !important;
   box-shadow: none !important;
-  padding: 0;
+  padding: 7px 10px !important; /* Match .form-input and .form-textarea */
+  width: 100% !important; /* Ensure full width */
 }
 
 /* Toolbar buttons and selects */
@@ -196,6 +200,28 @@
 }
 
 /* ============================= */
+/* Error States */
+.form-group .form-input.error,
+.form-group .form-input select.error,
+.form-group .form-textarea.error {
+  border: 1px solid #F56565 !important; /* Match new_jobs.css */
+}
+
+.editor-outer-container .ql-editor.error {
+  border: 1px solid #F56565 !important; /* Match new_jobs.css */
+}
+
+.error-message {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 400; /* Match new_jobs.css */
+  color: #F56565; /* Match new_jobs.css */
+  margin-top: 4px;
+  margin-bottom: 0;
+  display: block; /* Ensure visibility */
+}
+
+/* ============================= */
 /* Responsive */
 @media (max-width: 1024px) {
   .new-blog-wrapper {
@@ -217,6 +243,8 @@
     width: 100% !important; /* Ensure full width */
     margin-left: 0; /* Preserved */
     margin-right: 0; /* Preserved */
+    padding-left: 0; /* Match .form-grid */
+    padding-right: 0; /* Match .form-grid */
   }
 
   .form-input,
@@ -246,6 +274,8 @@
   #custom-toolbar {
     flex-wrap: wrap;
     gap: 4px; /* Scaled from 5px */
+    min-height: 42px; /* Preserved */
+    padding: 5px 8px; /* Preserved */
   }
 
   .new-blog-heading {
@@ -286,10 +316,16 @@
     min-height: 58px; /* Preserved */
   }
 
+  .ql-editor {
+    padding: 5px 8px !important; /* Match .form-input and .form-textarea */
+  }
+
   .editor-outer-container {
     min-height: 216px; /* Scaled from 260px */
     margin-left: 0; /* Preserved */
     margin-right: 0; /* Preserved */
+    padding-left: 0; /* Match .form-grid */
+    padding-right: 0; /* Match .form-grid */
   }
 
   .blog-editor {
@@ -307,13 +343,29 @@
   }
 
   #custom-toolbar {
-    height: 42px; /* Scaled from 50px */
-    padding: 5px 3px; /* Scaled from 6px 4px */
+    min-height: 42px; /* Preserved */
+    padding: 5px 8px; /* Preserved */
+    gap: 3px; /* Preserved */
   }
 
   #custom-toolbar button,
   #custom-toolbar select,
   #custom-toolbar input {
     font-size: 10px; /* Scaled from 12px */
+    padding: 2px 4px; /* Compact padding for buttons */
+  }
+
+  .form-group .form-input.error,
+  .form-group .form-input select.error,
+  .form-group .form-textarea.error {
+    border: 1px solid #F56565 !important; /* Match new_jobs.css */
+  }
+
+  .editor-outer-container .ql-editor.error {
+    border: 1px solid #F56565 !important; /* Match new_jobs.css */
+  }
+
+  .error-message {
+    font-size: 11px; /* Slightly smaller for mobile */
   }
 }

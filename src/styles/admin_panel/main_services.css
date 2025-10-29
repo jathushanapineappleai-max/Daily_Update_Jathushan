@@ -1,5 +1,5 @@
 ﻿/* ========================================================= */
-/* MAIN SERVICES (Figma Accurate ERP Design)                 */
+/* MAIN SERVICES (ERP Accurate Design – Final Polished)      */
 /* ========================================================= */
 
 /* -------------------- Layout Wrapper -------------------- */
@@ -91,7 +91,7 @@
 }
 
 /* ========================================================= */
-/* PLACEHOLDER FONT FIX (Source Sans Pro)                    */
+/* PLACEHOLDER FIX                                           */
 /* ========================================================= */
 .main-services-section input::placeholder,
 .main-services-section textarea::placeholder {
@@ -102,7 +102,7 @@
 }
 
 /* ========================================================= */
-/* UPLOAD FIELD                                              */
+/* UPLOAD FIELD (JPG/PNG only)                               */
 /* ========================================================= */
 .main-services-section .upload-box {
   display: flex;
@@ -115,7 +115,7 @@
   width: 300px;
   height: 45px;
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.25s ease, transform 0.2s ease;
 }
 
 .main-services-section .upload-box:hover {
@@ -155,7 +155,7 @@
 }
 
 /* ========================================================= */
-/* TABLE SECTION                                             */
+/* TABLE SECTION (Action Column Right Aligned)               */
 /* ========================================================= */
 .main-services-section .second-container {
   background: #0b1739;
@@ -181,7 +181,6 @@
   overflow-y: auto;
 }
 
-/* Table core */
 .main-services-section .services-table {
   width: 100%;
   border-collapse: collapse;
@@ -190,7 +189,6 @@
   table-layout: fixed;
 }
 
-/* Table headers & cells */
 .main-services-section .services-table th,
 .main-services-section .services-table td {
   padding: 14px 16px;
@@ -213,27 +211,6 @@
   transition: background 0.2s ease;
 }
 
-.main-services-section .services-table tr:last-child td {
-  border-bottom: none;
-}
-
-/* Column widths */
-.main-services-section .services-table th:nth-child(1),
-.main-services-section .services-table td:nth-child(1) {
-  width: 30%;
-}
-
-.main-services-section .services-table th:nth-child(2),
-.main-services-section .services-table td:nth-child(2) {
-  width: 60%;
-}
-
-.main-services-section .services-table th:nth-child(3),
-.main-services-section .services-table td:nth-child(3) {
-  width: 10%;
-  text-align: center;
-}
-
 .main-services-section .service-cell {
   display: flex;
   align-items: center;
@@ -247,15 +224,23 @@
   object-fit: cover;
 }
 
+/* Align Action Heading & Icons to Right */
+.main-services-section .services-table th:last-child,
+.main-services-section .services-table td:last-child {
+  text-align: right !important;
+  width: 140px;
+}
+
+.main-services-section .action-buttons {
+  display: flex;
+  justify-content: flex-end !important;
+  gap: 10px;
+  align-items: center;
+}
+
 /* ========================================================= */
 /* ACTION BUTTONS                                            */
 /* ========================================================= */
-.main-services-section .action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
 .main-services-section .icon-btn {
   background: transparent;
   border: none;
@@ -273,7 +258,7 @@
 }
 
 /* ========================================================= */
-/* EDIT MODAL                                                */
+/* MODAL (Edit)                                              */
 /* ========================================================= */
 .main-services-section .modal-overlay {
   position: fixed;
@@ -367,20 +352,6 @@
 }
 
 /* ========================================================= */
-/* ANIMATIONS                                                */
-/* ========================================================= */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* ========================================================= */
 /* VALIDATION STYLES                                         */
 /* ========================================================= */
 .input-error,
@@ -428,5 +399,10 @@
 
   .main-services-section .modal {
     width: 90%;
+  }
+
+  .main-services-section .services-table th:last-child,
+  .main-services-section .services-table td:last-child {
+    text-align: center !important;
   }
 }

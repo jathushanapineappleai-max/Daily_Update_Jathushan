@@ -459,3 +459,46 @@
     padding: 0 36px 36px 36px; /* Keep aligned padding for small screens */
   }
 }
+
+/* Delete Popup wrapper positioned top-center */
+.delete-popup-container {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px;
+  animation: success-popup-slide 220ms ease-out;
+  z-index: 9999;
+}
+
+/* Override styles for the delete popup */
+.delete-popup-container .popup.delete {
+  pointer-events: auto;
+  min-width: 260px;
+  max-width: 94vw;
+  background: #1f2937;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: 'Source Sans Pro', sans-serif;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+}
+
+/* responsive tweak for delete popup */
+@media (max-width: 420px) {
+  .delete-popup-container { top: 10px; padding: 6px; }
+  .delete-popup-container .popup.delete { min-width: 220px; padding: 10px; }
+}

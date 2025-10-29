@@ -20,6 +20,7 @@ export default function CompanyProjects() {
   const [qrCode, setQrCode] = useState(null);
   const [activeBox, setActiveBox] = useState("");
   const [projects, setProjects] = useState([]);
+  const [errors, setErrors] = useState({});
 
   // Popups
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -31,10 +32,23 @@ export default function CompanyProjects() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  /* File Handlers */
-  const handleFileChange = (e, setter) => {
+  /* ========================================================= */
+  /* FILE HANDLING + VALIDATION                                */
+  /* ========================================================= */
+  const handleFileChange = (e, setter, fieldName) => {
     const file = e.target.files?.[0];
-    if (file) setter(file);
+    if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        setErrors((prev) => ({
+          ...prev,
+          [fieldName]: "Only JPG or PNG files are allowed.",
+        }));
+        return;
+      }
+      setter(file);
+      setErrors((prev) => ({ ...prev, [fieldName]: "" }));
+    }
     setActiveBox("");
   };
 
@@ -44,12 +58,24 @@ export default function CompanyProjects() {
     setTimeout(() => setActiveBox(""), 800);
   };
 
-  /* Add Project */
+  /* ========================================================= */
+  /* VALIDATION BEFORE SUBMIT                                  */
+  /* ========================================================= */
+  const validateForm = () => {
+    const newErrors = {};
+    if (!projectName.trim()) newErrors.projectName = "Project name is required.";
+    if (!caption.trim()) newErrors.caption = "Caption is required.";
+    if (!projectPhoto)
+      newErrors.projectPhoto = "Please upload a project photo (JPG or PNG).";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  /* ========================================================= */
+  /* ADD PROJECT                                               */
+  /* ========================================================= */
   const handleSubmit = () => {
-    if (!projectName || !caption) {
-      alert("Please fill in required fields!");
-      return;
-    }
+    if (!validateForm()) return;
 
     const newProject = {
       id: Date.now(),
@@ -58,9 +84,7 @@ export default function CompanyProjects() {
       googleLink,
       appLink,
       description,
-      projectPhoto: projectPhoto
-        ? projectPhoto.name
-        : "IMGProject.png",
+      projectPhoto: projectPhoto ? projectPhoto.name : "IMGProject.png",
       qrCode: qrCode ? qrCode.name : "Upload QR Code",
     };
 
@@ -72,11 +96,14 @@ export default function CompanyProjects() {
     setDescription("");
     setProjectPhoto(null);
     setQrCode(null);
+    setErrors({});
     setShowSuccessPopup(true);
     setTimeout(() => setShowSuccessPopup(false), 2500);
   };
 
-  /* Delete */
+  /* ========================================================= */
+  /* DELETE                                                    */
+  /* ========================================================= */
   const handleDeleteClick = (id) => {
     setDeleteTarget(id);
     setShowDeletePopup(true);
@@ -92,7 +119,9 @@ export default function CompanyProjects() {
   };
   const handleCancelDelete = () => setShowDeletePopup(false);
 
-  /* Edit */
+  /* ========================================================= */
+  /* EDIT                                                      */
+  /* ========================================================= */
   const handleEditClick = (proj) => {
     setEditData(proj);
     setEditModalVisible(true);
@@ -106,7 +135,9 @@ export default function CompanyProjects() {
     setEditModalVisible(false);
   };
 
-  /* Render */
+  /* ========================================================= */
+  /* RENDER                                                    */
+  /* ========================================================= */
   return (
     <div className="cp-content">
       <h2 className="cp-heading">Company Projects</h2>
@@ -119,10 +150,13 @@ export default function CompanyProjects() {
             <input
               type="text"
               placeholder="Add project name"
-              className="cp-input"
+              className={`cp-input ${errors.projectName ? "input-error" : ""}`}
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
             />
+            {errors.projectName && (
+              <small className="error-text">{errors.projectName}</small>
+            )}
           </div>
 
           <div className="cp-form-group">
@@ -130,24 +164,30 @@ export default function CompanyProjects() {
             <input
               type="text"
               placeholder="Write a short caption"
-              className="cp-input"
+              className={`cp-input ${errors.caption ? "input-error" : ""}`}
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
             />
+            {errors.caption && (
+              <small className="error-text">{errors.caption}</small>
+            )}
           </div>
 
           <div className="cp-form-group">
-            <label className="cp-label">Project Photo</label>
+            <label className="cp-label">Project Photo (JPG/PNG)</label>
             <input
               type="file"
               id="project-photo"
               style={{ display: "none" }}
-              onChange={(e) => handleFileChange(e, setProjectPhoto)}
+              accept=".jpg,.jpeg,.png"
+              onChange={(e) =>
+                handleFileChange(e, setProjectPhoto, "projectPhoto")
+              }
             />
             <div
               className={`cp-upload-box ${
                 activeBox === "project-photo" ? "active" : ""
-              }`}
+              } ${errors.projectPhoto ? "upload-error" : ""}`}
               onClick={() => handleBoxClick("project-photo")}
             >
               <span className="cp-upload-placeholder">
@@ -155,6 +195,9 @@ export default function CompanyProjects() {
               </span>
               <img src={uploadIcon} alt="Upload" className="cp-upload-icon" />
             </div>
+            {errors.projectPhoto && (
+              <small className="error-text">{errors.projectPhoto}</small>
+            )}
           </div>
 
           <div className="cp-form-group">
@@ -185,7 +228,7 @@ export default function CompanyProjects() {
               type="file"
               id="qr-code"
               style={{ display: "none" }}
-              onChange={(e) => handleFileChange(e, setQrCode)}
+              onChange={(e) => handleFileChange(e, setQrCode, "qrCode")}
             />
             <div
               className={`cp-upload-box ${
@@ -230,7 +273,9 @@ export default function CompanyProjects() {
                 <th>App Store Link</th>
                 <th>QR Code</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th style={{ textAlign: "right", paddingRight: "30px" }}>
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -273,96 +318,7 @@ export default function CompanyProjects() {
         </div>
       </div>
 
-      {/* =================== EDIT MODAL =================== */}
-      {editModalVisible && (
-        <div className="cp-modal-overlay">
-          <div className="cp-modal">
-            <h2 className="cp-modal-heading">Edit Project</h2>
-
-            <div className="cp-modal-field">
-              <label>Project Name</label>
-              <input
-                type="text"
-                value={editData.name}
-                onChange={(e) =>
-                  setEditData({ ...editData, name: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Caption</label>
-              <input
-                type="text"
-                value={editData.caption}
-                onChange={(e) =>
-                  setEditData({ ...editData, caption: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Project Photo</label>
-              <div className="cp-upload-box">
-                <span className="cp-upload-placeholder">
-                  {editData.projectPhoto}
-                </span>
-                <img src={uploadIcon} alt="Upload" className="cp-upload-icon" />
-              </div>
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Google Play Link</label>
-              <input
-                type="text"
-                value={editData.googleLink}
-                onChange={(e) =>
-                  setEditData({ ...editData, googleLink: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="cp-modal-field">
-              <label>App Store Link</label>
-              <input
-                type="text"
-                value={editData.appLink}
-                onChange={(e) =>
-                  setEditData({ ...editData, appLink: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="cp-modal-field">
-              <label>QR Code</label>
-              <div className="cp-upload-box">
-                <span className="cp-upload-placeholder">
-                  {editData.qrCode}
-                </span>
-                <img src={uploadIcon} alt="Upload" className="cp-upload-icon" />
-              </div>
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Description</label>
-              <textarea
-                value={editData.description}
-                onChange={(e) =>
-                  setEditData({ ...editData, description: e.target.value })
-                }
-              ></textarea>
-            </div>
-
-            <hr className="cp-modal-divider" />
-
-            <div className="cp-modal-actions">
-              <button onClick={handleUpdateProject}>Update</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* =================== POPUPS =================== */}
+      {/* POPUPS */}
       {showSuccessPopup && (
         <Popup
           title="Company Project Added!"

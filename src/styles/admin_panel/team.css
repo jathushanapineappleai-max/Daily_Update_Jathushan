@@ -57,7 +57,7 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  min-width: 1250px;
+  min-width: 1220px;
 }
 
 .row{
@@ -209,6 +209,7 @@
 
 .link-btn.change{
   color: #60f0b6;
+
 }
 
 .link-btn.delete{
@@ -219,7 +220,7 @@
   flex: 1;
   min-height: 127px;
   border-radius: 6px;
-  border: 2px dashed rgba(36,161,88,0.2);
+  border: 2px dashed rgba(24, 243, 4, 0.464);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -257,7 +258,7 @@
 }
 
 .drop-line{
-  font-size: 13px;
+  font-size: 12px;
   color: var(--green);
 }
 
@@ -316,26 +317,44 @@
   - Styles for modal overlay, dialog, and form fields
   - Used in TeamPage for editing employee details
 ====================== */
-.modal-overlay {
+.TMmodal-overlay {
   position: fixed;
   inset: 0;
-  
+  background: none;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   z-index: 1200;
-  margin-top: 7%;
+  margin-top: 8%;
+  
+  /*position: fixed;
+  margin-top: 12%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;*/
 }
 
-.editmodal {
+.editTMmodal {
   top: 9.75%;
+   background-color: #031029;
+   height: 600px;
+   width: 600px;
 
 }
 
-.modal-content {
+.TMmodal-content {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background-color: #031029;
+  padding-left: 50px;
+  padding-top: 30px;
   
 }
 
@@ -351,7 +370,7 @@
  
 }
 
-.modal-title {
+.TMmodal-title {
   margin: 0;
   font-weight: 600;
   font-size: 18px;
@@ -410,55 +429,54 @@
   justify-content: center;
 }
 
-.modal-drop {
+.TMmodal-drop {
   width: 301.5px;
   height: 127px;
   min-height: auto;
   flex: none;
   border-radius: 4px;
-  border: 0.6px dashed rgba(36,161,88,0.2);
+  border: 0.6px dashed  rgba(24, 243, 4, 0.464);
 }
 
-.modal-drop.error {
-  border-color: var(--error);
+.TMmodal-drop.error {
+  border-color: var(error);
 }
 
-.edit-modal .avatar {
+.editTMmodal .avatar {
   width: 48px;
   height: 48px;
   border: none;
   box-shadow: none;
 }
 
-.edit-modal .avatar-placeholder .avatar-icon {
+.editTMmodal .avatar-placeholder .avatar-icon {
   width: 48px;
   height: 48px;
   background: var(--accent);
 }
 
-.edit-modal .avatar-icon img {
+.editTMmodal .avatar-icon img {
   width: 28px;
   height: 28px;
 }
 
-.edit-modal .link-btn.delete {
+.editTMmodal .link-btn.delete {
   width: 42px;
   height: 19px;
 }
 
-.modal-actions {
-  justify-content: flex-end;
+.TMmodal-actions {
+  justify-content: none;
   display: flex;
- 
- 
+  margin-right: 8%;
   gap: 8px;
 }
 
-.edit-modal .row-field .field-label {
+.editTMmodal .row-field .field-label {
   min-width: 103px;
 }
 
-.edit-modal .input, .edit-modal .select, .edit-modal .textarea {
+.editTMmodal .input, .editTMmodal .select, .editTMmodal .textarea {
   width: 301.5px;
   flex: none;
 }
@@ -476,7 +494,7 @@
   padding: 28px;
   border-radius: 6px;
   margin-top: 40px;
-  min-width: 1250px;
+  min-width: 1220px;
 }
 
 .list-header {
@@ -649,72 +667,9 @@
 
 /* Pagination box */
 .pagination-box {
+  width: 1220px;
   margin-left: 16%;
   margin-right: 2.89%;
-}
-
-/* responsive */
-/* =====================
-   Responsive styles for Employee Update Modal
-   - Adjusts modal and form layout for smaller screens
-====================== */
-@media (max-width: 980px){
-  .team-container{
-    position: static;
-    margin: 10px;
-  }
-
-  .row{
-    flex-direction: column;
-  }
-
-  .photo-row{
-    flex-direction: column;
-  }
-
-  .photo-field{
-    max-width: none;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .edit-modal {
-    position: fixed;
-    left: 10px;
-    right: 10px;
-    top: 8%;
-    width: auto;
-    height: auto;
-  }
-
-  .modal-content {
-    gap: 12px;
-  }
-
-  .photo-block-inner {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .row-field {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .team-list {
-    margin: 10px;
-  }
-
-  .pagination-box {
-    margin: 10px;
-  }
-
-  .list-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
 }
 
 /* Fullscreen backdrop — used to detect outside clicks and ensure z-index coverage */
@@ -812,6 +767,49 @@
   .success-popup { min-width: 220px; padding: 10px; }
 }
 
+/* Delete Popup wrapper positioned top-center */
+.delete-popup-container {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px;
+  animation: success-popup-slide 220ms ease-out;
+  z-index: 9999;
+}
+
+/* Override styles for the delete popup */
+.delete-popup-container .popup.delete {
+  pointer-events: auto;
+  min-width: 260px;
+  max-width: 94vw;
+  background: #1f2937;
+  color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: 'Source Sans Pro', sans-serif;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+}
+
+/* responsive tweak for delete popup */
+@media (max-width: 420px) {
+  .delete-popup-container { top: 10px; padding: 6px; }
+  .delete-popup-container .popup.delete { min-width: 220px; padding: 10px; }
+}
+
 /* Sort icon styles */
 .sort-icon {
   width: 16px;
@@ -838,4 +836,391 @@
   flex-direction: column;
   gap: 4px;
   flex: 1;
+}
+
+/* =====================
+   Responsive styles for Employee Update Modal
+   - Adjusts modal and form layout for smaller screens
+====================== */
+@media (max-width: 1200px) {
+  .team-container,
+  .team-list,
+  .pagination-box {
+    min-width: auto;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .team-title {
+    margin-left: 5%;
+  }
+}
+
+@media (max-width: 980px){
+  .team-page-root {
+    padding: 15px 20px;
+  }
+
+  .team-container{
+    position: static;
+    margin: 10px;
+    padding: 20px;
+    gap: 14px;
+    min-width: auto;
+  }
+
+  .row{
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .photo-row{
+    flex-direction: column;
+  }
+
+  .photo-field{
+    max-width: none;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .editTMmodal {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    top: 8%;
+    width: auto;
+    height: auto;
+    padding: 20px;
+  }
+
+  .TMmodal-content {
+    gap: 12px;
+    padding-left: 20px;
+    padding-top: 20px;
+  }
+
+  .form-details {
+    width: auto;
+    height: auto;
+    gap: 20px;
+  }
+
+  .photo-block-inner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .row-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .team-list {
+    margin: 10px;
+    padding: 20px;
+    min-width: auto;
+  }
+
+  .pagination-box {
+    margin: 10px;
+    width: auto;
+  }
+
+  .list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .team-table th,
+  .team-table td {
+    padding: 10px 12px;
+  }
+
+  .th-position,
+  .th-linkedin,
+  .th-description,
+  .th-action {
+    width: auto;
+  }
+
+  .action-group {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-page-root {
+    padding: 10px 15px;
+  }
+
+  .team-title {
+    margin-left: 0;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .team-container,
+  .team-list {
+    margin: 0;
+    padding: 15px;
+    border-radius: 4px;
+  }
+
+  .field-label {
+    font-size: 12px;
+  }
+
+  .input, .select, .textarea {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .avatar-placeholder .avatar-icon,
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .avatar-icon img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .photo-drop {
+    min-height: 100px;
+  }
+
+  .drop-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .drop-line,
+  .drop-sub {
+    font-size: 11px;
+  }
+
+  .add-employee-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .cancel-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .editTMmodal {
+    top: 5%;
+    padding: 15px;
+  }
+
+  .TMmodal-title {
+    font-size: 16px;
+  }
+
+  .TMmodal-drop {
+    width: 100%;
+    height: 100px;
+  }
+
+  .editTMmodal .input,
+  .editTMmodal .select,
+  .editTMmodal .textarea {
+    width: 100%;
+  }
+
+  .editTMmodal .row-field .field-label {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .list-header h3 {
+    font-size: 16px;
+  }
+
+  .cr-list-meta {
+    font-size: 12px;
+  }
+
+  /* Make table responsive by allowing horizontal scroll */
+  .team-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .team-table thead,
+  .team-table tbody,
+  .team-table th,
+  .team-table td,
+  .team-table tr {
+    display: block;
+  }
+
+  .team-table th {
+    display: none; /* Hide headers on small screens, or use data-labels */
+  }
+
+  .team-table tr {
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .team-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    padding: 10px;
+    border: none;
+    position: relative;
+    white-space: normal;
+  }
+
+  .team-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: calc(50% - 20px);
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .name-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .list-avatar,
+  .list-avatar-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .action-btn {
+    padding: 4px 6px;
+  }
+
+  .action-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .pagination-box {
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-page-root {
+    padding: 8px 10px;
+  }
+
+  .team-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .team-container,
+  .team-list {
+    padding: 10px;
+  }
+
+  .row {
+    gap: 15px;
+  }
+
+  .field {
+    gap: 6px;
+  }
+
+  .input, .select, .textarea {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .photo-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .photo-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .add-employee-btn,
+  .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .editTMmodal {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .TMmodal-content {
+    padding: 15px;
+  }
+
+  .TMmodal-actions {
+    flex-direction: column;
+    margin-right: 0;
+    gap: 8px;
+  }
+
+  .TMmodal-actions button {
+    width: 100%;
+  }
+
+  .team-table td {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .team-table td:before {
+    font-size: 12px;
+  }
+
+  .name-cell {
+    gap: 6px;
+  }
+
+  .list-avatar,
+  .list-avatar-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .action-group {
+    gap: 2px;
+  }
+
+  .action-btn {
+    padding: 2px 4px;
+  }
+
+  .action-icon {
+    width: 12px;
+    height: 12px;
+  }
 }

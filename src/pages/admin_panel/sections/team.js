@@ -11,6 +11,8 @@ import leftImg from "../../../assets/icons/leftArrow.png";
 import rightImg from "../../../assets/icons/rightArrow.png";
 import sortIcon from "../../../assets/icons/sort_arrows.png";
 import Popup from "../../../components/admin_panel/popups/success"; // Assuming this path; adjust as needed
+import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
+import DeletePopup from "../../../components/admin_panel/popups/delete";
 
 function getInitials(name) {
   const parts = name.split(/[\s.]+/).filter(Boolean);
@@ -48,6 +50,13 @@ export default function TeamPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [modalEditingId, setModalEditingId] = useState(null);
 
+  // Delete confirm states
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  // Delete success popup state
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+
   // Popup states
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupTitle, setPopupTitle] = useState("Success");
@@ -69,6 +78,12 @@ export default function TeamPage() {
     const t = setTimeout(() => setPopupVisible(false), 3000);
     return () => clearTimeout(t);
   }, [popupVisible]);
+
+  useEffect(() => {
+    if (!showDeleteSuccess) return undefined;
+    const t = setTimeout(() => setShowDeleteSuccess(false), 3000);
+    return () => clearTimeout(t);
+  }, [showDeleteSuccess]);
 
   function handleFile(file) {
     if (!file) return;
@@ -172,18 +187,8 @@ export default function TeamPage() {
 
   function handleDelete(id) {
     if (!id) return;
-    if (window.confirm("Are you sure you want to delete this employee?")) {
-      const newEmployees = employees.filter(e => e.id !== id);
-      setEmployees(newEmployees);
-      const maxPage = Math.ceil(newEmployees.length / rowsPerPage) || 1;
-      if (page > maxPage) {
-        setPage(maxPage);
-      }
-      // close modal if deleting the currently edited one
-      if (modalEditingId === id) {
-        closeEditModal();
-      }
-    }
+    setDeleteId(id);
+    setShowDeleteConfirm(true);
   }
 
   // Update employee from modal
@@ -220,7 +225,7 @@ export default function TeamPage() {
   return (
     <div className="team-page-root">
       {/* CONTENT WRAPPER: will be blurred when modal is open */}
-      <div className={`content-wrapper ${showEditModal ? "blurred" : ""}`}>
+      <div className={`content-wrapper ${showEditModal || showDeleteConfirm ? "blurred" : ""}`}>
         <h2 className="team-title">Team</h2>
 
         {/* Top add form - unchanged (Add Employee) */}
@@ -433,14 +438,14 @@ export default function TeamPage() {
 
       {/* Modal overlay kept outside content-wrapper so it doesn't get blurred */}
       {showEditModal && (
-        <div className="modal-overlay" onMouseDown={closeEditModal}>
+        <div className="TMmodal-overlay" onMouseDown={closeEditModal}>
           <div
-            className="edit-modal"
+            className="editTMmodal"
             onMouseDown={(e) => e.stopPropagation()} /* prevent overlay close when clicking inside modal */
           >
             {/* Modal form: stacked inputs in required order (no title, no delete/cancel) */}
             <form
-              className="modal-content"
+              className="TMmodal-content"
               onSubmit={(e) => { e.preventDefault(); updateEmployeeFromModal(); }}
             >
               <div className="form-details">
@@ -505,7 +510,7 @@ export default function TeamPage() {
                     </div>
 
                     <div
-                      className={`photo-drop modal-drop ${errors.photo ? "error" : ""}`}
+                      className={`photo-drop TMmodal-drop ${errors.photo ? "error" : ""}`}
                       onDrop={onDrop}
                       onDragOver={onDragOver}
                       onClick={() => fileInputRef.current && fileInputRef.current.click()}
@@ -560,12 +565,43 @@ export default function TeamPage() {
 
               <div className="divider" />
 
-              <div className="form-actions modal-actions">
+              <div className="form-actions TMmodal-actions">
                 {/* Only Update button remains */}
                 <UpdateButton onClick={updateEmployeeFromModal} />
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Delete Confirm Popup */}
+      {showDeleteConfirm && (
+        <DeleteConfirmPopup
+          onClose={() => {
+            setShowDeleteConfirm(false);
+            setDeleteId(null);
+          }}
+          onConfirm={() => {
+            const newEmployees = employees.filter(e => e.id !== deleteId);
+            setEmployees(newEmployees);
+            const maxPage = Math.ceil(newEmployees.length / rowsPerPage) || 1;
+            if (page > maxPage) {
+              setPage(maxPage);
+            }
+            if (modalEditingId === deleteId) {
+              closeEditModal();
+            }
+            setShowDeleteConfirm(false);
+            setDeleteId(null);
+            setShowDeleteSuccess(true);
+          }}
+        />
+      )}
+
+      {/* Delete Success Popup */}
+      {showDeleteSuccess && (
+        <div className="delete-popup-container">
+          <DeletePopup message="Employee deleted successfully." />
         </div>
       )}
 

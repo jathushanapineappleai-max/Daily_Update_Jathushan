@@ -1,5 +1,6 @@
-﻿import React from "react";
+﻿import React, { useState } from "react";
 import "../../../styles/admin_panel/contact.css";
+import Pagination from "../../../components/admin_panel/pagination";
 
 // Arrow icon for sorting (up/down)
 import sortIcon from "../../../assets/icons/sort_arrows.png";
@@ -9,11 +10,12 @@ import editIcon from "../../../assets/icons/Frame.png";
 import deleteIcon from "../../../assets/icons/Vector.png";
 
 export default function Contact() {
-  // Columns
-  const columns = ["Name", "Email", "Phone Number", "Services", "Message", "Action"];
+  // State for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  // Dummy data (constructor-style)
-  const contacts = [
+  // State for contacts
+  const [contacts, setContacts] = useState([
     {
       name: "John Doe",
       email: "example@gmail.com",
@@ -84,7 +86,38 @@ export default function Contact() {
       service: "Web Development",
       message: "Corporate website revamp project.",
     },
-  ];
+  ]);
+
+  // Pagination logic
+  const totalContacts = contacts.length;
+  const paginatedContacts = contacts.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
+
+  // Handlers for pagination
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newRowsPerPage) => {
+    setRowsPerPage(newRowsPerPage);
+    setCurrentPage(1); // Reset to first page when rows per page changes
+  };
+
+  // Delete handler
+  const handleDelete = (email) => {
+    const newContacts = contacts.filter((contact) => contact.email !== email);
+    setContacts(newContacts);
+    // Adjust current page if necessary
+    const newTotalPages = Math.max(1, Math.ceil(newContacts.length / rowsPerPage));
+    if (currentPage > newTotalPages) {
+      setCurrentPage(newTotalPages);
+    }
+  };
+
+  // Columns
+  const columns = ["Name", "Email", "Phone Number", "Services", "Message", "Action"];
 
   return (
     <div className="contact-wrapper">
@@ -94,7 +127,10 @@ export default function Contact() {
       <div className="contact-section">
         <div className="contact-header-wrapper">
           <h2 className="contact-header">All Contacts</h2>
-          <div className="contact-counter">1 - 10 of 256</div>
+          <div className="contact-counter">
+            {(currentPage - 1) * rowsPerPage + 1} -{" "}
+            {Math.min(currentPage * rowsPerPage, totalContacts)} of {totalContacts}
+          </div>
         </div>
 
         {/* Table headers */}
@@ -109,11 +145,11 @@ export default function Contact() {
           ))}
         </div>
 
-        {/* Render rows dynamically */}
-        {contacts.map((contact, index) => (
+        {/* Render paginated rows dynamically */}
+        {paginatedContacts.map((contact, index) => (
           <div
             className={`contact-row ${index % 2 === 0 ? "alt-row" : ""}`}
-            key={index}
+            key={contact.email} // Use email as unique key
           >
             <div className="contact-column">{contact.name}</div>
             <div className="contact-column">{contact.email}</div>
@@ -124,13 +160,30 @@ export default function Contact() {
               <button className="icon-btn" title="Edit">
                 <img src={editIcon} alt="Edit" />
               </button>
-              <button className="icon-btn" title="Delete">
+              <button
+                className="icon-btn"
+                title="Delete"
+                onClick={() => handleDelete(contact.email)}
+              >
                 <img src={deleteIcon} alt="Delete" />
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Pagination Component */}
+      <Pagination
+        currentPage={currentPage}
+        total={totalContacts}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        showRowsPerPage={true}
+        showArrows={true}
+        className="contact-pagination"
+      />
     </div>
   );
 }

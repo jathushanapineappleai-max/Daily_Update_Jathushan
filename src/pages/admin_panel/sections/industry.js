@@ -1,73 +1,111 @@
 import React, { useState, useRef } from "react";
 import uploadIcon from "../../../assets/icons/upload.png";
-import editIconImg from "../../../assets/icons/Frame.png";
+import editIcon from "../../../assets/icons/Frame.png";
 import deleteIcon from "../../../assets/icons/Vector.png";
-import "../../../styles/admin_panel/main_services.css";
 import SummitButton from "../../../components/admin_panel/buttons/summit_button";
 import UpdateButton from "../../../components/admin_panel/buttons/update_button";
+import "../../../styles/admin_panel/industry.css";
 
-// ✅ Popups
+// Popups
 import Popup from "../../../components/admin_panel/popups/success";
 import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
 import DeletePopup from "../../../components/admin_panel/popups/delete";
 
-export default function MainServices() {
+export default function Industry() {
+  const [industryName, setIndustryName] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [serviceName, setServiceName] = useState("");
-  const [description, setDescription] = useState("");
-  const [services, setServices] = useState([]);
-
-  // === Validation Errors ===
+  const [industries, setIndustries] = useState([]);
   const [errors, setErrors] = useState({});
 
-  // === Popups ===
+  // Popups
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  // === Edit Modal ===
+  // Edit Modal
   const [showModal, setShowModal] = useState(false);
-  const [editService, setEditService] = useState(null);
+  const [editIndustry, setEditIndustry] = useState(null);
   const [editName, setEditName] = useState("");
-  const [editDescription, setEditDescription] = useState("");
-  const [editIconFile, setEditIconFile] = useState(null);
+  const [editFile, setEditFile] = useState(null);
 
   const mainFileInputRef = useRef(null);
   const editFileInputRef = useRef(null);
 
-  /* ========================== VALIDATION ========================== */
+  /* ========================================================= */
+  /* VALIDATION + FILE HANDLING                                */
+  /* ========================================================= */
   const validateForm = () => {
     const newErrors = {};
-    if (!serviceName.trim()) newErrors.serviceName = "Service name is required.";
-    if (!description.trim()) newErrors.description = "Description is required.";
-    if (!selectedFile) newErrors.icon = "Please upload an icon.";
+    if (!industryName.trim()) newErrors.industryName = "Industry name is required.";
+    if (!selectedFile) newErrors.image = "Please upload an image (JPG or PNG).";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  /* ========================== ADD SERVICE ========================== */
-  const handleAddService = () => {
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        setErrors((prev) => ({
+          ...prev,
+          image: "Only JPG or PNG files are allowed.",
+        }));
+        return;
+      }
+      setSelectedFile(file);
+      setErrors((prev) => ({ ...prev, image: "" }));
+      e.target.value = "";
+    }
+  };
+
+  /* ========================================================= */
+  /* ADD INDUSTRY                                              */
+  /* ========================================================= */
+  const handleAddIndustry = () => {
     if (!validateForm()) return;
-
-    const newService = {
+    const newIndustry = {
       id: Date.now(),
-      name: serviceName,
-      description,
-      icon: URL.createObjectURL(selectedFile),
+      name: industryName,
+      image: URL.createObjectURL(selectedFile),
     };
-
-    setServices((prev) => [...prev, newService]);
-    setServiceName("");
-    setDescription("");
+    setIndustries([...industries, newIndustry]);
+    setIndustryName("");
     setSelectedFile(null);
     setErrors({});
-
     setShowSuccessPopup(true);
     setTimeout(() => setShowSuccessPopup(false), 2500);
   };
 
-  /* ========================== DELETE ========================== */
+  /* ========================================================= */
+  /* EDIT INDUSTRY                                             */
+  /* ========================================================= */
+  const handleEdit = (industry) => {
+    setEditIndustry(industry);
+    setEditName(industry.name);
+    setEditFile(null);
+    setShowModal(true);
+  };
+
+  const handleUpdate = () => {
+    if (!editName.trim()) return;
+    const updatedList = industries.map((item) =>
+      item.id === editIndustry.id
+        ? {
+            ...item,
+            name: editName,
+            image: editFile ? URL.createObjectURL(editFile) : item.image,
+          }
+        : item
+    );
+    setIndustries(updatedList);
+    setShowModal(false);
+  };
+
+  /* ========================================================= */
+  /* DELETE INDUSTRY                                           */
+  /* ========================================================= */
   const handleDeleteClick = (id) => {
     setDeleteTarget(id);
     setShowDeletePopup(true);
@@ -75,10 +113,9 @@ export default function MainServices() {
 
   const handleConfirmDelete = () => {
     if (deleteTarget) {
-      setServices((prev) => prev.filter((srv) => srv.id !== deleteTarget));
+      setIndustries((prev) => prev.filter((item) => item.id !== deleteTarget));
       setShowDeletePopup(false);
       setDeleteTarget(null);
-
       setShowDeleteSuccess(true);
       setTimeout(() => setShowDeleteSuccess(false), 2500);
     }
@@ -89,158 +126,104 @@ export default function MainServices() {
     setDeleteTarget(null);
   };
 
-  /* ========================== EDIT ========================== */
-  const handleEdit = (service) => {
-    setEditService(service);
-    setEditName(service.name);
-    setEditDescription(service.description);
-    setShowModal(true);
-  };
-
-  const handleUpdate = () => {
-    if (!editName.trim() || !editDescription.trim()) return;
-
-    const updatedServices = services.map((srv) =>
-      srv.id === editService.id
-        ? {
-            ...srv,
-            name: editName,
-            description: editDescription,
-            icon: editIconFile ? URL.createObjectURL(editIconFile) : srv.icon,
-          }
-        : srv
-    );
-    setServices(updatedServices);
-    setShowModal(false);
-  };
-
-  /* ========================== RETURN ========================== */
+  /* ========================================================= */
+  /* RENDER                                                    */
+  /* ========================================================= */
   return (
-    <div className="main-services-section">
+    <div className="industry-section">
       <div className="main-content">
-        <div className="main-services-wrapper">
-          <h2 className="main-services-heading">Main Services</h2>
+        <div className="industry-wrapper">
+          <h2 className="industry-heading">Industries</h2>
 
           {/* ================== FORM SECTION ================== */}
           <div className="big-container">
             <div className="form-row">
-              {/* Service Name */}
+              {/* Industry Name */}
               <div className="form-group">
-                <label className="category-tag">Service</label>
+                <label className="category-tag">Industry</label>
                 <input
                   type="text"
-                  className={`service-input ${
-                    errors.serviceName ? "input-error" : ""
-                  }`}
-                  placeholder="Enter service name"
-                  value={serviceName}
-                  onChange={(e) => setServiceName(e.target.value)}
+                  className={`industry-input ${errors.industryName ? "input-error" : ""}`}
+                  placeholder="Enter industry name"
+                  value={industryName}
+                  onChange={(e) => setIndustryName(e.target.value)}
                 />
-                {errors.serviceName && (
-                  <small className="error-text">{errors.serviceName}</small>
+                {errors.industryName && (
+                  <small className="error-text">{errors.industryName}</small>
                 )}
               </div>
 
-              {/* Upload Icon */}
+              {/* Upload Image */}
               <div className="form-group">
-                <label className="category-tag">Icon</label>
+                <label className="category-tag">Image (JPG or PNG)</label>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept=".jpg,.jpeg,.png"
                   ref={mainFileInputRef}
                   style={{ display: "none" }}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) setSelectedFile(file);
-                    e.target.value = "";
-                  }}
+                  onChange={handleFileChange}
                 />
                 <div
-                  className={`upload-box ${errors.icon ? "upload-error" : ""}`}
+                  className={`upload-box ${errors.image ? "upload-error" : ""}`}
                   onClick={() =>
                     mainFileInputRef.current && mainFileInputRef.current.click()
                   }
                 >
                   <span className="upload-placeholder">
-                    {selectedFile ? selectedFile.name : "Upload icon"}
+                    {selectedFile ? selectedFile.name : "Upload an image"}
                   </span>
                   <img src={uploadIcon} alt="Upload" className="upload-icon" />
                 </div>
-                {errors.icon && (
-                  <small className="error-text">{errors.icon}</small>
-                )}
+                {errors.image && <small className="error-text">{errors.image}</small>}
               </div>
-            </div>
-
-            {/* Description */}
-            <div className="form-group">
-              <label className="category-tag">Description</label>
-              <textarea
-                className={`description-input ${
-                  errors.description ? "input-error" : ""
-                }`}
-                placeholder="Write a description about the service"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-              {errors.description && (
-                <small className="error-text">{errors.description}</small>
-              )}
             </div>
 
             <hr className="form-divider" />
             <div className="form-actions">
-              <SummitButton label="Submit" onClick={handleAddService} />
+              <SummitButton label="Submit" onClick={handleAddIndustry} />
             </div>
           </div>
 
           {/* ================== TABLE SECTION ================== */}
           <div className="second-container">
-            <h2 className="table-heading">All Services</h2>
+            <div className="industry-list-header">
+              <h2 className="table-heading">All Industries</h2>
+              <span className="industry-count">{industries.length}</span>
+            </div>
             <div className="table-wrapper">
-              <table className="services-table">
+              <table className="industry-table">
                 <thead>
                   <tr>
-                    <th>Service</th>
-                    <th>Description</th>
+                    <th>Industry</th>
                     <th className="action-col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {services.map((service) => (
-                    <tr key={service.id}>
-                      <td className="service-cell">
+                  {industries.map((item) => (
+                    <tr key={item.id}>
+                      <td className="industry-cell">
                         <img
-                          src={service.icon}
-                          alt="Service Icon"
-                          className="service-icon"
+                          src={item.image}
+                          alt="Industry"
+                          className="industry-avatar"
                         />
-                        <span>{service.name}</span>
+                        <span>{item.name}</span>
                       </td>
-                      <td>{service.description}</td>
                       <td className="action-col">
                         <div className="action-buttons">
                           <button
                             className="icon-btn"
                             title="Edit"
-                            onClick={() => handleEdit(service)}
+                            onClick={() => handleEdit(item)}
                           >
-                            <img
-                              src={editIconImg}
-                              alt="Edit"
-                              className="action-icon"
-                            />
+                            <img src={editIcon} alt="Edit" className="action-icon" />
                           </button>
                           <button
                             className="icon-btn"
                             title="Delete"
-                            onClick={() => handleDeleteClick(service.id)}
+                            onClick={() => handleDeleteClick(item.id)}
                           >
-                            <img
-                              src={deleteIcon}
-                              alt="Delete"
-                              className="action-icon"
-                            />
+                            <img src={deleteIcon} alt="Delete" className="action-icon" />
                           </button>
                         </div>
                       </td>
@@ -253,23 +236,11 @@ export default function MainServices() {
 
           {/* ================== POPUPS ================== */}
           {showSuccessPopup && (
-            <div className="popup-container">
-              <Popup
-                title="Service Added!"
-                message="The service was successfully added."
-              />
-            </div>
+            <Popup title="Industry Added!" message="Industry added successfully." />
           )}
-
           {showDeleteSuccess && (
-            <div className="popup-container">
-              <DeletePopup
-                title="Deleted!"
-                message="The service has been deleted successfully."
-              />
-            </div>
+            <DeletePopup title="Deleted!" message="Industry deleted successfully." />
           )}
-
           {showDeletePopup && (
             <DeleteConfirmPopup
               onClose={handleCancelDelete}
@@ -281,10 +252,10 @@ export default function MainServices() {
           {showModal && (
             <div className="modal-overlay">
               <div className="modal">
-                <h2 className="modal-heading">Edit Service</h2>
+                <h2 className="modal-heading">Edit Industry</h2>
 
                 <div className="modal-field">
-                  <label>Service</label>
+                  <label>Industry</label>
                   <input
                     type="text"
                     value={editName}
@@ -293,43 +264,33 @@ export default function MainServices() {
                 </div>
 
                 <div className="modal-field">
-                  <label>Icon</label>
+                  <label>Image (JPG or PNG)</label>
                   <input
                     type="file"
-                    accept="image/*"
+                    accept=".jpg,.jpeg,.png"
                     ref={editFileInputRef}
                     style={{ display: "none" }}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      if (file) setEditIconFile(file);
+                      if (file) setEditFile(file);
                       e.target.value = "";
                     }}
                   />
                   <div
                     className="upload-box"
                     onClick={() =>
-                      editFileInputRef.current &&
-                      editFileInputRef.current.click()
+                      editFileInputRef.current && editFileInputRef.current.click()
                     }
                   >
                     <span className="upload-placeholder">
-                      {editIconFile
-                        ? editIconFile.name
-                        : editService?.icon
-                        ? "Current Icon"
-                        : "Upload an icon"}
+                      {editFile
+                        ? editFile.name
+                        : editIndustry?.image
+                        ? "Current Image"
+                        : "Upload image"}
                     </span>
                     <img src={uploadIcon} alt="Upload" className="upload-icon" />
                   </div>
-                </div>
-
-                <div className="modal-field">
-                  <label>Description</label>
-                  <textarea
-                    rows="3"
-                    value={editDescription}
-                    onChange={(e) => setEditDescription(e.target.value)}
-                  ></textarea>
                 </div>
 
                 <hr className="modal-divider" />

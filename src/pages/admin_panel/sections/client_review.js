@@ -11,6 +11,8 @@ import PostButton from "../../../components/admin_panel/buttons/post_button";
 import UpdateButton from "../../../components/admin_panel/buttons/update_button";
 import PaginationBar from "../../../components/admin_panel/pagination";
 import Popup from "../../../components/admin_panel/popups/success"; // Assuming this path for the success popup
+import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
+import DeletePopup from "../../../components/admin_panel/popups/delete";
 
 const ClientReview = ({ externalOnSubmit }) => {
   const [clientName, setClientName] = useState("");
@@ -52,6 +54,13 @@ const ClientReview = ({ externalOnSubmit }) => {
   // Popup state
   const [visible, setVisible] = useState(false);
 
+  // Delete popup state
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  // Delete success popup state
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+
   const fileInputRef = useRef(null);
   const editFileInputRef = useRef(null);
 
@@ -61,6 +70,13 @@ const ClientReview = ({ externalOnSubmit }) => {
     const t = setTimeout(() => setVisible(false), 3000);
     return () => clearTimeout(t);
   }, [visible]);
+
+  // Delete success auto-hide effect
+  useEffect(() => {
+    if (!showDeleteSuccess) return undefined;
+    const t = setTimeout(() => setShowDeleteSuccess(false), 3000);
+    return () => clearTimeout(t);
+  }, [showDeleteSuccess]);
 
   // Validation functions
   const validateName = (name) => {
@@ -311,19 +327,8 @@ const ClientReview = ({ externalOnSubmit }) => {
 
   // delete existing
   const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this review?")) return;
-    setReviews((prev) => {
-      const toDelete = prev.find((x) => x.id === id);
-      if (toDelete?.fileUrl) {
-        URL.revokeObjectURL(toDelete.fileUrl);
-      }
-      const newReviews = prev.filter((r) => r.id !== id);
-      const newTotalPages = Math.max(1, Math.ceil(newReviews.length / rowsPerPage));
-      if (currentPage > newTotalPages) {
-        setCurrentPage(newTotalPages);
-      }
-      return newReviews;
-    });
+    setDeleteId(id);
+    setShowDeletePopup(true);
   };
 
   // pagination helpers
@@ -358,7 +363,7 @@ const ClientReview = ({ externalOnSubmit }) => {
 
   return (
     <div className="client-review-container">
-      <div className={`cr-main-content ${showModal ? 'blurred' : ''}`}>
+      <div className={`cr-main-content ${showModal || showDeletePopup ? 'blurred' : ''}`}>
         {/* Title & Add Form */}
         <div className="cr-title">Client Reviews</div>
 
@@ -509,16 +514,18 @@ const ClientReview = ({ externalOnSubmit }) => {
         </div>
 
         {/* Separate pagination box */}
-        <PaginationBar
-          currentPage={currentPage}
-          total={total}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handlePageChange}
-          onRowsPerPageChange={handleRowsPerPageChange}
-          leftIcon={leftArrow}
-          rightIcon={rightArrow}
-          resetPageOnRowsChange={true}
-        />
+        <div className="cr-pagination-wrapper">
+          <PaginationBar
+            currentPage={currentPage}
+            total={total}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handlePageChange}
+            onRowsPerPageChange={handleRowsPerPageChange}
+            leftIcon={leftArrow}
+            rightIcon={rightArrow}
+            resetPageOnRowsChange={true}
+          />
+        </div>
       </div>
 
       {/* Edit Modal */}
@@ -615,6 +622,30 @@ const ClientReview = ({ externalOnSubmit }) => {
         </div>
       )}
 
+      {/* Delete Confirm Popup */}
+      {showDeletePopup && (
+        <DeleteConfirmPopup
+          onClose={() => setShowDeletePopup(false)}
+          onConfirm={() => {
+            setReviews((prev) => {
+              const toDelete = prev.find((x) => x.id === deleteId);
+              if (toDelete?.fileUrl) {
+                URL.revokeObjectURL(toDelete.fileUrl);
+              }
+              const newReviews = prev.filter((r) => r.id !== deleteId);
+              const newTotalPages = Math.max(1, Math.ceil(newReviews.length / rowsPerPage));
+              if (currentPage > newTotalPages) {
+                setCurrentPage(newTotalPages);
+              }
+              return newReviews;
+            });
+            setShowDeletePopup(false);
+            setDeleteId(null);
+            setShowDeleteSuccess(true);
+          }}
+        />
+      )}
+
       {/* Success Popup */}
       {visible && (
         <div
@@ -624,6 +655,13 @@ const ClientReview = ({ externalOnSubmit }) => {
           aria-modal="false"
         >
           <Popup title="Success" message="Review posted successfully." />
+        </div>
+      )}
+
+      {/* Delete Success Popup */}
+      {showDeleteSuccess && (
+        <div className="delete-popup-container">
+          <DeletePopup message="Review deleted successfully." />
         </div>
       )}
     </div>

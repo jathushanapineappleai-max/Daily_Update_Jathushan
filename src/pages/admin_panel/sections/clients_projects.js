@@ -18,6 +18,7 @@ export default function ClientProjects() {
   const [projectLogo, setProjectLogo] = useState(null);
   const [activeBox, setActiveBox] = useState("");
   const [projects, setProjects] = useState([]);
+  const [errors, setErrors] = useState({}); // <-- added for validation
 
   // Popups
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -29,10 +30,21 @@ export default function ClientProjects() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  /* ------------------------ File Upload ------------------------ */
+  /* ------------------------ File Upload (Validation Added) ------------------------ */
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
-    if (file) setProjectLogo(file);
+    if (file) {
+      const validTypes = ["image/jpeg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        setErrors((prev) => ({
+          ...prev,
+          projectLogo: "Only JPG or PNG files are allowed.",
+        }));
+        return;
+      }
+      setProjectLogo(file);
+      setErrors((prev) => ({ ...prev, projectLogo: "" }));
+    }
     setActiveBox("");
   };
 
@@ -42,12 +54,23 @@ export default function ClientProjects() {
     setTimeout(() => setActiveBox(""), 800);
   };
 
+  /* ------------------------ Validation Before Submit ------------------------ */
+  const validateForm = () => {
+    const newErrors = {};
+    if (!projectName.trim()) newErrors.projectName = "Project name is required.";
+    if (!projectCategory) newErrors.projectCategory = "Please select a category.";
+    if (!projectWebsite.trim())
+      newErrors.projectWebsite = "Project website is required.";
+    if (!projectLogo)
+      newErrors.projectLogo = "Please upload a project logo (JPG or PNG).";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   /* ------------------------ Add Project ------------------------ */
   const handleSubmit = () => {
-    if (!projectName || !projectCategory || !projectWebsite) {
-      alert("Please fill all fields!");
-      return;
-    }
+    if (!validateForm()) return;
 
     const newProject = {
       id: Date.now(),
@@ -66,6 +89,7 @@ export default function ClientProjects() {
     setProjectWebsite("");
     setDescription("");
     setProjectLogo(null);
+    setErrors({});
     setShowSuccessPopup(true);
     setTimeout(() => setShowSuccessPopup(false), 2500);
   };
@@ -116,16 +140,23 @@ export default function ClientProjects() {
             <input
               type="text"
               placeholder="Enter project name"
-              className="cp-client-input"
+              className={`cp-client-input ${
+                errors.projectName ? "input-error" : ""
+              }`}
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
             />
+            {errors.projectName && (
+              <small className="error-text">{errors.projectName}</small>
+            )}
           </div>
 
           <div className="cp-client-group">
             <label className="cp-client-label">Project Category</label>
             <select
-              className="cp-client-input"
+              className={`cp-client-input ${
+                errors.projectCategory ? "input-error" : ""
+              }`}
               value={projectCategory}
               onChange={(e) => setProjectCategory(e.target.value)}
             >
@@ -134,20 +165,24 @@ export default function ClientProjects() {
               <option value="Mobile Solution">Mobile Solution</option>
               <option value="UI/UX Design">UI/UX Design</option>
             </select>
+            {errors.projectCategory && (
+              <small className="error-text">{errors.projectCategory}</small>
+            )}
           </div>
 
           <div className="cp-client-group">
-            <label className="cp-client-label">Project Logo</label>
+            <label className="cp-client-label">Project Logo (JPG/PNG)</label>
             <input
               type="file"
               id="project-logo"
+              accept=".jpg,.jpeg,.png"
               style={{ display: "none" }}
               onChange={handleFileChange}
             />
             <div
               className={`cp-client-upload-box ${
                 activeBox === "logo" ? "active" : ""
-              }`}
+              } ${errors.projectLogo ? "upload-error" : ""}`}
               onClick={handleBoxClick}
             >
               <span className="cp-client-upload-placeholder">
@@ -159,6 +194,9 @@ export default function ClientProjects() {
                 className="cp-client-upload-icon"
               />
             </div>
+            {errors.projectLogo && (
+              <small className="error-text">{errors.projectLogo}</small>
+            )}
           </div>
 
           <div className="cp-client-group website-field">
@@ -166,10 +204,15 @@ export default function ClientProjects() {
             <input
               type="text"
               placeholder="Add project website link"
-              className="cp-client-input"
+              className={`cp-client-input ${
+                errors.projectWebsite ? "input-error" : ""
+              }`}
               value={projectWebsite}
               onChange={(e) => setProjectWebsite(e.target.value)}
             />
+            {errors.projectWebsite && (
+              <small className="error-text">{errors.projectWebsite}</small>
+            )}
           </div>
 
           <div className="cp-client-group description-field">
@@ -243,77 +286,6 @@ export default function ClientProjects() {
           </table>
         </div>
       </div>
-
-      {/* ================= EDIT MODAL ================= */}
-      {editModalVisible && (
-        <div className="cp-modal-overlay">
-          <div className="cp-modal">
-            <h2 className="cp-modal-heading">Edit Client Project</h2>
-
-            <div className="cp-modal-field">
-              <label>Project Name</label>
-              <input
-                type="text"
-                value={editData.name}
-                onChange={(e) =>
-                  setEditData({ ...editData, name: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Project Category</label>
-              <select
-                value={editData.category}
-                onChange={(e) =>
-                  setEditData({ ...editData, category: e.target.value })
-                }
-              >
-                <option value="Web Solution">Web Solution</option>
-                <option value="Mobile Solution">Mobile Solution</option>
-                <option value="UI/UX Design">UI/UX Design</option>
-              </select>
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Photo Logo</label>
-              <div className="cp-upload-box">
-                <span className="cp-upload-placeholder">
-                  {editData.logo ? "Dialus.jpg" : "Upload Logo"}
-                </span>
-                <img src={uploadIcon} alt="Upload" className="cp-upload-icon" />
-              </div>
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Project Website</label>
-              <input
-                type="text"
-                value={editData.website}
-                onChange={(e) =>
-                  setEditData({ ...editData, website: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="cp-modal-field">
-              <label>Description</label>
-              <textarea
-                value={editData.description}
-                onChange={(e) =>
-                  setEditData({ ...editData, description: e.target.value })
-                }
-              ></textarea>
-            </div>
-
-            <hr className="cp-modal-divider" />
-
-            <div className="cp-modal-actions">
-              <button onClick={handleUpdateProject}>Update</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ================= POPUPS ================= */}
       {showSuccessPopup && (

@@ -1,3 +1,4 @@
+// product selection.js 
 import React, { useState, useEffect } from 'react';
 import '../../../styles/admin_panel/product_selection.css';
 import UploadIcon from "../../../assets/icons/uploadIcon.png";
@@ -9,6 +10,8 @@ import Pagination from "../../../components/admin_panel/pagination";
 import rightImg from "../../../assets/icons/rightArrow.png";*/
 import sort from "../../../assets/icons/sort_arrows.png";
 import Popup from "../../../components/admin_panel/popups/success";
+import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
+import DeletePopup from "../../../components/admin_panel/popups/delete";
 
 // --------- Name validation (sync) ---------
 // Returns null when valid, otherwise returns an error message string.
@@ -104,6 +107,13 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
   // success popup state
   const [successVisible, setSuccessVisible] = useState(false);
 
+  // delete confirm state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+
+  // delete success state
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+
   const totalProducts = products.length;
 
   // paginated products for display
@@ -135,6 +145,13 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
     const t = setTimeout(() => setSuccessVisible(false), 3000);
     return () => clearTimeout(t);
   }, [successVisible]);
+
+  // Auto-hide delete success popup after 3000ms
+  useEffect(() => {
+    if (!showDeleteSuccess) return undefined;
+    const t = setTimeout(() => setShowDeleteSuccess(false), 3000);
+    return () => clearTimeout(t);
+  }, [showDeleteSuccess]);
 
   const handleFileChange = (e) => {
     handleFileSelect(e, { setFile: setFileObj, setFileName, setErrors, maxSizeBytes: 5 * 1024 * 1024 });
@@ -277,13 +294,27 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
     setModalErrors({ name: null, website: null, photo: null });
   };
 
+  const handleConfirmDelete = () => {
+    if (productToDelete) {
+      handleDelete(productToDelete);
+    }
+    setShowDeleteConfirm(false);
+    setProductToDelete(null);
+    setShowDeleteSuccess(true);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setProductToDelete(null);
+  };
+
   // Calculate the display range
   const start = totalProducts > 0 ? (page - 1) * rowsPerPage + 1 : 0;
   const end = Math.min(page * rowsPerPage, totalProducts);
 
   return (
     <div className="product-section">
-      <div className={`content-wrapper ${showModal ? 'blurred' : ''}`}>
+      <div className={`content-wrapper ${showModal || showDeleteConfirm ? 'blurred' : ''}`}>
         {/* Section Title moved inside content-wrapper so it blurs with content */}
         <h1 className="ps-section-title">Product Section</h1>
 
@@ -306,11 +337,11 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
               {errors.name && <span className="field-error">{errors.name}</span>}
             </div>
 
-            <div className="ps-field">
-              <label className="ps-label" htmlFor="productWebsite">Product Website</label>
+            <div className="ps-field ps-website-field">
+              <label className="ps-label ps-website-label" htmlFor="productWebsite">Product Website</label>
               <input
                 id="productWebsite"
-                className={`ps-input ${errors.website ? 'error' : ''}`}
+                className={`ps-input ps-website-input ${errors.website ? 'error' : ''}`}
                 placeholder="Add product website URL"
                 value={productWebsite}
                 onChange={(e) => setProductWebsite(e.target.value)}
@@ -423,7 +454,10 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
                       <button
                         title="Delete"
                         className="pl-btn pl-delete"
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => {
+                          setProductToDelete(product.id);
+                          setShowDeleteConfirm(true);
+                        }}
                         aria-label={`Delete ${product.name}`}
                       >
                         <img src={DeleteIcon} alt="Delete" />
@@ -455,8 +489,8 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
 
       {/* Edit Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="PSmodal-overlay" onClick={() => setShowModal(false)}>
+          <div className="PSmodal-content" onClick={(e) => e.stopPropagation()}>
             <form onSubmit={handleUpdate}>
               <div className="ps-row">
                 <div className="ps-field">
@@ -473,11 +507,11 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
                   {modalErrors.name && <span className="field-error">{modalErrors.name}</span>}
                 </div>
 
-                <div className="ps-field">
-                  <label className="ps-label" htmlFor="modalProductWebsite">Product Website</label>
+                <div className="ps-field ps-website-field">
+                  <label className="ps-label ps-website-label" htmlFor="modalProductWebsite">Product Website</label>
                   <input
                     id="modalProductWebsite"
-                    className={`ps-input ${modalErrors.website ? 'error' : ''}`}
+                    className={`ps-input ps-website-input ${modalErrors.website ? 'error' : ''}`}
                     placeholder="Add product website URL"
                     value={modalWebsite}
                     onChange={(e) => setModalWebsite(e.target.value)}
@@ -508,7 +542,7 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
                       aria-label="Upload product photo"
                     />
                     <span className="file-placeholder">{modalFileName || 'Upload product photo'}</span>
-                    <span className="upload-icon">
+                    <span className="PSmodal-upload-icon">
                       <img src={UploadIcon} alt="upload" style={{ width: 20, height: 20, display: 'block' }} />
                     </span>
                   </div>
@@ -536,6 +570,21 @@ export default function ProductSelection({ onSubmit: externalOnSubmit }) {
         >
           <Popup title="Success" message="Product added successfully." />
         </div>
+      )}
+
+      {/* Delete Success Popup */}
+      {showDeleteSuccess && (
+        <div className="delete-popup-container">
+          <DeletePopup message="Product deleted successfully." />
+        </div>
+      )}
+
+      {/* Delete Confirm Popup */}
+      {showDeleteConfirm && (
+        <DeleteConfirmPopup
+          onClose={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+        />
       )}
     </div>
   );

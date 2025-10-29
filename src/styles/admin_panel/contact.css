@@ -5,7 +5,7 @@
   flex-direction: column;
   padding: 14px; /* Scaled from 12px */
   margin-left: 250px; /* Scaled from 220px */
-  margin-top: 91px; /* Scaled from 80px */
+  margin-top: 38px; /* Scaled from 80px */
   min-height: calc(100vh - 91px); /* Adjusts for header */
   width: calc(100% - 250px); /* Spreads to remaining space */
   transition: margin-left 0.3s ease, width 0.3s ease;
@@ -225,6 +225,13 @@
 }
 
 /* =============================== */
+/* Pagination Styling */
+.contact-pagination {
+  margin-top: 18px; /* Scaled from 16px */
+  align-self: flex-end; /* Align to the right */
+}
+
+/* =============================== */
 /* Responsive Styles */
 @media (max-width: 1024px) {
   .contact-counter {
@@ -238,6 +245,10 @@
 
   .alt-row {
     padding: 9px 11px; /* Scaled from 8px 10px */
+  }
+
+  .contact-pagination {
+    align-self: center; /* Center on smaller screens */
   }
 }
 
@@ -364,6 +375,10 @@
     white-space: normal;
   }
 
+  .contact-pagination {
+    align-self: center; /* Center on mobile */
+  }
+
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(11px); } /* Scaled from 10px */
     to { opacity: 1; transform: translateY(0); }
@@ -435,5 +450,9 @@
     flex-direction: column; /* Stack for small screens */
     align-items: flex-start;
     gap: 2px; /* Unchanged, small enough */
+  }
+
+  .contact-pagination {
+    align-self: center; /* Center on small screens */
   }
 }

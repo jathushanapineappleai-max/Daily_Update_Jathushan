@@ -223,7 +223,7 @@ select.cp-client-input {
 /* Convert table to grid for flex-end Action alignment */
 .cp-client-table thead tr {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1.2fr 2fr auto; /* Adjust ratios for balance */
+  grid-template-columns: 1.5fr 1fr 1.2fr 2fr auto;
   align-items: center;
 }
 
@@ -280,7 +280,7 @@ select.cp-client-input {
 
 .cp-action-buttons {
   display: flex;
-  justify-content: flex-end; /* ✅ moved from center to flex-end */
+  justify-content: flex-end;
   align-items: center;
   gap: 8px;
 }
@@ -429,6 +429,22 @@ select.cp-client-input {
 }
 
 /* ========================================================= */
+/* VALIDATION STYLING (JPG/PNG restriction errors)            */
+/* ========================================================= */
+
+.input-error,
+.upload-error {
+  border: 1px solid #f44336 !important;
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+.error-text {
+  color: #f87171;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* ========================================================= */
 /* PLACEHOLDER + FONT FIX (Source Sans Pro)                  */
 /* ========================================================= */
 
@@ -485,7 +501,7 @@ body {
 
   .cp-client-table thead tr,
   .cp-client-table tbody tr {
-    grid-template-columns: 1.3fr 1fr 1fr 1.8fr auto; /* Adjusted for smaller screens */
+    grid-template-columns: 1.3fr 1fr 1fr 1.8fr auto;
   }
 
   .cp-client-table th,

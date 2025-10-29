@@ -10,10 +10,22 @@ import redX from "../../../assets/icons/redX.png";
 // view more button component
 import ViewMoreButton from "../../../components/admin_panel/buttons/viewmore_button";
 
+// new delete confirm popup
+import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
+
+// success popup
+import DeletePopup from "../../../components/admin_panel/popups/delete";
+
 const PostedJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [removing, setRemoving] = useState(new Set());
   const [editingJob, setEditingJob] = useState(null);
+
+  // pendingDelete holds { jobId, idx } or null
+  const [pendingDelete, setPendingDelete] = useState(null);
+
+  // success state
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
 
   const loadJobs = () => {
     try {
@@ -32,6 +44,13 @@ const PostedJobs = () => {
     return () => window.removeEventListener("jobsUpdated", handler);
   }, []);
 
+  // auto-close success popup
+  useEffect(() => {
+    if (!showDeleteSuccess) return undefined;
+    const t = setTimeout(() => setShowDeleteSuccess(false), 3000);
+    return () => clearTimeout(t);
+  }, [showDeleteSuccess]);
+
   const formatDate = (iso) => {
     try {
       const d = new Date(iso || Date.now());
@@ -49,9 +68,15 @@ const PostedJobs = () => {
     setEditingJob({ ...job }); // Copy to avoid mutating original
   };
 
+  // When user clicks the delete button => open the custom confirm popup
   const handleDelete = (jobId, idx) => {
-    if (!window.confirm("Delete this job? This action cannot be undone.")) return;
+    setPendingDelete({ jobId, idx });
+  };
 
+  // Called when the user confirms in the DeleteConfirmPopup
+  const handleConfirmDelete = () => {
+    if (!pendingDelete) return;
+    const { jobId, idx } = pendingDelete;
     const key = jobId ?? `idx-${idx}`;
     setRemoving((prev) => new Set(prev).add(key));
 
@@ -73,10 +98,19 @@ const PostedJobs = () => {
           return copy;
         });
         window.dispatchEvent(new Event("jobsUpdated"));
+        setShowDeleteSuccess(true);
       } catch (err) {
         console.error("Failed to delete job", err);
       }
     }, 260);
+
+    // close popup
+    setPendingDelete(null);
+  };
+
+  // Cancel deletion (close popup)
+  const handleCancelDelete = () => {
+    setPendingDelete(null);
   };
 
   const handleViewMore = () => {
@@ -160,6 +194,18 @@ const PostedJobs = () => {
           <div className="ej-form-wrapper" onClick={(e) => e.stopPropagation()}>
             <EditJobForm job={editingJob} onUpdate={handleUpdate} />
           </div>
+        </div>
+      )}
+
+      {/* Delete confirmation popup (custom component) */}
+      {pendingDelete && (
+        <DeleteConfirmPopup onClose={handleCancelDelete} onConfirm={handleConfirmDelete} />
+      )}
+
+      {/* Success popup */}
+      {showDeleteSuccess && (
+        <div className="delete-popup-container">
+          <DeletePopup message="Job deleted successfully." />
         </div>
       )}
     </section>
