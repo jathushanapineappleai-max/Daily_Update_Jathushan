@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import "../../../styles/admin_panel/new_blog.css";
@@ -111,6 +110,9 @@ export default function NewBlog() {
           ></textarea>
         </div>
 
+        {/* Divider (Figma: Vector 813) */}
+        <div className="tags-editor-divider"></div>
+
         {/* Editor */}
         <div className="editor-outer-container">
           <CustomToolbar />
@@ -143,6 +145,7 @@ export default function NewBlog() {
             className="blog-editor"
           />
         </div>
+        <div className="tags-editor-divider"></div>
 
         {/* Post Button */}
         <div className="form-actions">

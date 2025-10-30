@@ -1,11 +1,9 @@
 ﻿import React, { useState } from "react";
-
 import uploadIcon from "../../../assets/icons/upload.png";
 import editIconImg from "../../../assets/icons/Frame.png";
 import deleteIcon from "../../../assets/icons/Vector.png";
 import SummitButton from "../../../components/admin_panel/buttons/summit_button";
 import "../../../styles/admin_panel/company_projects.css";
-
 import Popup from "../../../components/admin_panel/popups/success";
 import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
 import DeletePopup from "../../../components/admin_panel/popups/delete";
@@ -32,9 +30,7 @@ export default function CompanyProjects() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editData, setEditData] = useState(null);
 
-  /* ========================================================= */
-  /* FILE HANDLING + VALIDATION                                */
-  /* ========================================================= */
+  /* File Handling */
   const handleFileChange = (e, setter, fieldName) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -58,9 +54,7 @@ export default function CompanyProjects() {
     setTimeout(() => setActiveBox(""), 800);
   };
 
-  /* ========================================================= */
-  /* VALIDATION BEFORE SUBMIT                                  */
-  /* ========================================================= */
+  /* Validation */
   const validateForm = () => {
     const newErrors = {};
     if (!projectName.trim()) newErrors.projectName = "Project name is required.";
@@ -71,12 +65,9 @@ export default function CompanyProjects() {
     return Object.keys(newErrors).length === 0;
   };
 
-  /* ========================================================= */
-  /* ADD PROJECT                                               */
-  /* ========================================================= */
+  /* Add Project */
   const handleSubmit = () => {
     if (!validateForm()) return;
-
     const newProject = {
       id: Date.now(),
       name: projectName,
@@ -87,7 +78,6 @@ export default function CompanyProjects() {
       projectPhoto: projectPhoto ? projectPhoto.name : "IMGProject.png",
       qrCode: qrCode ? qrCode.name : "Upload QR Code",
     };
-
     setProjects((prev) => [...prev, newProject]);
     setProjectName("");
     setCaption("");
@@ -101,50 +91,43 @@ export default function CompanyProjects() {
     setTimeout(() => setShowSuccessPopup(false), 2500);
   };
 
-  /* ========================================================= */
-  /* DELETE                                                    */
-  /* ========================================================= */
+  /* Delete */
   const handleDeleteClick = (id) => {
     setDeleteTarget(id);
     setShowDeletePopup(true);
   };
+
   const handleConfirmDelete = () => {
     if (deleteTarget) {
-      setProjects((prev) => prev.filter((proj) => proj.id !== deleteTarget));
+      setProjects((prev) => prev.filter((p) => p.id !== deleteTarget));
       setShowDeletePopup(false);
       setDeleteTarget(null);
       setShowDeleteSuccess(true);
       setTimeout(() => setShowDeleteSuccess(false), 2500);
     }
   };
-  const handleCancelDelete = () => setShowDeletePopup(false);
 
-  /* ========================================================= */
-  /* EDIT                                                      */
-  /* ========================================================= */
+  /* Edit */
   const handleEditClick = (proj) => {
     setEditData(proj);
     setEditModalVisible(true);
   };
+
   const handleUpdateProject = () => {
     setProjects((prev) =>
-      prev.map((proj) =>
-        proj.id === editData.id ? { ...proj, ...editData } : proj
-      )
+      prev.map((p) => (p.id === editData.id ? { ...p, ...editData } : p))
     );
     setEditModalVisible(false);
   };
 
-  /* ========================================================= */
-  /* RENDER                                                    */
-  /* ========================================================= */
   return (
     <div className="cp-content">
       <h2 className="cp-heading">Company Projects</h2>
 
-      {/* =================== FORM =================== */}
+      {/* Form Section */}
       <div className="cp-container">
         <div className="cp-form-grid">
+          {/* Project Name */}
           <div className="cp-form-group">
             <label className="cp-label">Project Name</label>
             <input
@@ -159,6 +142,7 @@ export default function CompanyProjects() {
             )}
           </div>
 
+          {/* Caption */}
           <div className="cp-form-group">
             <label className="cp-label">Caption</label>
             <input
@@ -173,6 +157,7 @@ export default function CompanyProjects() {
             )}
           </div>
 
+          {/* Project Photo */}
           <div className="cp-form-group">
             <label className="cp-label">Project Photo (JPG/PNG)</label>
             <input
@@ -180,14 +165,10 @@ export default function CompanyProjects() {
               id="project-photo"
               style={{ display: "none" }}
               accept=".jpg,.jpeg,.png"
-              onChange={(e) =>
-                handleFileChange(e, setProjectPhoto, "projectPhoto")
-              }
+              onChange={(e) => handleFileChange(e, setProjectPhoto, "projectPhoto")}
             />
             <div
-              className={`cp-upload-box ${
-                activeBox === "project-photo" ? "active" : ""
-              } ${errors.projectPhoto ? "upload-error" : ""}`}
+              className={`cp-upload-box ${activeBox === "project-photo" ? "active" : ""}`}
               onClick={() => handleBoxClick("project-photo")}
             >
               <span className="cp-upload-placeholder">
@@ -200,6 +181,7 @@ export default function CompanyProjects() {
             )}
           </div>
 
+          {/* Google Link */}
           <div className="cp-form-group">
             <label className="cp-label">Google Play Link</label>
             <input
@@ -211,6 +193,7 @@ export default function CompanyProjects() {
             />
           </div>
 
+          {/* App Store Link */}
           <div className="cp-form-group">
             <label className="cp-label">App Store Link</label>
             <input
@@ -222,18 +205,18 @@ export default function CompanyProjects() {
             />
           </div>
 
+          {/* QR Code */}
           <div className="cp-form-group">
             <label className="cp-label">QR Code</label>
             <input
               type="file"
               id="qr-code"
               style={{ display: "none" }}
+              accept=".jpg,.jpeg,.png"
               onChange={(e) => handleFileChange(e, setQrCode, "qrCode")}
             />
             <div
-              className={`cp-upload-box ${
-                activeBox === "qr-code" ? "active" : ""
-              }`}
+              className={`cp-upload-box ${activeBox === "qr-code" ? "active" : ""}`}
               onClick={() => handleBoxClick("qr-code")}
             >
               <span className="cp-upload-placeholder">
@@ -260,7 +243,7 @@ export default function CompanyProjects() {
         </div>
       </div>
 
-      {/* =================== TABLE =================== */}
+      {/* Table Section */}
       <div className="cp-second-container">
         <h2 className="cp-table-heading">All Company Projects</h2>
         <div className="cp-table-wrapper">
@@ -273,9 +256,7 @@ export default function CompanyProjects() {
                 <th>App Store Link</th>
                 <th>QR Code</th>
                 <th>Description</th>
-                <th style={{ textAlign: "right", paddingRight: "30px" }}>
-                  Action
-                </th>
+                <th style={{ textAlign: "right", paddingRight: "30px" }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -293,22 +274,14 @@ export default function CompanyProjects() {
                       title="Edit"
                       onClick={() => handleEditClick(proj)}
                     >
-                      <img
-                        src={editIconImg}
-                        alt="Edit"
-                        className="cp-action-icon small-icon"
-                      />
+                      <img src={editIconImg} alt="Edit" className="cp-action-icon" />
                     </button>
                     <button
                       className="cp-icon-btn"
                       title="Delete"
                       onClick={() => handleDeleteClick(proj.id)}
                     >
-                      <img
-                        src={deleteIcon}
-                        alt="Delete"
-                        className="cp-action-icon small-icon"
-                      />
+                      <img src={deleteIcon} alt="Delete" className="cp-action-icon" />
                     </button>
                   </td>
                 </tr>
@@ -318,22 +291,59 @@ export default function CompanyProjects() {
         </div>
       </div>
 
-      {/* POPUPS */}
+      {/* ===== EDIT MODAL ===== */}
+      {editModalVisible && editData && (
+        <div className="cp-modal-overlay" onClick={() => setEditModalVisible(false)}>
+          <div className="cp-modal" onClick={(e) => e.stopPropagation()}>
+            <h3 className="cp-modal-heading">Edit Company Project</h3>
+
+            <div className="cp-modal-field">
+              <label>Project Name</label>
+              <input
+                type="text"
+                value={editData.name || ""}
+                onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+              />
+            </div>
+
+            <div className="cp-modal-field">
+              <label>Caption</label>
+              <input
+                type="text"
+                value={editData.caption || ""}
+                onChange={(e) => setEditData({ ...editData, caption: e.target.value })}
+              />
+            </div>
+
+            <div className="cp-modal-field">
+              <label>Description</label>
+              <textarea
+                value={editData.description || ""}
+                onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+              />
+            </div>
+
+            <hr className="cp-modal-divider" />
+
+            <div className="cp-modal-actions">
+              <button type="button" onClick={handleUpdateProject}>
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Popups */}
       {showSuccessPopup && (
-        <Popup
-          title="Company Project Added!"
-          message="New company project added successfully."
-        />
+        <Popup title="Company Project Added!" message="New company project added successfully." />
       )}
       {showDeleteSuccess && (
-        <DeletePopup
-          title="Deleted!"
-          message="Company project deleted successfully."
-        />
+        <DeletePopup title="Deleted!" message="Company project deleted successfully." />
       )}
       {showDeletePopup && (
         <DeleteConfirmPopup
-          onClose={handleCancelDelete}
+          onClose={() => setShowDeletePopup(false)}
           onConfirm={handleConfirmDelete}
         />
       )}

@@ -1,62 +1,89 @@
 import React, { useState, useRef } from "react";
 import uploadIcon from "../../../assets/icons/upload.png";
-import editIconImg from "../../../assets/icons/Frame.png";
+import editIcon from "../../../assets/icons/Frame.png";
 import deleteIcon from "../../../assets/icons/Vector.png";
 import "../../../styles/admin_panel/main_services.css";
+
 import SummitButton from "../../../components/admin_panel/buttons/summit_button";
 import UpdateButton from "../../../components/admin_panel/buttons/update_button";
-
-// ✅ Popups
-import Popup from "../../../components/admin_panel/popups/success"; // Green popup
-import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm"; // Confirm box
-import DeletePopup from "../../../components/admin_panel/popups/delete"; // Red popup
+import Popup from "../../../components/admin_panel/popups/success";
+import DeletePopup from "../../../components/admin_panel/popups/delete";
+import DeleteConfirmPopup from "../../../components/admin_panel/popups/delete_confirm";
 
 export default function MainServices() {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [serviceName, setServiceName] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [services, setServices] = useState([]);
+  const [errors, setErrors] = useState({});
 
-  // === Popup states ===
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  // === Edit Modal ===
   const [showModal, setShowModal] = useState(false);
   const [editService, setEditService] = useState(null);
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
-  const [editIconFile, setEditIconFile] = useState(null);
+  const [editFile, setEditFile] = useState(null);
 
   const mainFileInputRef = useRef(null);
-  const editFileInputRef = useRef(null);
+  const modalFileInputRef = useRef(null);
 
-  /* ========================== ADD SERVICE ========================== */
+  /* -------------------- VALIDATION -------------------- */
+  const validateForm = () => {
+    const newErrors = {};
+    if (!serviceName.trim()) newErrors.serviceName = "Service name is required.";
+    if (!description.trim()) newErrors.description = "Description is required.";
+    if (!selectedFile) newErrors.icon = "Please upload an icon (JPG or PNG).";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  /* -------------------- ADD -------------------- */
   const handleAddService = () => {
-    if (!serviceName || !description) return;
-
+    if (!validateForm()) return;
     const newService = {
       id: Date.now(),
       name: serviceName,
       description,
-      icon: selectedFile
-        ? URL.createObjectURL(selectedFile)
-        : "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+      icon: URL.createObjectURL(selectedFile),
     };
-
-    setServices((prev) => [...prev, newService]);
+    setServices([...services, newService]);
     setServiceName("");
     setDescription("");
     setSelectedFile(null);
-
-    // ✅ Show success popup
+    setErrors({});
     setShowSuccessPopup(true);
     setTimeout(() => setShowSuccessPopup(false), 2500);
   };
 
-  /* ========================== DELETE ========================== */
+  /* -------------------- EDIT -------------------- */
+  const handleEdit = (service) => {
+    setEditService(service);
+    setEditName(service.name);
+    setEditDescription(service.description);
+    setEditFile(null);
+    setShowModal(true);
+  };
+
+  const handleUpdate = () => {
+    const updated = services.map((item) =>
+      item.id === editService.id
+        ? {
+            ...item,
+            name: editName,
+            description: editDescription,
+            icon: editFile ? URL.createObjectURL(editFile) : item.icon,
+          }
+        : item
+    );
+    setServices(updated);
+    setShowModal(false);
+  };
+
+  /* -------------------- DELETE -------------------- */
   const handleDeleteClick = (id) => {
     setDeleteTarget(id);
     setShowDeletePopup(true);
@@ -64,11 +91,8 @@ export default function MainServices() {
 
   const handleConfirmDelete = () => {
     if (deleteTarget) {
-      setServices((prev) => prev.filter((srv) => srv.id !== deleteTarget));
+      setServices((prev) => prev.filter((s) => s.id !== deleteTarget));
       setShowDeletePopup(false);
-      setDeleteTarget(null);
-
-      // ✅ Show delete success popup
       setShowDeleteSuccess(true);
       setTimeout(() => setShowDeleteSuccess(false), 2500);
     }
@@ -79,37 +103,14 @@ export default function MainServices() {
     setDeleteTarget(null);
   };
 
-  /* ========================== EDIT ========================== */
-  const handleEdit = (service) => {
-    setEditService(service);
-    setEditName(service.name);
-    setEditDescription(service.description);
-    setShowModal(true);
-  };
-
-  const handleUpdate = () => {
-    const updatedServices = services.map((srv) =>
-      srv.id === editService.id
-        ? {
-            ...srv,
-            name: editName,
-            description: editDescription,
-            icon: editIconFile ? URL.createObjectURL(editIconFile) : srv.icon,
-          }
-        : srv
-    );
-    setServices(updatedServices);
-    setShowModal(false);
-  };
-
-  /* ========================== RETURN ========================== */
+  /* -------------------- RENDER -------------------- */
   return (
     <div className="main-services-section">
       <div className="main-content">
         <div className="main-services-wrapper">
           <h2 className="main-services-heading">Main Services</h2>
 
-          {/* ================== FORM SECTION ================== */}
+          {/* FORM SECTION */}
           <div className="big-container">
             <div className="form-row">
               {/* Service Name */}
@@ -117,19 +118,22 @@ export default function MainServices() {
                 <label className="category-tag">Service</label>
                 <input
                   type="text"
-                  className="service-input"
-                  placeholder="Add service"
+                  className={`service-input ${errors.serviceName ? "input-error" : ""}`}
+                  placeholder="Enter service name"
                   value={serviceName}
                   onChange={(e) => setServiceName(e.target.value)}
                 />
+                {errors.serviceName && (
+                  <small className="error-text">{errors.serviceName}</small>
+                )}
               </div>
 
-              {/* Icon Upload */}
+              {/* Upload Icon */}
               <div className="form-group">
-                <label className="category-tag">Icon</label>
+                <label className="category-tag">Icon (JPG/PNG)</label>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept=".jpg,.jpeg,.png"
                   ref={mainFileInputRef}
                   style={{ display: "none" }}
                   onChange={(e) => {
@@ -139,7 +143,7 @@ export default function MainServices() {
                   }}
                 />
                 <div
-                  className="upload-box"
+                  className={`upload-box ${errors.icon ? "upload-error" : ""}`}
                   onClick={() =>
                     mainFileInputRef.current && mainFileInputRef.current.click()
                   }
@@ -149,6 +153,7 @@ export default function MainServices() {
                   </span>
                   <img src={uploadIcon} alt="Upload" className="upload-icon" />
                 </div>
+                {errors.icon && <small className="error-text">{errors.icon}</small>}
               </div>
             </div>
 
@@ -156,21 +161,25 @@ export default function MainServices() {
             <div className="form-group">
               <label className="category-tag">Description</label>
               <textarea
-                className="description-input"
+                className={`service-input textarea-input ${
+                  errors.description ? "input-error" : ""
+                }`}
                 placeholder="Write a description about the service"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
+              {errors.description && (
+                <small className="error-text">{errors.description}</small>
+              )}
             </div>
 
-            {/* Divider & Submit */}
             <hr className="form-divider" />
             <div className="form-actions">
               <SummitButton label="Submit" onClick={handleAddService} />
             </div>
           </div>
 
-          {/* ================== TABLE SECTION ================== */}
+          {/* TABLE SECTION */}
           <div className="second-container">
             <h2 className="table-heading">All Services</h2>
             <div className="table-wrapper">
@@ -183,40 +192,23 @@ export default function MainServices() {
                   </tr>
                 </thead>
                 <tbody>
-                  {services.map((service) => (
-                    <tr key={service.id}>
+                  {services.map((srv) => (
+                    <tr key={srv.id}>
                       <td className="service-cell">
-                        <img
-                          src={service.icon}
-                          alt="Service Icon"
-                          className="service-icon"
-                        />
-                        <span>{service.name}</span>
+                        <img src={srv.icon} alt="Service" className="service-icon" />
+                        <span>{srv.name}</span>
                       </td>
-                      <td>{service.description}</td>
+                      <td>{srv.description}</td>
                       <td className="action-col">
                         <div className="action-buttons">
-                          <button
-                            className="icon-btn"
-                            title="Edit"
-                            onClick={() => handleEdit(service)}
-                          >
-                            <img
-                              src={editIconImg}
-                              alt="Edit"
-                              className="action-icon"
-                            />
+                          <button className="icon-btn" onClick={() => handleEdit(srv)}>
+                            <img src={editIcon} alt="Edit" className="action-icon" />
                           </button>
                           <button
                             className="icon-btn"
-                            title="Delete"
-                            onClick={() => handleDeleteClick(service.id)} // ✅ open confirmation
+                            onClick={() => handleDeleteClick(srv.id)}
                           >
-                            <img
-                              src={deleteIcon}
-                              alt="Delete"
-                              className="action-icon"
-                            />
+                            <img src={deleteIcon} alt="Delete" className="action-icon" />
                           </button>
                         </div>
                       </td>
@@ -227,26 +219,13 @@ export default function MainServices() {
             </div>
           </div>
 
-          {/* ================== POPUPS ================== */}
+          {/* POPUPS */}
           {showSuccessPopup && (
-            <div className="popup-container">
-              <Popup
-                title="Service Added!"
-                message="The service was successfully added."
-              />
-            </div>
+            <Popup title="Service Added!" message="Successfully added new service." />
           )}
-
           {showDeleteSuccess && (
-            <div className="popup-container">
-              <DeletePopup
-                title="Deleted!"
-                message="The service has been deleted successfully."
-              />
-            </div>
+            <DeletePopup title="Deleted!" message="Service deleted successfully." />
           )}
-
-          {/* ================== DELETE CONFIRMATION ================== */}
           {showDeletePopup && (
             <DeleteConfirmPopup
               onClose={handleCancelDelete}
@@ -254,63 +233,64 @@ export default function MainServices() {
             />
           )}
 
-          {/* ================== EDIT MODAL ================== */}
+          {/* EDIT MODAL */}
           {showModal && (
             <div className="modal-overlay">
-              <div className="modal">
-                <h2 className="modal-heading">Edit Service</h2>
+              <div className="edit-modal">
+                <h2 className="edit-heading">Edit Service</h2>
 
-                <div className="modal-field">
-                  <label>Service</label>
-                  <input
-                    type="text"
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
-                  />
-                </div>
+                <div className="edit-form">
+                  <div className="edit-group">
+                    <label>Service</label>
+                    <input
+                      type="text"
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                    />
+                  </div>
 
-                <div className="modal-field">
-                  <label>Icon</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={editFileInputRef}
-                    style={{ display: "none" }}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) setEditIconFile(file);
-                      e.target.value = "";
-                    }}
-                  />
-                  <div
-                    className="upload-box"
-                    onClick={() =>
-                      editFileInputRef.current &&
-                      editFileInputRef.current.click()
-                    }
-                  >
-                    <span className="upload-placeholder">
-                      {editIconFile
-                        ? editIconFile.name
-                        : editService?.icon
-                        ? "Current Icon"
-                        : "Upload an icon"}
-                    </span>
-                    <img src={uploadIcon} alt="Upload" className="upload-icon" />
+                  <div className="edit-group">
+                    <label>Icon</label>
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png"
+                      ref={modalFileInputRef}
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) setEditFile(file);
+                        e.target.value = "";
+                      }}
+                    />
+                    <div
+                      className="upload-box"
+                      onClick={() =>
+                        modalFileInputRef.current && modalFileInputRef.current.click()
+                      }
+                    >
+                      <span className="upload-placeholder">
+                        {editFile
+                          ? editFile.name
+                          : editService?.icon
+                          ? "Current Icon"
+                          : "Upload Icon"}
+                      </span>
+                      <img src={uploadIcon} alt="Upload" className="upload-icon" />
+                    </div>
+                  </div>
+
+                  <div className="edit-group">
+                    <label>Description</label>
+                    <textarea
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      rows="3"
+                    />
                   </div>
                 </div>
 
-                <div className="modal-field">
-                  <label>Description</label>
-                  <textarea
-                    rows="3"
-                    value={editDescription}
-                    onChange={(e) => setEditDescription(e.target.value)}
-                  ></textarea>
-                </div>
-
-                <hr className="modal-divider" />
-                <div className="modal-actions">
+                <div className="edit-divider"></div>
+                <div className="edit-actions">
                   <UpdateButton label="Update" onClick={handleUpdate} />
                 </div>
               </div>

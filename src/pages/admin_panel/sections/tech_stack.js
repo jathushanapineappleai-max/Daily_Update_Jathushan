@@ -243,10 +243,7 @@ export default function TechStack() {
                       <td>{tech.category}</td>
                       <td className="action-col">
                         <div className="action-buttons">
-                          <button
-                            className="icon-btn"
-                            onClick={() => handleEdit(tech)}
-                          >
+                          <button className="icon-btn" onClick={() => handleEdit(tech)}>
                             <img src={editIcon} alt="Edit" className="action-icon" />
                           </button>
                           <button
@@ -278,61 +275,68 @@ export default function TechStack() {
             />
           )}
 
-          {/* MODAL */}
+          {/* EDIT MODAL */}
           {showModal && (
             <div className="modal-overlay">
-              <div className="modal">
-                <h2 className="modal-heading">Edit Technology</h2>
-                <div className="modal-field">
-                  <label>Technology</label>
-                  <input
-                    type="text"
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
-                  />
-                </div>
-                <div className="modal-field">
-                  <label>Category</label>
-                  <select
-                    value={editCategory}
-                    onChange={(e) => setEditCategory(e.target.value)}
-                  >
-                    <option value="">Select category</option>
-                    <option value="Frontend">Frontend</option>
-                    <option value="Backend">Backend</option>
-                    <option value="Database">Database</option>
-                    <option value="DevOps">DevOps</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div className="modal-field">
-                  <label>Icon (JPG/PNG)</label>
-                  <input
-                    type="file"
-                    accept=".jpg,.jpeg,.png"
-                    ref={modalFileInputRef}
-                    style={{ display: "none" }}
-                    onChange={handleModalFileChange}
-                  />
-                  <div
-                    className="upload-box"
-                    onClick={() =>
-                      modalFileInputRef.current &&
-                      modalFileInputRef.current.click()
-                    }
-                  >
-                    <span className="upload-placeholder">
-                      {editFile
-                        ? editFile.name
-                        : editTech?.image
-                        ? "Current Icon"
-                        : "Upload Icon"}
-                    </span>
-                    <img src={uploadIcon} alt="Upload" className="upload-icon" />
+              <div className="edit-modal">
+                <h2 className="edit-heading">Edit Technology</h2>
+
+                <div className="edit-form">
+                  <div className="edit-group">
+                    <label>Service</label>
+                    <input
+                      type="text"
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      placeholder="Enter technology name"
+                    />
+                  </div>
+
+                  <div className="edit-group">
+                    <label>Icon</label>
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png"
+                      ref={modalFileInputRef}
+                      style={{ display: "none" }}
+                      onChange={handleModalFileChange}
+                    />
+                    <div
+                      className="upload-box"
+                      onClick={() =>
+                        modalFileInputRef.current && modalFileInputRef.current.click()
+                      }
+                    >
+                      <span className="upload-placeholder">
+                        {editFile
+                          ? editFile.name
+                          : editTech?.image
+                          ? "Current Icon"
+                          : "Upload Icon"}
+                      </span>
+                      <img src={uploadIcon} alt="Upload" className="upload-icon" />
+                    </div>
+                  </div>
+
+                  <div className="edit-group">
+                    <label>Category</label>
+                    <select
+                      value={editCategory}
+                      onChange={(e) => setEditCategory(e.target.value)}
+                    >
+                      <option value="">Select category</option>
+                      <option value="Frontend">Frontend</option>
+                      <option value="Backend">Backend</option>
+                      <option value="Database">Database</option>
+                      <option value="DevOps">DevOps</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
                 </div>
-                <hr className="modal-divider" />
-                <div className="modal-actions">
+
+                <div className="edit-divider"></div>
+
+                <div className="edit-actions">
                   <UpdateButton label="Update" onClick={handleUpdate} />
                 </div>
               </div>

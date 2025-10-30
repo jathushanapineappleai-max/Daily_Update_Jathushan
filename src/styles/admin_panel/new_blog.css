@@ -1,113 +1,176 @@
 ﻿/* ============================= */
+/* ROOT VARIABLES */
+:root {
+  --sidebar-width: clamp(200px, 20vw, 250px);
+  --container-padding: clamp(20px, 2.5vw, 32px);
+  --form-gap: clamp(20px, 3vw, 33px);
+  --input-height: clamp(40px, 5vw, 42px);
+  --font-base: clamp(13px, 1.2vw, 15px);
+}
+
 /* Main Wrapper */
 .new-blog-wrapper {
   display: flex;
   flex-direction: column;
-  margin-left: 250px; /* Matches sidebar width */
-  margin-top: 91px; /* Matches header height */
-  padding: 10px; /* Scaled from 12px */
+  margin-left: var(--sidebar-width);
+  margin-top: 38px;
+  padding: 10px;
   padding-right: 40px;
-  width: calc(100% - 250px); /* Matches contact page */
+  width: calc(100% - var(--sidebar-width));
   transition: margin-left 0.3s ease, width 0.3s ease, margin-top 0.3s ease;
-  min-height: calc(100vh - 91px); /* Adjusts for header */
+  min-height: calc(100vh - 91px);
   box-sizing: border-box;
 }
 
-/* ============================= */
 /* Page Heading */
 .new-blog-heading {
   position: relative;
   font-family: 'Source Sans Pro', sans-serif;
+  font-style: normal;
   font-weight: 600;
-  font-size: 24px; /* Preserved */
-  line-height: 18px; /* Preserved */
+  font-size: clamp(18px, 2.5vw, 20px);
+  line-height: 1.25;
   color: #FFFFFF;
-  margin-bottom: 13px; /* Scaled from 16px */
+  margin-bottom: 13px;
 }
 
 /* Container Box */
 .new-blog-section {
   background: #0B1739;
   border: 0.6px solid #343B4F;
-  box-shadow: 0px 2px 10px rgba(11, 22, 44, 0.05); /* Scaled shadow */
-  border-radius: 8px; /* Scaled from 10px */
-  padding: 32px; /* Matches contact page */
-  width: 100%; /* Fill wrapper, matches contact page */
+  box-shadow: 0px 2px 10px rgba(11, 22, 44, 0.05);
+  border-radius: 8px;
+  padding: var(--container-padding);
+  width: 100%;
   box-sizing: border-box;
 }
 
-/* Form Layout */
+/* ============================= */
+/* FORM GRID - 3 FIELDS: 320px on Desktop */
 .form-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 33px; /* Preserved */
-  margin-bottom: 17px; /* Scaled from 20px */
-  justify-content: space-between; /* Distribute fields evenly */
-  padding-left: 30px;
-  padding-right: 30px;
+  gap: var(--form-gap);
+  margin-bottom: 17px;
+  justify-content: space-between;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
 }
 
-/* Form Group */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  width: 300px; /* Preserved */
-  min-width: 200px; /* Ensure readability */
+/* First 3 fields: 320px on desktop */
+.form-grid > .form-group:nth-child(-n+3) {
+  width: 320px;
+  min-width: 320px;
+  flex: 0 0 320px;
+}
+
+/* Other fields flexible */
+.form-grid > .form-group:not(:nth-child(-n+3)) {
+  flex: 1;
+  min-width: 200px;
 }
 
 .form-label {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
-  font-size: 15px; /* Preserved */
-  line-height: 100%; /* Preserved */
+  font-size: var(--font-base);
+  line-height: 1;
   color: #FFFFFF;
-  margin-bottom: 5px; /* Scaled from 6px */
-}
-
-.form-input,
-.form-input select {
-  background: #081028;
-  border: 0.6px solid #343B4F !important;
-  border-radius: 4px;
-  padding: 7px 10px; /* Preserved */
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 15px; /* Preserved */
-  color: #AEB9E1;
-  height: 48px;
-  width: 100%; /* Preserved */
-}
-
-.form-input::placeholder,
-.form-input select option {
-  color: #AEB9E1;
-}
-
-/* Tags Section */
-.form-textarea {
-  background: #081028;
-  border: 0.6px solid #343B4F !important;
-  border-radius: 4px;
-  padding: 7px 10px !important; /* Match .form-input padding */
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 15px; /* Preserved */
-  color: #AEB9E1;
-  resize: none;
-  min-height: 95px; /* Preserved */
-  width: 100% !important; /* Ensure responsiveness */
-}
-
-.form-textarea::placeholder {
-  color: #AEB9E1;
-}
-
-/* Full Width Input/Editor (Tags Container) */
-.full-width {
-  width: 633px !important; /* Align with second field’s end (663px - 30px) */
-  padding-left: 30px; /* Match .form-grid */
-  padding-right: 30px; /* Match .form-grid */
+  margin-bottom: 5px;
 }
 
 /* ============================= */
+/* INPUT & TEXTAREA - FIGMA EXACT */
+.form-input,
+.form-input select,
+.form-textarea {
+  background: #081028;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  font-size: var(--font-base);
+  line-height: 19px;
+  color: #AEB9E1;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  height: var(--input-height);
+  width: 100%; /* Fixed from 80% */
+  background-clip: padding-box;
+}
+
+.form-input::before,
+.form-input select::before,
+.form-textarea::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 1px solid #343B4F;
+  border-radius: 4px;
+  pointer-events: none;
+  transform: scaleY(0.6);
+  transform-origin: center;
+  z-index: 1;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #AEB9E1;
+  opacity: 1;
+  font-size: var(--font-base);
+}
+
+.form-input select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23AEB9E1'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 36px;
+}
+
+.form-input:focus,
+.form-input select:focus,
+.form-textarea:focus {
+  outline: none;
+}
+
+.form-textarea {
+  resize: none;
+  min-height: clamp(80px, 12vw, 95px);
+  padding: 11px 14px;
+  align-items: flex-start;
+}
+
+.form-textarea::before {
+  top: 0; bottom: 0;
+}
+
+.full-width {
+  width: 100%;
+  max-width: clamp(500px, 90%, 633px);
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+  box-sizing: border-box;
+}
+
+/* Divider - TRUE 0.6px */
+.tags-editor-divider {
+  width: 100%;
+  max-width: clamp(800px, 95%, 1210px);
+  height: 1px;
+  margin: clamp(16px, 2.5vw, 20px) auto 0;
+  background: #343B4F;
+  border: none;
+  transform: scaleY(0.6);
+  transform-origin: center;
+}
+
 /* Editor Outer Container */
 .editor-outer-container {
   background: #081028;
@@ -115,23 +178,25 @@
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  width: 95% !important; /* Preserved */
-  min-height: 233px; /* Scaled from 280px */
+  width: 95% !important;
+  min-height: clamp(200px, 40vh, 233px);
   box-sizing: border-box;
-  margin-top: 10px; /* Scaled from 12px */
-  margin-left: 30px; /* Preserved */
-  margin-right: 30px; /* Preserved */
+  margin-top: clamp(60px, 8vw, 73px);
+  margin-left: var(--container-padding);
+  margin-right: var(--container-padding);
 }
 
-/* Toolbar inside editor */
+/* Toolbar */
 #custom-toolbar {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 7px 10px; /* Preserved */
+  gap: 6px;
+  padding: clamp(6px, 1vw, 7px) 10px;
   width: 100%;
-  min-height: 50px; /* Preserved */
+  min-height: clamp(40px, 7vw, 50px);
   background: #081028;
   border-bottom: 1px solid #343B4F;
   border-radius: 4px 4px 0 0;
@@ -146,27 +211,21 @@
   color: #FFFFFF;
   font-family: 'Source Sans Pro', sans-serif;
   border-radius: 0 0 4px 4px;
-  padding: 7px; /* Scaled from 8px */
-  min-height: 150px; /* Scaled from 160px */
+  padding: clamp(6px, 1vw, 7px);
+  min-height: clamp(120px, 25vh, 150px);
 }
 
-/* Remove Quill container borders */
-.ql-container {
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 0 4px 4px;
-  width: 100% !important; /* Ensure full width */
-}
-
-/* Remove editor default borders */
+.ql-container,
 .ql-editor {
   border: none !important;
   box-shadow: none !important;
-  padding: 7px 10px !important; /* Match .form-input and .form-textarea */
-  width: 100% !important; /* Ensure full width */
+  border-radius: 0 0 4px 4px;
+  width: 100% !important;
+  padding: clamp(6px, 1vw, 7px) 10px !important;
+  font-size: var(--font-base);
 }
 
-/* Toolbar buttons and selects */
+/* Toolbar Buttons */
 #custom-toolbar button,
 #custom-toolbar select,
 #custom-toolbar input {
@@ -175,7 +234,8 @@
   border: none;
   cursor: pointer;
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 11px; /* Scaled from 13px */
+  font-size: clamp(10px, 1.1vw, 11px);
+  padding: 2px 4px;
 }
 
 #custom-toolbar button:hover {
@@ -186,186 +246,229 @@
   background: #081028;
   border: 0.6px solid #343B4F;
   border-radius: 4px;
-  padding: 2px 4px; /* Scaled from 2px 5px */
+  padding: 2px 4px;
   color: #AEB9E1;
 }
 
-/* ============================= */
 /* Form Actions */
 .form-actions {
-  margin-top: 13px; /* Scaled from 16px */
+  margin-top: 13px;
   display: flex;
   justify-content: flex-end;
-  padding-right: 30px; /* Preserved */
+  padding-right: var(--container-padding);
 }
 
-/* ============================= */
 /* Error States */
-.form-group .form-input.error,
-.form-group .form-input select.error,
-.form-group .form-textarea.error {
-  border: 1px solid #F56565 !important; /* Match new_jobs.css */
-}
-
+.form-group .form-input.error::before,
+.form-group .form-input select.error::before,
+.form-group .form-textarea.error::before,
 .editor-outer-container .ql-editor.error {
-  border: 1px solid #F56565 !important; /* Match new_jobs.css */
+  border: 1px solid #F56565 !important;
+  transform: scaleY(1) !important;
 }
 
 .error-message {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 12px;
-  font-weight: 400; /* Match new_jobs.css */
-  color: #F56565; /* Match new_jobs.css */
+  font-size: clamp(11px, 1.1vw, 12px);
+  font-weight: 400;
+  color: #F56565;
   margin-top: 4px;
-  margin-bottom: 0;
-  display: block; /* Ensure visibility */
+  display: block;
 }
 
 /* ============================= */
-/* Responsive */
-@media (max-width: 1024px) {
+/* RESPONSIVE - FIELDS SHARE SPACE ON TABLET & MOBILE */
+
+/* 125%+ Zoom: Force row (desktop-like) */
+@media (max-width: 1024px) and (min-resolution: 1.25dppx) {
   .new-blog-wrapper {
-    margin-left: 227px; /* Adjusted from 270px */
-    width: calc(100% - 227px); /* Matches contact page */
-    padding-right: 10px; /* Preserved */
+    margin-left: 227px;
+    width: calc(100% - 227px);
+    padding-right: 10px;
+  }
+
+  .form-grid {
+    flex-wrap: nowrap !important;
+    gap: 20px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+    scrollbar-width: none;
+  }
+
+  .form-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .form-grid > .form-group:nth-child(-n+3) {
+    width: 320px;
+    min-width: 320px;
+    flex: 0 0 320px;
+  }
+
+  .full-width,
+  .editor-outer-container {
+    width: 100% !important;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .new-blog-section {
+    padding: clamp(20px, 3vw, 28px);
+  }
+
+  .tags-editor-divider {
+    margin: 16px auto 0;
+    transform: scaleY(0.6);
+  }
+}
+
+/* 100%–120% Zoom: Wrap, 320px fields */
+@media (max-width: 1024px) and (max-resolution: 1.24dppx) {
+  .new-blog-wrapper {
+    margin-left: 227px;
+    width: calc(100% - 227px);
+    padding-right: 10px;
+  }
+
+  .form-grid {
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+
+  .form-grid > .form-group:nth-child(-n+3) {
+    width: 320px;
+    min-width: 320px;
+    flex: 0 0 320px;
+  }
+
+  .full-width,
+  .editor-outer-container {
+    width: 100% !important;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .new-blog-section {
+    padding: clamp(20px, 3vw, 28px);
+  }
+
+  .tags-editor-divider {
+    margin: 16px auto 0;
+    transform: scaleY(0.6);
+  }
+}
+
+/* ============================= */
+/* TABLET & MOBILE: ALL FIELDS SHARE SPACE */
+@media (max-width: 768px) {
+  .new-blog-wrapper {
+    margin-left: 0;
+    width: 100%;
+    padding: 7px;
+    margin-top: 68px;
+    min-height: calc(100vh - 68px);
   }
 
   .form-grid {
     flex-direction: column;
-    gap: 10px; /* Scaled from 12px */
-    padding-left: 0; /* Preserved */
-    padding-right: 0; /* Preserved */
+    gap: 12px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
-  .form-group,
-  .full-width,
-  .editor-outer-container {
-    width: 100% !important; /* Ensure full width */
-    margin-left: 0; /* Preserved */
-    margin-right: 0; /* Preserved */
-    padding-left: 0; /* Match .form-grid */
-    padding-right: 0; /* Match .form-grid */
+  /* ALL fields share full width */
+  .form-group {
+    width: 100% !important;
+    min-width: 100% !important;
+    flex: 1 1 100%;
   }
 
-  .form-input,
-  .form-input select,
-  .form-textarea {
-    width: 100% !important; /* Ensure full width */
-  }
-
-  .new-blog-section {
-    width: 100%; /* Matches contact page */
-  }
-
-  .form-actions {
-    padding-right: 0; /* Preserved */
-  }
-}
-
-@media (max-width: 768px) {
-  .new-blog-wrapper {
-    margin-left: 0; /* Sidebar hidden */
-    margin-top: 68px; /* Adjusted from 60px */
-    width: 100%; /* Full width */
-    min-height: calc(100vh - 68px);
-    padding: 7px; /* Preserved */
-  }
-
-  #custom-toolbar {
-    flex-wrap: wrap;
-    gap: 4px; /* Scaled from 5px */
-    min-height: 42px; /* Preserved */
-    padding: 5px 8px; /* Preserved */
+  .form-grid > .form-group:nth-child(-n+3) {
+    width: 100% !important;
+    min-width: 100% !important;
+    flex: 1 1 100%;
   }
 
   .new-blog-heading {
-    font-size: 18px; /* Preserved */
-    line-height: 17px; /* Preserved */
+    font-size: 18px;
+    line-height: 1.2;
   }
 
-  .new-blog-section {
-    padding: 13px; /* Scaled from 16px */
+  #custom-toolbar {
+    gap: 4px;
+    padding: 5px 8px;
+    min-height: 42px;
+  }
+
+  .editor-outer-container {
+    margin-top: 50px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .tags-editor-divider {
+    margin: 16px auto 0;
+    transform: scaleY(0.6);
   }
 }
 
 @media (max-width: 480px) {
   .new-blog-wrapper {
-    margin-top: 62px; /* Adjusted from 55px */
-    min-height: calc(100vh - 62px);
-    padding: 7px; /* Scaled from 8px */
+    margin-top: 62px;
+    padding: 7px;
   }
 
-  .form-group {
-    width: 100%;
-  }
-
-  .form-label {
-    font-size: 13px; /* Preserved */
-    line-height: 13px; /* Preserved */
+  .form-label,
+  .form-input,
+  .form-textarea,
+  .ql-editor {
+    font-size: 13px;
   }
 
   .form-input,
-  .form-input select,
   .form-textarea {
-    font-size: 13px; /* Preserved */
-    padding: 5px 8px; /* Scaled from 6px 10px */
-    width: 100% !important; /* Ensure full width */
+    padding: 0 12px;
+    height: 40px;
   }
 
   .form-textarea {
-    min-height: 58px; /* Preserved */
-  }
-
-  .ql-editor {
-    padding: 5px 8px !important; /* Match .form-input and .form-textarea */
+    min-height: 58px;
+    padding: 10px 12px;
   }
 
   .editor-outer-container {
-    min-height: 216px; /* Scaled from 260px */
-    margin-left: 0; /* Preserved */
-    margin-right: 0; /* Preserved */
-    padding-left: 0; /* Match .form-grid */
-    padding-right: 0; /* Match .form-grid */
+    min-height: 200px;
+    margin-top: 40px;
   }
 
   .blog-editor {
-    min-height: 133px; /* Scaled from 160px */
-  }
-
-  .form-grid {
-    gap: 10px; /* Matches ≤1024px for consistency */
-    padding-left: 0; /* Preserved */
-    padding-right: 0; /* Preserved */
-  }
-
-  .form-actions {
-    padding-right: 0; /* Preserved */
+    min-height: 120px;
   }
 
   #custom-toolbar {
-    min-height: 42px; /* Preserved */
-    padding: 5px 8px; /* Preserved */
-    gap: 3px; /* Preserved */
+    gap: 3px;
+    padding: 4px 6px;
   }
 
   #custom-toolbar button,
-  #custom-toolbar select,
-  #custom-toolbar input {
-    font-size: 10px; /* Scaled from 12px */
-    padding: 2px 4px; /* Compact padding for buttons */
-  }
-
-  .form-group .form-input.error,
-  .form-group .form-input select.error,
-  .form-group .form-textarea.error {
-    border: 1px solid #F56565 !important; /* Match new_jobs.css */
-  }
-
-  .editor-outer-container .ql-editor.error {
-    border: 1px solid #F56565 !important; /* Match new_jobs.css */
+  #custom-toolbar select {
+    font-size: 10px;
+    padding: 1px 3px;
   }
 
   .error-message {
-    font-size: 11px; /* Slightly smaller for mobile */
+    font-size: 11px;
+  }
+
+  .tags-editor-divider {
+    margin: 16px auto 0;
+    transform: scaleY(0.6);
   }
 }
