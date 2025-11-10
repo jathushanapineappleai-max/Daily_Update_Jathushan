@@ -1,0 +1,171 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: 108px; /* Figma */
+  width: 100%; /* equals 1448px when viewport is 1728px and sidebar is 280px */
+  background: #FFFFFF; /* Figma */
+  border-bottom: 0.5px solid #DADADA; /* Figma */
+  box-sizing: border-box;
+}
+.hamburger-btn{display:none}
+.hamburger-btn .bar{display:block}
+
+
+
+/* Left title/subtitle block */
+.header-title {
+  position: absolute;
+  width: max-content;
+  height: 39px;
+  left: 20px; /* Figma */
+  top: calc(50% - 39px/2 + 0.5px); /* Figma */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+}
+.header-title .title {
+  width: max-content;
+  height: 23px;
+  font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 23px;
+  color: #1E293B;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.header-title .subtitle {
+  width: 88px;
+  height: 16px;
+  font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 16px;
+  color: #979494;
+  margin: 0;
+}
+.header-title .title .wave {
+  margin-left: 8px;
+  font-size: 20px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+
+/* Notification square and inner glyph */
+.notification-box {
+  box-sizing: border-box;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  /* In Figma: left: 1140px. To keep it responsive relative to the right edge, we place it 248px from right (1448 - 1140 - 60) */
+  right: 248px;
+  top: calc(50% - 60px/2);
+  border: 1px solid #347E45;
+  border-radius: 10px;
+}
+.notification-icon-img {
+  position: absolute;
+  width: 32px; /* Figma frame */
+  height: 32px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+
+/* User card (Group 266) */
+.user-card {
+  box-sizing: border-box;
+  position: absolute;
+  width: 206px;
+  height: 60px;
+  /* In Figma: left: 1210px => right: 32px (1448 - 1210 - 206) */
+  right: 32px;
+  top: 24px;
+  border: 1px solid #DADADA;
+  border-radius: 8px;
+}
+.avatar-box {
+  box-sizing: border-box;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 18px; /* 1228 - 1210 */
+  top: 10px; /* 34 - 24 */
+  border: 1px solid #DADADA;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+.avatar-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.user-info {
+  position: absolute;
+  width: 93px;
+  height: 31px;
+  left: 68px; /* 1278 - 1210 */
+  top: 10px; /* 34 - 24 */
+  display: flex;
+  flex-direction: column;
+}
+.user-info .name {
+  width: 93px;
+  height: 19px;
+  font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: #1E293B;
+  margin: 0 0 -2px 0; /* match figma spacing */
+}
+.user-info .role {
+  width: 66px;
+  height: 14px;
+  font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 14px;
+  color: #979494;
+  margin: 0;
+}
+
+
+
+
+
+/* Mobile layout overrides */
+@media (max-width:768px){
+  /* Single compact row */
+  .header{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px;}
+
+  /* Hide desktop title/subtitle */
+  .header-title{display:none !important;}
+
+  /* Hamburger */
+  .hamburger-btn{display:block;position:relative;width:36px;height:36px;border:1px solid #DADADA;border-radius:6px;background:#fff;}
+  .hamburger-btn .bar{position:absolute;left:8px;right:8px;height:2px;background:#1E293B}
+  .hamburger-btn .bar:nth-child(1){top:11px}
+  .hamburger-btn .bar:nth-child(2){top:17px}
+  .hamburger-btn .bar:nth-child(3){top:23px}
+
+  /* Notification (second) */
+  .notification-box{position:static;width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+  .notification-icon-img{position:static;width:20px;height:20px;object-fit:contain;transform:none;display:block;}
+
+  /* User card (right) */
+  .user-card{position:static;display:flex;align-items:center;height:40px;width:auto;padding:0 10px;margin-left:auto;border:1px solid #DADADA;border-radius:8px;}
+  .avatar-box{position:static;width:28px;height:28px;border:0;border-radius:50%;overflow:hidden;}
+  .user-info{position:static;display:flex;flex-direction:column;margin-left:8px;}
+  .user-info .name{font-size:14px;line-height:16px;}
+  .user-info .role{font-size:10px;line-height:12px;}
+}
