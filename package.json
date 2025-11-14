@@ -1,0 +1,33 @@
+{
+  "name": "mern-condominium-management",
+  "version": "1.0.0",
+  "description": "MERN Stack Condominium Management System for Span Tower 27",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "install-server": "cd backend && npm install",
+    "install-client": "cd frontend && npm install",
+    "install-all": "npm run install-server && npm run install-client",
+    "heroku-postbuild": "npm run install-all && npm run build"
+  },
+  "keywords": [
+    "mern",
+    "condominium",
+    "management",
+    "react",
+    "node",
+    "express",
+    "mongodb"
+  ],
+  "author": "Span Tower Development Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
+  }
+}
