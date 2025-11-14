@@ -1,4 +1,4 @@
-.success-modal {
+.error-modal {
   position: fixed;
   top: 20px;
   left: 50%;
@@ -8,7 +8,7 @@
   height: 70px;
   box-sizing: border-box;
   background: #FFFFFF;
-  border: 1px solid #347E45;
+  border: 1px solid #F45B69;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -17,27 +17,27 @@
   z-index: 3000;
 }
 
-.success-modal .accent {
+.error-modal .accent {
   width: 26px;
   height: 100%;
-  background: #347E45;
-  border: 1px solid #347E45;
+  background: #F45B69;
+  border: 1px solid #F45B69;
   border-radius: 12px 0 0 12px;
   flex: 0 0 26px;
 }
 
-.success-modal .check-icon {
-  width: 20px;
-  height: 20px;
+.error-modal .x-icon {
+  width: 24px;
+  height: 24px;
 }
 
-.success-modal .message {
+.error-modal .message {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
   line-height: 23px;
-  color: #347E45;
+  color: #F45B69;
   display: flex;
   align-items: center;
   flex: 1;
@@ -46,7 +46,7 @@
   text-overflow: ellipsis;
 }
 
-.success-modal .close-btn {
+.error-modal .close-btn {
   width: 26px;
   height: 26px;
   background: #DADADA;
@@ -59,7 +59,7 @@
   flex: 0 0 26px;
 }
 
-.success-modal .close-icon {
+.error-modal .close-icon {
   width: 18px;
   height: 18px;
   display: block;
@@ -67,7 +67,7 @@
 
 /* Tablet responsive */
 @media (max-width: 1024px) {
-  .success-modal {
+  .error-modal {
     width: calc(100% - 40px);
     left: 20px;
     right: 20px;
@@ -75,7 +75,7 @@
     height: 65px;
     gap: 12px;
   }
-  .success-modal .message {
+  .error-modal .message {
     font-size: 16px;
     line-height: 19px;
   }
@@ -83,15 +83,16 @@
 
 /* Mobile responsive */
 @media (max-width: 640px) {
-  .success-modal {
+  .error-modal {
     width: calc(100% - 24px);
     left: 12px;
     right: 12px;
     transform: none;
     height: 60px;
   }
-  .success-modal .message {
+  .error-modal .message {
     font-size: 14px;
     line-height: 17px;
   }
 }
+

@@ -1,17 +1,18 @@
 import React from 'react';
 import './SearchBar.css';
+import searchIcon from '../assets/icons/search.png';
 
-const SearchBar = ({ placeholder, value, onChange }) => {
+const SearchBar = ({ value, onChange }) => {
   return (
     <div className="search-bar">
+      <img src={searchIcon} alt="" className="search-icon" />
       <input
         type="text"
-        placeholder={placeholder || 'Search...'}
+        placeholder="Search"               // <-- exact Figma text
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="search-input"
       />
-      <span className="search-icon">🔍</span>
     </div>
   );
 };

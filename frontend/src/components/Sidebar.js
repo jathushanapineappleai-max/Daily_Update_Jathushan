@@ -30,16 +30,16 @@ const Sidebar = ({ isOpen, onNavigate }) => {
   ];
 
   const staffMenu = [
-    { path: '/dashboard', label: 'Dashboard', icon: dashboardIcon },
-    { path: '/tasks', label: 'My tasks', icon: taskIcon },
+    { path: '/employee-dashboard', label: 'Dashboard', icon: dashboardIcon },
+    { path: '/tasks', label: 'My Tasks', icon: taskIcon },
     { path: '/leaves', label: 'Leaves', icon: leaveIcon },
     { path: '/performance', label: 'Performance', icon: performanceIcon },
     { path: '/settings', label: 'Settings', icon: settingIcon },
     { path: '/logout', label: 'Logout', icon: logoutIcon },
   ];
 
+  // Combine both menus: admin items first, then employee items
   const menuItems = [...adminMenu, ...staffMenu];
-
   const sidebarClass = `sidebar${isOpen ? ' open' : ''}`;
 
   return (
