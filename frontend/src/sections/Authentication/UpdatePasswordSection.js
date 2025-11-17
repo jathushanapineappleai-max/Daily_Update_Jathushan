@@ -103,6 +103,7 @@ export default function UpdatePasswordSection({ onUpdated }) {
             aria-invalid={touched.pw1 && !!errors.pw1}
             aria-describedby={touched.pw1 && errors.pw1 ? 'update-np-error' : undefined}
           />
+          {/* Password field always shows eye icon */}
           <button type="button" className="update-eye" onClick={()=>setShow1(v=>!v)} aria-label="Toggle password visibility">
             <img src={eyeIcon} alt="" width={24} height={24} />
           </button>
@@ -140,6 +141,7 @@ export default function UpdatePasswordSection({ onUpdated }) {
             aria-invalid={touched.pw2 && !!errors.pw2}
             aria-describedby={touched.pw2 && errors.pw2 ? 'update-cp-error' : undefined}
           />
+          {/* Password field always shows eye icon */}
           <button type="button" className="update-eye" onClick={()=>setShow2(v=>!v)} aria-label="Toggle confirm visibility">
             <img src={eyeIcon} alt="" width={24} height={24} />
           </button>

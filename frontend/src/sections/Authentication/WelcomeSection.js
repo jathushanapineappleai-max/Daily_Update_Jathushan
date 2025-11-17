@@ -3,6 +3,8 @@ import logoMark from '../../assets/images/logo.png';
 import logoText from '../../assets/images/pineappleai.png';
 import eyeIcon from '../../assets/icons/eye.png';
 import errorIcon from '../../assets/icons/error.png';
+import checkFieldIcon from '../../assets/icons/check_field.png';
+import crossFieldIcon from '../../assets/icons/cross_field.png';
 
 export default function WelcomeSection({ onLogin, onForgot }) {
   const [email, setEmail] = useState('');
@@ -89,6 +91,16 @@ export default function WelcomeSection({ onLogin, onForgot }) {
             aria-invalid={touched.id && !!errors.id}
             aria-describedby={touched.id && errors.id ? 'login-id-error' : undefined}
           />
+          {/* Show check icon if valid, cross if error */}
+          {touched.id && !errors.id && email ? (
+            <span className="welcome-field-icon">
+              <img src={checkFieldIcon} alt="Valid" />
+            </span>
+          ) : touched.id && errors.id ? (
+            <span className="welcome-field-icon">
+              <img src={crossFieldIcon} alt="Invalid" />
+            </span>
+          ) : null}
         </div>
         {touched.id && errors.id && (
           <div id="login-id-error" className="welcome-error" role="alert">
@@ -126,6 +138,7 @@ export default function WelcomeSection({ onLogin, onForgot }) {
             aria-invalid={touched.password && !!errors.password}
             aria-describedby={touched.password && errors.password ? 'login-password-error' : undefined}
           />
+          {/* Password field always shows eye icon */}
           <button
             type="button"
             className="welcome-eye"

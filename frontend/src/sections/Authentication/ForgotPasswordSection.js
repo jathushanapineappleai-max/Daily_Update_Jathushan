@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import logoMark from '../../assets/images/logo.png';
 import logoText from '../../assets/images/pineappleai.png';
 import errorIcon from '../../assets/icons/error.png';
+import checkFieldIcon from '../../assets/icons/check_field.png';
+import crossFieldIcon from '../../assets/icons/cross_field.png';
 
 
 export default function ForgotPasswordSection({ onBack, onSendOTP }) {
@@ -85,6 +87,16 @@ export default function ForgotPasswordSection({ onBack, onSendOTP }) {
             aria-invalid={touched.email && !!errors.email}
             aria-describedby={touched.email && errors.email ? 'forgot-email-error' : undefined}
           />
+          {/* Show check icon if valid, cross if error */}
+          {touched.email && !errors.email && email ? (
+            <span className="forgot-field-icon">
+              <img src={checkFieldIcon} alt="Valid" />
+            </span>
+          ) : touched.email && errors.email ? (
+            <span className="forgot-field-icon">
+              <img src={crossFieldIcon} alt="Invalid" />
+            </span>
+          ) : null}
         </div>
         {touched.email && errors.email && (
           <div id="forgot-email-error" className="forgot-error" role="alert">
