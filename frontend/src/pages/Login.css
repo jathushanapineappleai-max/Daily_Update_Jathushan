@@ -209,14 +209,14 @@
 
 /* Base styles */
 .welcome-title,.welcome-subtitle,.welcome-label,.welcome-remember-text,.welcome-forgot,.welcome-footer{ position:absolute; font-family:'Roboto',sans-serif; }
-.welcome-input{ position:absolute; box-sizing:border-box; background:#FFFFFF; border:1px solid #DADADA; border-radius:10px; height:55px; }
+.welcome-input{ position:absolute; box-sizing:border-box; background:#FFFFFF; border:1px solid #DADADA; border-radius:0.895vh; height:55px; }
 .welcome-input input{ width:100%; height:100%; border:none; outline:none; background:transparent; padding:16px 44px 16px 20px; font-family:'Roboto',sans-serif; font-size:16px; line-height:19px; color:#1E293B; }
 /* Ensure placeholder text matches Figma for all fields */
 .welcome-input input::placeholder{ font-family:'Roboto',sans-serif; font-weight:400; font-size:16px; line-height:19px; color:#1E293B; opacity:1; }
 
 .welcome-eye{ position:absolute; right:8px; top:50%; transform:translateY(-50%); background:transparent; border:0; padding:0; cursor:pointer; width:24px; height:24px; }
 .welcome-eye img{ width:100%; height:100%; object-fit:contain; }
-.welcome-field-icon{ position:absolute; right:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+.welcome-field-icon{ position:absolute; right:1.43vh; top:50%; transform:translateY(-50%); width:1.43vh; height:1.43vh; display:flex; align-items:center; justify-content:center; pointer-events:none; }
 .welcome-field-icon img{ width:100%; height:100%; object-fit:contain; }
 .welcome-checkbox{ position:absolute; background:transparent; border:1px solid #1E293B; border-radius:4px; width:18px; height:18px; }
 .welcome-checkbox.checked{ background:#347E45; border-color:#347E45; }
@@ -260,7 +260,7 @@
 .mode-fixed .welcome-checkbox{ left:90px; top:593px; }
 .mode-fixed .welcome-remember-text{ left:120px; top:595px; width:105px; height:19px; font-weight:400; font-size:16px; line-height:19px; color:#1E293B; background:transparent; border:0; padding:0; cursor:pointer; }
 .mode-fixed .welcome-forgot{ left:574px; top:593px; width:128px; height:19px; font-weight:400; font-size:16px; line-height:19px; color:#347E45; background:transparent; border:0; padding:0; cursor:pointer; }
-.mode-fixed .welcome-login-btn{ left:90px; top:649px; width:612px; height:56px; display:flex; flex-direction:row; align-items:center; justify-content:center; padding:20px; gap:10px; background:#347E45; border-radius:10px; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; cursor:pointer; }
+.mode-fixed .welcome-login-btn{ left:90px; top:649px; width:612px; height:56px; display:flex; flex-direction:row; align-items:center; justify-content:center; padding:20px; gap:10px; background:#347E45; border-radius:0.895vh; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; cursor:pointer; }
 .mode-fixed .welcome-footer{ left:239px; top:1068px; width:314px; height:19px; text-align:center; font-weight:400; font-size:16px; line-height:19px; color:#979494; }
 
 /* Error message positions (Welcome) – Fixed-canvas (desktop) */
@@ -333,7 +333,7 @@
 .mode-fluid .welcome-checkbox{ left:11.06%; top:53.09vh; width:1.549vh; height:1.549vh; }
 .mode-fluid .welcome-remember-text{ left:14.75%; top:53.29vh; font-weight:400; font-size:1.432vh; line-height:1.701vh; color:#1E293B; background:transparent; border:0; padding:0; cursor:pointer; }
 .mode-fluid .welcome-forgot{ left:74.40%; top:53.09vh; font-weight:400; font-size:1.432vh; line-height:1.701vh; color:#347E45; background:transparent; border:0; padding:0; cursor:pointer; }
-.mode-fluid .welcome-login-btn{ left:11.06%; top:58.12vh; width:75.18%; height:5.01vh; display:flex; flex-direction:row; align-items:center; justify-content:center; padding:1.79vh; gap:0.895vh; background:#347E45; border-radius:10px; border:0; color:#FFFFFF; font-weight:400; font-size:1.79vh; line-height:2.06vh; cursor:pointer; }
+.mode-fluid .welcome-login-btn{ left:11.06%; top:58.12vh; width:75.18%; height:5.01vh; display:flex; flex-direction:row; align-items:center; justify-content:center; padding:1.79vh; gap:0.895vh; background:#347E45; border-radius:0.895vh; border:0; color:#FFFFFF; font-weight:400; font-size:1.79vh; line-height:2.06vh; cursor:pointer; }
 .mode-fluid .welcome-footer{ left:29.38%; top:95.62vh; width:38.58%; text-align:center; font-weight:400; font-size:1.432vh; line-height:1.701vh; color:#979494; }
 
 /* Error message positions (Welcome) – Fluid (desktop) */
@@ -634,12 +634,12 @@
 .forgot-input input::placeholder{ font-family:'Roboto',sans-serif; font-weight:400; font-size:16px; line-height:19px; color:#1E293B; opacity:1; }
 
 .forgot-title,.forgot-subtitle,.forgot-label,.forgot-footer,.forgot-back{ position:absolute; font-family:'Roboto',sans-serif; }
-.forgot-input{ position:absolute; box-sizing:border-box; background:#FFFFFF; border:1px solid #DADADA; border-radius:10px; }
+.forgot-input{ position:absolute; box-sizing:border-box; background:#FFFFFF; border:1px solid #DADADA; border-radius:0.895vh; }
 .forgot-input input{ width:100%; height:100%; border:none; outline:none; background:transparent; padding:16px 20px; font-family:'Roboto',sans-serif; font-size:16px; line-height:19px; color:#1E293B; }
-.forgot-field-icon{ position:absolute; right:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+.forgot-field-icon{ position:absolute; right:1.43vh; top:50%; transform:translateY(-50%); width:1.43vh; height:1.43vh; display:flex; align-items:center; justify-content:center; pointer-events:none; }
 .forgot-field-icon img{ width:100%; height:100%; object-fit:contain; }
 .forgot-logo-mark,.forgot-logo-text{ position:absolute; }
-.forgot-send-btn{ position:absolute; display:flex; flex-direction:row; justify-content:center; align-items:center; padding:20px; gap:10px; background:#347E45; border-radius:10px; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; cursor:pointer; }
+.forgot-send-btn{ position:absolute; display:flex; flex-direction:row; justify-content:center; align-items:center; padding:20px; gap:10px; background:#347E45; border-radius:0.895vh; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; cursor:pointer; }
 
 
 /* --------------------------------------------------------------
@@ -837,8 +837,8 @@
 
   .forgot-field-icon {
     position: static !important;
-    width: 16px;
-    height: 16px;
+    width: 1.43vh;
+    height: 1.43vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -933,14 +933,14 @@
 /* Base styles */
 .otp-title,.otp-subtitle,.otp-footer,.otp-back,.otp-resend-hint{ position:absolute; font-family:'Roboto',sans-serif; }
 .otp-logo-mark,.otp-logo-text{ position:absolute; }
-.otp-row{ position:absolute; display:flex; flex-direction:row; align-items:flex-start; gap:20px; isolation:isolate; }
-.otp-box{ width:60px; height:60px; border:2px solid #DADADA; border-radius:8px; box-sizing:border-box; position:relative; flex:0 0 auto; z-index:2; background:#FFFFFF; }
-.otp-box input{ width:100%; height:100%; border:0; outline:0; background:transparent; text-align:center; font-weight:600; font-size:24px; line-height:60px; color:#1E293B; padding:0; }
+.otp-row{ position:absolute; display:flex; flex-direction:row; align-items:flex-start; gap:1.79vh; isolation:isolate; }
+.otp-box{ width:5.37vh; height:5.37vh; border:2px solid #DADADA; border-radius:0.716vh; box-sizing:border-box; position:relative; flex:0 0 auto; z-index:2; background:#FFFFFF; }
+.otp-box input{ width:100%; height:100%; border:0; outline:0; background:transparent; text-align:center; font-weight:600; font-size:2.15vh; line-height:5.37vh; color:#1E293B; padding:0; }
 .otp-box:focus-within{ border-color:#347E45; }
 .otp-box.filled{ border-color:#347E45; }
 .otp-resend-hint{ text-align:center; color:#979494; font-weight:400; font-size:14px; line-height:16px; }
 .otp-resend{ background:transparent; border:0; padding:0 0 0 6px; color:#347E45; cursor:pointer; font: inherit; }
-.otp-verify-btn{ position:absolute; display:flex; flex-direction:row; justify-content:center; align-items:center; padding:20px; gap:10px; background:#347E45; border-radius:10px; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; cursor:pointer; height:55px; }
+.otp-verify-btn{ position:absolute; display:flex; flex-direction:row; justify-content:center; align-items:center; padding:20px; gap:10px; background:#347E45; border-radius:0.895vh; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; cursor:pointer; height:55px; }
 
 
 /* --------------------------------------------------------------
@@ -959,7 +959,7 @@
 
 .mode-fixed .otp-title{ left:90px; top:247px; width:627px; height:56px; font-weight:600; font-size:48px; line-height:56px; color:#1E293B; }
 .mode-fixed .otp-subtitle{ left:90px; top:313px; width:676px; height:19px; font-weight:300; font-size:16px; line-height:19px; color:#979494; }
-.mode-fixed .otp-row{ left:90px; top:367px; width:460px; height:60px; }
+.mode-fixed .otp-row{ left:90px; top:367px; width:460px; height:5.37vh; }
 .mode-fixed #otp-error{ position:absolute; display:flex; align-items:center; gap:8px; left:90px; top:430px; width:612px; color:#F45B69; font-family:'Roboto',sans-serif; font-weight:400; font-size:14px; line-height:16px; height:16px; }
 .mode-fixed .otp-resend-hint{ left:90px; top:450px; width:397px; height:16px; }
 .mode-fixed .otp-verify-btn{ left:90px; top:480px; width:612px; }
@@ -978,8 +978,8 @@
 .mode-fluid .otp-title{ left:11.06%; top:22.13vh; width:76.99%; height:5.01vh; font-weight:600; font-size:4.296vh; line-height:5.01vh; color:#1E293B; }
 .mode-fluid .otp-subtitle{ left:11.06%; top:28.04vh; width:83.06%; height:1.7vh; font-weight:300; font-size:1.432vh; line-height:1.701vh; color:#979494; }
 .mode-fluid .otp-row{ left:11.06%; top:32.86vh; width:56.53%; height:auto; gap:2.46%; align-items:center; }
-.mode-fluid .otp-box{ width:7.37%; aspect-ratio:1 / 1; height:auto; border:2px solid #DADADA; border-radius:8px; }
-.mode-fluid .otp-box input{ font-size:2.15vh; line-height:2.51vh; padding:0; }
+.mode-fluid .otp-box{ width:7.37%; aspect-ratio:1 / 1; height:auto; border:2px solid #DADADA; border-radius:0.716vh; }
+.mode-fluid .otp-box input{ font-size:2.15vh; line-height:5.37vh; padding:0; }
 .mode-fluid #otp-error{ position:absolute; display:flex; align-items:center; gap:0.716vh; left:11.06%; top:38.54vh; width:75.18%; color:#F45B69; font-family:'Roboto',sans-serif; font-weight:400; font-size:1.253vh; line-height:1.432vh; height:1.432vh; }
 .mode-fluid .otp-resend-hint{ left:5.06%; top:40.26vh; width:48.65%; font-size:1.253vh; line-height:1.432vh; }
 .mode-fluid .otp-verify-btn{ left:11.06%; top:43.96vh; width:75.18%; height:4.925vh; font-size:1.79vh; line-height:2.06vh; }
@@ -1236,16 +1236,16 @@
 /* Base styles */
 .update-title,.update-subtitle,.update-label,.update-footer{ position:absolute; font-family:'Roboto',sans-serif; }
 .update-logo-mark,.update-logo-text{ position:absolute; }
-.update-input{ position:absolute; box-sizing:border-box; background:#FFFFFF; border:1px solid #DADADA; border-radius:10px; }
+.update-input{ position:absolute; box-sizing:border-box; background:#FFFFFF; border:1px solid #DADADA; border-radius:0.895vh; }
 .update-input input{ width:100%; height:100%; border:none; outline:none; background:transparent; padding:16px 44px 16px 20px; font-size:16px; line-height:19px; color:#1E293B; }
 /* Placeholder styling for Update fields */
 .update-input input::placeholder{ font-family:'Roboto',sans-serif; font-weight:400; font-size:16px; line-height:19px; color:#1E293B; opacity:1; }
 
 .update-eye{ position:absolute; right:8px; top:50%; transform:translateY(-50%); background:transparent; border:0; padding:0; cursor:pointer; width:24px; height:24px; }
 .update-eye img{ width:100%; height:100%; object-fit:contain; }
-.update-field-icon{ position:absolute; right:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+.update-field-icon{ position:absolute; right:1.43vh; top:50%; transform:translateY(-50%); width:1.43vh; height:1.43vh; display:flex; align-items:center; justify-content:center; pointer-events:none; }
 .update-field-icon img{ width:100%; height:100%; object-fit:contain; }
-.update-btn{ position:absolute; display:flex; flex-direction:row; align-items:center; justify-content:center; padding:12.98px 50.49px; gap:14.42px; background:#347E45; border-radius:10px; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; height:55px; cursor:pointer; }
+.update-btn{ position:absolute; display:flex; flex-direction:row; align-items:center; justify-content:center; padding:12.98px 50.49px; gap:14.42px; background:#347E45; border-radius:0.895vh; border:0; color:#FFFFFF; font-weight:400; font-size:20px; line-height:23px; height:55px; cursor:pointer; }
 
 /* --------------------------------------------------------------
    Validation states (Update Password)
@@ -1505,8 +1505,8 @@
 
   .update-field-icon {
     position: static !important;
-    width: 16px;
-    height: 16px;
+    width: 1.43vh;
+    height: 1.43vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1771,8 +1771,8 @@
   .welcome-input input::placeholder { color: #1E293B; opacity: 0.6; }
   .welcome-eye { width: 24px; height: 24px; background: transparent; border: 0; padding: 0; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; line-height: 1; margin-right: 8px; }
   .welcome-eye img { width: 24px; height: 24px; max-width: 24px; max-height: 24px; object-fit: contain; flex-shrink: 0; display: block; }
-  .welcome-field-icon { position: static !important; width: 16px; height: 16px; background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center; line-height: 1; margin-right: 10px; margin-top: 0; margin-bottom: 0; }
-  .welcome-field-icon img { width: 16px; height: 16px; max-width: 16px; max-height: 16px; object-fit: contain; flex-shrink: 0; display: block; }
+  .welcome-field-icon { position: static !important; width: 1.43vh; height: 1.43vh; background: transparent; flex-shrink: 0; display: flex; align-items: center; justify-content: center; line-height: 1; margin-right: 10px; margin-top: 0; margin-bottom: 0; }
+  .welcome-field-icon img { width: 1.43vh; height: 1.43vh; max-width: 1.43vh; max-height: 1.43vh; object-fit: contain; flex-shrink: 0; display: block; }
   .welcome-remember-row { display: flex; justify-content: space-between; align-items: center; margin: 0; gap: 12px; width: 100%; }
   .welcome-remember-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #1E293B; }
   .welcome-checkbox-input { opacity: 0; position: absolute; width: 0; height: 0; }
@@ -1851,9 +1851,9 @@
 
 
 
-  .otp-row { position: static !important; display: flex; justify-content: center; gap: 12px; width: 100%; }
-  .otp-box { position: relative; width: 52px !important; height: 52px !important; border: 2px solid #DADADA; border-radius: 8px; background: #FFFFFF; flex: 0 0 auto; box-sizing: border-box; }
-  .otp-box input { width: 100%; height: 100%; border: none; outline: none; background: transparent; text-align: center; font-weight: 600; font-size: 18px; line-height: 52px; color: #1E293B; padding: 0; }
+  .otp-row { position: static !important; display: flex; justify-content: center; gap: 1.07vh; width: 100%; }
+  .otp-box { position: relative; width: 4.66vh !important; height: 4.66vh !important; border: 2px solid #DADADA; border-radius: 0.716vh; background: #FFFFFF; flex: 0 0 auto; box-sizing: border-box; }
+  .otp-box input { width: 100%; height: 100%; border: none; outline: none; background: transparent; text-align: center; font-weight: 600; font-size: 1.61vh; line-height: 4.66vh; color: #1E293B; padding: 0; }
   .otp-box:focus-within, .otp-box.filled { border-color: #347E45; }
 
   .otp-resend-hint { position: static !important; text-align: center; font-size: 13px; line-height: 1.4; color: #979494; margin: 0; }

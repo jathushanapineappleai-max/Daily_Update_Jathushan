@@ -1,3 +1,155 @@
-/* leaves styles placeholder */
-.page-container { padding: 16px; }
+/* leaves.css – 100% FIXED – NO HORIZONTAL SCROLL WHATSOEVER */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 100vw;
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', Arial, sans-serif;
+  background: #fff;
+  color: #222;
+  overflow-x: hidden;           /* ← blocks any scroll */
+  min-height: 100vh;
+}
+
+/* Top section container */
+.leaves-top-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1384px;
+  height: 80px;
+  margin: 0 auto 20px auto;
+  padding: 0 30px;
+  background: #FFFFFF;
+  border: 1px solid #DADADA;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+/* Heading */
+.leaves-top-section h1 {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: #1E293B;
+  flex-shrink: 0;
+}
+
+/* Apply button row */
+.leaves-actions {
+  padding: 0;
+  margin: 0;
+}
+
+/* MAIN LAYOUT – THIS IS THE ONLY THING THAT MATTERS */
+.leaves-content {
+  display: flex;
+  flex-wrap: wrap;              /* ← allows wrap instead of overflow */
+  gap: 28px;
+  align-items: stretch;
+  width: 100%;
+  padding: 0 4px 40px 4px;
+  margin: 0 auto;
+  max-width: 1384px;
+
+  /* These 3 lines are the real fix */
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Left column – takes all available space */
+.leaves-left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;                 /* ← critical */
+  width: 100%;                  /* ← forces it to respect container */
+}
+
+/* HolidayList will now shrink properly because of min-width:0 in its own CSS */
+
+/* Apply Button */
+.apply-btn {
+  width: 200px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #347E45;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.apply-btn:hover {
+  background: #2d6a3a;
+  transform: translateY(-2px);
+}
+.apply-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.plus-icon {
+  width: 24px;
+  height: 24px;
+}
+.apply-btn-text {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #FFFFFF;
+}
+
+/* RESPONSIVE – column layout kicks in early enough */
+@media (max-width: 1000px) {
+  .leaves-content {
+    flex-direction: column;
+  }
+  .holiday-container {
+    max-width: none !important;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container > h1 { padding:12px 16px 0; font-size:24px; }
+  .leaves-actions { padding:0 16px; justify-content:center; }
+  .apply-btn { width:100%; max-width:280px; }
+  .leaves-content { padding:0 16px 20px; gap:20px; }
+  .leaves-left-section { gap:20px; }
+}
+
+@media (max-width: 480px) {
+  .page-container > h1 { font-size:22px; }
+  .leaves-content { padding:0 12px 20px; }
+}
