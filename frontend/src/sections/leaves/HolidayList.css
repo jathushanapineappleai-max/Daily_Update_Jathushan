@@ -1,33 +1,31 @@
-/* HolidayList.css – FINAL RESPONSIVE VERSION (No horizontal scroll, ever) */
 .holiday-container {
   width: 100%;
-  max-width: 340px;           /* Decreased from 400px to give more space to left elements */
-  min-width: 0;               /* THIS IS THE KEY – allows flex shrinking */
+  max-width: clamp(280px, 28vw, 380px);
+  min-width: 0;
   background: #FFFFFF;
   border: 1px solid #DADADA;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: clamp(12px, 2vw, 20px);
+  padding: clamp(14px, 2vh, 20px);
   box-sizing: border-box;
   flex-shrink: 0;
-  align-self: stretch;        /* Matches calendar height on desktop */
+  align-self: stretch;
   display: flex;
   flex-direction: column;
-
-  /* REMOVED: aspect-ratio → was the main cause of overflow */
-  /* REMOVED: fixed min-width 280px → now fully flexible */
+  overflow: hidden;
 }
 
 .holiday-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 16px;
+  gap: clamp(12px, 2vh, 16px);
+  min-width: 0;
 }
 
 .holiday-title {
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
-  font-size: 24px;
+  font-size: clamp(18px, 4vw, 24px);
   line-height: 1.2;
   color: #1E293B;
   margin: 0;
@@ -40,137 +38,103 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-right: 6px;
-  margin-top: 8px;
+  gap: clamp(12px, 2vh, 16px);
+  padding-right: clamp(4px, 1vw, 6px);
+  margin-top: clamp(6px, 1vh, 8px);
+  min-width: 0;
 }
 
-/* Custom scrollbar – clean & subtle */
 .holidays-list::-webkit-scrollbar {
-  width: 6px;
+  width: clamp(4px, 0.8vw, 6px);
 }
+
 .holidays-list::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .holidays-list::-webkit-scrollbar-thumb {
   background: #DADADA;
-  border-radius: 3px;
+  border-radius: clamp(2px, 0.5vw, 3px);
 }
+
 .holidays-list::-webkit-scrollbar-thumb:hover {
   background: #bbb;
 }
 
 .holiday-item {
   display: flex;
-  gap: 16px;
+  gap: clamp(12px, 2vw, 16px);
   align-items: center;
-  padding: 8px 0;
+  padding: clamp(6px, 1vh, 8px) 0;
+  flex-shrink: 0;
 }
 
 .holiday-date-box {
-  width: 60px;
-  height: 60px;
-  border-radius: 15px;
+  width: clamp(50px, 8vw, 60px);
+  height: clamp(50px, 8vw, 60px);
+  border-radius: clamp(12px, 2vw, 15px);
   background: #DADADA;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: clamp(1px, 0.5vh, 2px);
 }
 
 .holiday-date-number {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
-  font-size: 15px;
-  line-height: 18px;
+  font-size: clamp(13px, 2vw, 15px);
+  line-height: 1.2;
   color: #1E293B;
 }
 
 .holiday-date-month {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
-  font-size: 15px;
-  line-height: 18px;
+  font-size: clamp(11px, 1.5vw, 15px);
+  line-height: 1.2;
   color: #1E293B;
   text-transform: uppercase;
 }
 
 .holiday-info {
   flex: 1;
-  min-width: 0; /* Allows text to wrap if needed */
+  min-width: 0;
 }
 
 .holiday-name {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
-  line-height: 23px;
+  font-size: clamp(14px, 2.5vw, 20px);
+  line-height: 1.2;
   color: #1E293B;
   margin: 0;
   word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .holiday-day {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 300;
-  font-size: 15px;
-  line-height: 18px;
+  font-size: clamp(12px, 2vw, 15px);
+  line-height: 1.2;
   color: #979494;
-  margin: 5px 0 0 0;
-}
-
-/* RESPONSIVE BREAKPOINTS – Clean & smooth */
-
-@media (max-width: 1200px) {
-  .holiday-container {
-    max-width: 360px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .holiday-container {
-    max-width: 340px;
-    padding: 18px;
-  }
+  margin: clamp(3px, 0.5vh, 5px) 0 0 0;
 }
 
 @media (max-width: 768px) {
   .holiday-container {
     max-width: none;
     width: 100%;
-    padding: 16px;
-    border-radius: 16px;
   }
-
-  .holiday-title {
-    font-size: 20px;
-  }
-
-  .holiday-date-box {
-    width: 56px;
-    height: 56px;
-  }
-
-  .holiday-date-number { font-size: 16px; }
-  .holiday-name { font-size: 17px; }
-  .holiday-day { font-size: 13px; }
 }
 
 @media (max-width: 480px) {
   .holiday-container {
-    padding: 14px;
+    padding: clamp(12px, 2vh, 14px);
   }
-
-  .holiday-date-box {
-    width: 50px;
-    height: 50px;
-  }
-
-  .holiday-date-number { font-size: 15px; }
-  .holiday-date-month { font-size: 11px; }
-  .holiday-name { font-size: 16px; }
 }
