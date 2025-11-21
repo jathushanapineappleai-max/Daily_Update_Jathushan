@@ -1,53 +1,79 @@
 import React, { useState } from 'react';
+import { PieChart as RePieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import './LeaveStats.css';
 
-const PieChart = ({ title, available, consumed }) => {
+const LeavePieChart = ({ title, available, consumed }) => {
   const total = available + consumed;
-  const availablePercentage = (available / total) * 100;
-  const consumedPercentage = (consumed / total) * 100;
-
-  // Calculate SVG path for pie chart
-  const radius = 55;
-  const circumference = 2 * Math.PI * radius;
-  const availableStrokeDashoffset = circumference - (availablePercentage / 100) * circumference;
+  const data = [
+    { name: 'Available', value: available, color: '#347E45' },
+    { name: 'Consumed', value: consumed, color: '#1E293B' }
+  ];
 
   return (
     <div className="pie-chart-card">
       <h3 className="pie-chart-title">{title}</h3>
-      
+
       <div className="pie-chart-container">
-        <svg className="pie-chart-svg" viewBox="0 0 120 120">
-          {/* Background circle */}
-          <circle cx="60" cy="60" r="55" fill="none" stroke="#1E293B" strokeWidth="8" />
-          
-          {/* Available segment (green) */}
-          <circle
-            cx="60"
-            cy="60"
-            r="55"
-            fill="none"
-            stroke="#347E45"
-            strokeWidth="8"
-            strokeDasharray={`${(availablePercentage / 100) * circumference} ${circumference}`}
-            strokeDashoffset="0"
-            transform="rotate(-90 60 60)"
-            strokeLinecap="round"
-          />
-        </svg>
+        <div className="pie-chart-wrapper">
+          <ResponsiveContainer width="100%" height="100%">
+            <RePieChart>
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={37}
+                outerRadius={55}
+                paddingAngle={2}
+                startAngle={90}
+                endAngle={-270}
+                stroke="none"
+              >
+                {data.map((entry) => (
+                  <Cell key={entry.name} fill={entry.color} />
+                ))}
+              </Pie>
+
+              <Pie
+                data={data}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={37}
+                outerRadius={60}
+                paddingAngle={2}
+                startAngle={90}
+                endAngle={-270}
+                stroke="none"
+                isAnimationActive={false}
+              >
+                {data.map((entry) => (
+                  <Cell
+                    key={`${entry.name}-overlay`}
+                    fill={entry.name === 'Available' ? entry.color : 'transparent'}
+                  />
+                ))}
+              </Pie>
+            </RePieChart>
+          </ResponsiveContainer>
+
+          <div className="pie-chart-center">
+            <span className="pie-chart-total">{total}</span>
+            <span className="pie-chart-total-label">Total</span>
+          </div>
+        </div>
 
         <div className="pie-chart-legend">
           <div className="legend-item">
             <span className="legend-dot available"></span>
             <div className="legend-text">
-              <div className="legend-number">{available}</div>
+              <div className="legend-number">{String(available).padStart(2, '0')}</div>
               <div className="legend-label">Available</div>
             </div>
           </div>
-          
+
           <div className="legend-item">
             <span className="legend-dot consumed"></span>
             <div className="legend-text">
-              <div className="legend-number">{consumed}</div>
+              <div className="legend-number">{String(consumed).padStart(2, '0')}</div>
               <div className="legend-label">Consumed</div>
             </div>
           </div>
@@ -68,7 +94,7 @@ export default function LeaveStats() {
     <div className="leave-stats-container">
       <div className="pie-charts-grid">
         {stats.map((stat, index) => (
-          <PieChart
+          <LeavePieChart
             key={index}
             title={stat.title}
             available={stat.available}

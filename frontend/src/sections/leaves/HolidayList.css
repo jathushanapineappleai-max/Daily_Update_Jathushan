@@ -1,13 +1,13 @@
 .holiday-container {
-  width: 100%;
-  max-width: clamp(280px, 28vw, 380px);
-  min-width: 0;
+  width: clamp(220px, 22vw, 320px);
+  max-width: 320px;
+  min-width: 210px;
   background: #FFFFFF;
   border: 1px solid #DADADA;
   border-radius: clamp(12px, 2vw, 20px);
-  padding: clamp(14px, 2vh, 20px);
+  padding: clamp(12px, 1.6vh, 18px);
   box-sizing: border-box;
-  flex-shrink: 0;
+  flex: 0 0 clamp(220px, 22vw, 320px);
   align-self: stretch;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@
 .holiday-title {
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
-  font-size: clamp(18px, 4vw, 24px);
+  font-size: clamp(16px, 3vw, 20px);
   line-height: 1.2;
   color: #1E293B;
   margin: 0;
@@ -63,15 +63,15 @@
 
 .holiday-item {
   display: flex;
-  gap: clamp(12px, 2vw, 16px);
+  gap: clamp(10px, 1.5vw, 14px);
   align-items: center;
-  padding: clamp(6px, 1vh, 8px) 0;
+  padding: clamp(4px, 0.8vh, 6px) 0;
   flex-shrink: 0;
 }
 
 .holiday-date-box {
-  width: clamp(50px, 8vw, 60px);
-  height: clamp(50px, 8vw, 60px);
+  width: clamp(44px, 7vw, 56px);
+  height: clamp(44px, 7vw, 56px);
   border-radius: clamp(12px, 2vw, 15px);
   background: #DADADA;
   flex-shrink: 0;
@@ -108,7 +108,7 @@
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: clamp(14px, 2.5vw, 20px);
+  font-size: clamp(13px, 2.2vw, 18px);
   line-height: 1.2;
   color: #1E293B;
   margin: 0;
