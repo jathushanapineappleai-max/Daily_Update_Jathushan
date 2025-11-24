@@ -109,71 +109,71 @@ const TodayAttendance = () => {
 
   return (
     <div className="today-attendance-container">
-      <h2 className="attendance-title">Today Attendance</h2>
+      <h2 className="ta-title">Today Attendance</h2>
       
-      <div className="attendance-content">
+      <div className="ta-content">
         {/* Left Column - Check In & Break Time */}
-        <div className="attendance-column">
+        <div className="ta-column">
           {/* Check In Card */}
-          <div className="attendance-card">
-            <div className="card-icon">
+          <div className="ta-card">
+            <div className="ta-card-icon">
               <img src={checkInIcon} alt="Check In" />
             </div>
-            <div className="card-content">
-              <p className="card-label">Check In</p>
-              <p className="card-time">{displayTime.checkIn}</p>
+            <div className="ta-card-content">
+              <p className="ta-card-label">Check In</p>
+              <p className="ta-card-time">{displayTime.checkIn}</p>
             </div>
           </div>
 
           {/* Break Time Card */}
-          <div className="attendance-card">
-            <div className="card-icon">
+          <div className="ta-card">
+            <div className="ta-card-icon">
               <img src={breakTimeIcon} alt="Break Time" />
             </div>
-            <div className="card-content">
-              <p className="card-label">Break Time</p>
-              <p className="card-time">{displayTime.breakTime}</p>
+            <div className="ta-card-content">
+              <p className="ta-card-label">Break Time</p>
+              <p className="ta-card-time">{displayTime.breakTime}</p>
             </div>
           </div>
         </div>
 
         {/* Right Column - Check Out & Total Days */}
-        <div className="attendance-column">
+        <div className="ta-column">
           {/* Check Out Card */}
-          <div className="attendance-card">
-            <div className="card-icon">
+          <div className="ta-card">
+            <div className="ta-card-icon">
               <img src={checkOutIcon} alt="Check Out" />
             </div>
-            <div className="card-content">
-              <p className="card-label">Check Out</p>
-              <p className="card-time">{displayTime.checkOut}</p>
+            <div className="ta-card-content">
+              <p className="ta-card-label">Check Out</p>
+              <p className="ta-card-time">{displayTime.checkOut}</p>
             </div>
           </div>
 
           {/* Total Days Card */}
-          <div className="attendance-card">
-            <div className="card-icon">
+          <div className="ta-card">
+            <div className="ta-card-icon">
               <img src={totalDaysIcon} alt="Total Days" />
             </div>
-            <div className="card-content">
-              <p className="card-label">Total Days</p>
-              <p className="card-time">{displayTime.totalDays}</p>
+            <div className="ta-card-content">
+              <p className="ta-card-label">Total Days</p>
+              <p className="ta-card-time">{displayTime.totalDays}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="action-buttons">
+      <div className="ta-actions">
         <button
-          className={`btn-break ${attendanceState === 'checkedIn' ? 'active' : ''} ${attendanceState === 'checkedOut' ? 'disabled-after-checkout' : ''}`}
+          className={`ta-btn-break ${attendanceState === 'checkedIn' ? 'active' : ''} ${attendanceState === 'checkedOut' ? 'disabled-after-checkout' : ''}`}
           onClick={attendanceState === 'onBreak' ? handleBackToWork : handleTakeBreak}
           disabled={attendanceState === 'initial' || attendanceState === 'checkedOut'}
         >
           {attendanceState === 'onBreak' ? 'Back to Work' : 'Take a Break'}
         </button>
         <button
-          className={`btn-checkout ${attendanceState === 'onBreak' ? 'error' : ''} ${attendanceState === 'checkedOut' ? 'disabled-after-checkout' : ''}`}
+          className={`ta-btn-checkout ${attendanceState === 'onBreak' ? 'error' : ''} ${attendanceState === 'checkedOut' ? 'disabled-after-checkout' : ''}`}
           onClick={attendanceState === 'initial' ? handleCheckIn : handleCheckOutClick}
           disabled={attendanceState === 'onBreak' || attendanceState === 'checkedOut'}
         >

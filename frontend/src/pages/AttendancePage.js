@@ -39,12 +39,12 @@ const AttendancePage = () => {
   }, [attendanceData, currentPage]);
 
   return (
-    <div className="page-container">
-      <div className="page-header-card">
-        <button className="page-back-button" onClick={handleBack} aria-label="Go back">
+    <div className="page-container attendance-page">
+      <div className="attendance-header-card">
+        <button className="attendance-back-button" onClick={handleBack} aria-label="Go back">
           <img src={backIcon} alt="Back" />
         </button>
-        <h1 className="page-header-title">Attendance</h1>
+        <h1 className="attendance-header-title">Attendance</h1>
       </div>
 
       <div className="attendance-table-wrapper">

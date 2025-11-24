@@ -19,7 +19,7 @@
 }
 
 /* Title */
-.attendance-title {
+.ta-title {
   position: absolute;
   width: 130px;
   height: 19px;
@@ -36,7 +36,7 @@
 }
 
 /* Content Container */
-.attendance-content {
+.ta-content {
   position: absolute;
   width: 744px;
   height: 213px;
@@ -45,7 +45,7 @@
 }
 
 /* Left Column - Frame 283287 */
-.attendance-column:first-child {
+.ta-column:first-child {
   position: absolute;
   width: 356px;
   height: 213px;
@@ -57,7 +57,7 @@
 }
 
 /* Right Column - Frame 283288 */
-.attendance-column:last-child {
+.ta-column:last-child {
   position: absolute;
   width: 356px;
   height: 213px;
@@ -69,7 +69,7 @@
 }
 
 /* Attendance Card */
-.attendance-card {
+.ta-card {
   position: relative;
   width: 100%;
   height: 100px;
@@ -80,7 +80,7 @@
 }
 
 /* Card Icon - Circle */
-.card-icon {
+.ta-card-icon {
   position: absolute;
   width: 24px;
   height: 24px;
@@ -94,21 +94,21 @@
 }
 
 /* Card Icon - Symbol inside circle */
-.card-icon img {
+.ta-card-icon img {
   width: 12px;
   height: 12px;
   object-fit: contain;
 }
 
 /* Card Content Wrapper */
-.card-content {
+.ta-card-content {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
 /* Card Label */
-.card-label {
+.ta-card-label {
   position: absolute;
   width: auto;
   max-width: 280px;
@@ -129,7 +129,7 @@
 }
 
 /* Card Time */
-.card-time {
+.ta-card-time {
   position: absolute;
   width: auto;
   max-width: 300px;
@@ -148,13 +148,13 @@
 }
 
 /* SVG inside card-icon */
-.card-icon svg {
+.ta-card-icon svg {
   width: 24px;
   height: 24px;
 }
 
 /* Action Buttons */
-.action-buttons {
+.ta-actions {
   position: absolute;
   width: 100%;
   height: 56px;
@@ -163,7 +163,7 @@
 }
 
 /* Take a Break Button - Initial State (Gray) */
-.btn-break {
+.ta-btn-break {
   position: absolute;
   width: 170px;
   height: 56px;
@@ -186,30 +186,30 @@
   padding: 0;
 }
 
-.btn-break:hover {
+.ta-btn-break:hover {
   background: #7a7777;
 }
 
-.btn-break:active {
+.ta-btn-break:active {
   background: #6a6767;
 }
 
-.btn-break:disabled {
+.ta-btn-break:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 /* Take a Break Button - Active State (Black) */
-.btn-break.active {
+.ta-btn-break.active {
   background: #1E293B;
 }
 
-.btn-break.active:hover {
+.ta-btn-break.active:hover {
   background: #0f172a;
 }
 
 /* Punch Out Button - Initial State (Green) */
-.btn-checkout {
+.ta-btn-checkout {
   position: absolute;
   width: 170px;
   height: 56px;
@@ -232,38 +232,38 @@
   padding: 0;
 }
 
-.btn-checkout:hover {
+.ta-btn-checkout:hover {
   background: #2a6538;
 }
 
-.btn-checkout:active {
+.ta-btn-checkout:active {
   background: #1f4d2a;
 }
 
 /* Check Out Button - Error State (Red) when on break */
-.btn-checkout.error {
+.ta-btn-checkout.error {
   background: #F45B69;
 }
 
-.btn-checkout.error:hover {
+.ta-btn-checkout.error:hover {
   background: #e84a57;
 }
 
 /* Disabled After Checkout State */
-.btn-break.disabled-after-checkout,
-.btn-checkout.disabled-after-checkout {
+.ta-btn-break.disabled-after-checkout,
+.ta-btn-checkout.disabled-after-checkout {
   background: #979494;
   cursor: not-allowed;
   opacity: 1;
 }
 
-.btn-break.disabled-after-checkout:hover,
-.btn-checkout.disabled-after-checkout:hover {
+.ta-btn-break.disabled-after-checkout:hover,
+.ta-btn-checkout.disabled-after-checkout:hover {
   background: #979494;
 }
 
-.btn-break.disabled-after-checkout:active,
-.btn-checkout.disabled-after-checkout:active {
+.ta-btn-break.disabled-after-checkout:active,
+.ta-btn-checkout.disabled-after-checkout:active {
   background: #979494;
 }
 
@@ -279,7 +279,7 @@
     padding: 30px;
   }
 
-  .attendance-content {
+  .ta-content {
     position: relative;
     width: 100%;
     height: auto;
@@ -290,8 +290,8 @@
     gap: 20px;
   }
 
-  .attendance-column:first-child,
-  .attendance-column:last-child {
+  .ta-column:first-child,
+  .ta-column:last-child {
     position: relative;
     width: 50%;
     height: auto;
@@ -302,7 +302,7 @@
     gap: 15px;
   }
 
-  .action-buttons {
+  .ta-actions {
     position: relative;
     width: 100%;
     height: auto;
@@ -316,8 +316,8 @@
     justify-content: center;
   }
 
-  .btn-break,
-  .btn-checkout {
+  .ta-btn-break,
+  .ta-btn-checkout {
     position: relative;
     width: calc(50% - 7.5px);
     height: 56px;
@@ -341,7 +341,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
-  .attendance-title {
+  .ta-title {
     position: relative;
     left: 0;
     top: 0;
@@ -350,7 +350,7 @@
     font-weight: 600;
   }
 
-  .attendance-content {
+  .ta-content {
     position: relative;
     width: 100%;
     height: auto;
@@ -361,8 +361,8 @@
     gap: 16px;
   }
 
-  .attendance-column:first-child,
-  .attendance-column:last-child {
+  .ta-column:first-child,
+  .ta-column:last-child {
     position: relative;
     width: 100%;
     height: auto;
@@ -373,7 +373,7 @@
     gap: 12px;
   }
 
-  .attendance-card {
+  .ta-card {
     position: relative;
     width: 100%;
     height: 90px;
@@ -387,7 +387,7 @@
     gap: 12px;
   }
 
-  .card-icon {
+  .ta-card-icon {
     position: relative;
     width: 28px;
     height: 28px;
@@ -401,13 +401,13 @@
     border-radius: 50%;
   }
 
-  .card-icon img {
+  .ta-card-icon img {
     width: 14px;
     height: 14px;
     object-fit: contain;
   }
 
-  .card-content {
+  .ta-card-content {
     position: relative;
     width: 100%;
     height: auto;
@@ -416,7 +416,7 @@
     gap: 4px;
   }
 
-  .card-label {
+  .ta-card-label {
     position: relative;
     width: auto;
     max-width: none;
@@ -436,7 +436,7 @@
     overflow-wrap: break-word;
   }
 
-  .card-time {
+  .ta-card-time {
     position: relative;
     width: auto;
     max-width: none;
@@ -454,7 +454,7 @@
     white-space: nowrap;
   }
 
-  .action-buttons {
+  .ta-actions {
     position: relative;
     width: 100%;
     height: auto;
@@ -468,8 +468,8 @@
     justify-content: center;
   }
 
-  .btn-break,
-  .btn-checkout {
+  .ta-btn-break,
+  .ta-btn-checkout {
     position: relative;
     width: 100%;
     height: 50px;
@@ -494,7 +494,7 @@
     border-radius: 14px;
   }
 
-  .attendance-title {
+  .ta-title {
     position: relative;
     left: 0;
     top: 0;
@@ -503,7 +503,7 @@
     font-weight: 600;
   }
 
-  .attendance-card {
+  .ta-card {
     position: relative;
     width: 100%;
     height: 80px;
@@ -511,29 +511,29 @@
     gap: 10px;
   }
 
-  .card-icon {
+  .ta-card-icon {
     position: relative;
     width: 26px;
     height: 26px;
   }
 
-  .card-icon img {
+  .ta-card-icon img {
     width: 13px;
     height: 13px;
   }
 
-  .card-label {
+  .ta-card-label {
     font-size: 13px;
     line-height: 15px;
   }
 
-  .card-time {
+  .ta-card-time {
     font-size: 16px;
     line-height: 19px;
   }
 
-  .btn-break,
-  .btn-checkout {
+  .ta-btn-break,
+  .ta-btn-checkout {
     height: 48px;
     font-size: 14px;
   }
