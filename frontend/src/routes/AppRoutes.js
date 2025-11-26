@@ -33,6 +33,7 @@ export default function AppRoutes() {
         <Route path="/reports" element={<Reports />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/org-hierarchy" element={<OrgHierarchyPage />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

@@ -23,6 +23,9 @@ import Login from './pages/Login';
 import TemplatesPage from './pages/TemplatesPage';
 import Logout from './pages/Logout';
 
+// New Page Added
+import OrganizationalHierarchy from './pages/OrganizationalHierarchy';
+
 function AppShell() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const isAuthed = typeof window !== 'undefined' && !!localStorage.getItem('demoUser');
@@ -41,10 +44,12 @@ function AppShell() {
         {!hideChrome && <Header onToggleSidebar={() => setSidebarOpen((v) => !v)} />}
         <div className={`page-content ${hideChrome ? 'page-content--full' : ''}`}>
           <Routes>
+            {/* Auth Pages */}
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
+            {/* Admin Routes */}
             <Route path="/dashboard" element={<AdminDashboard />} />
             <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
             <Route path="/employees" element={<EmployeesPage />} />
@@ -55,7 +60,10 @@ function AppShell() {
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/templates" element={<TemplatesPage />} />
 
-            {/* Staff self-service routes */}
+            {/* New Route Added */}
+            <Route path="/org-hierarchy" element={<OrganizationalHierarchy />} />
+
+            {/* Staff Self-Service Routes */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/leaves" element={<Leaves />} />
             <Route path="/my-attendance" element={<Attendence />} />
@@ -75,4 +83,3 @@ function App() {
 }
 
 export default App;
-

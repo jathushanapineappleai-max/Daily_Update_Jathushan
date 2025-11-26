@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 import backIcon from '../assets/icons/title_back.png';
+import sortIcon from '../assets/icons/A-Z.png';
 import './Pages.css';
 import './AttendancePage.css';
 
@@ -17,15 +18,15 @@ const AttendancePage = () => {
 
   const attendanceData = useMemo(
     () => [
-      { date: '22 Nov 2025', checkIn: '09:00 AM', checkOut: '06:00 PM', break: '00:45', workingHours: '08:15', status: 'Present' },
-      { date: '21 Nov 2025', checkIn: '09:05 AM', checkOut: '05:55 PM', break: '00:30', workingHours: '08:20', status: 'Present' },
-      { date: '20 Nov 2025', checkIn: '08:58 AM', checkOut: '06:10 PM', break: '00:40', workingHours: '08:32', status: 'Present' },
+      { date: '22 Nov 2025', checkIn: '09:00 AM', checkOut: '06:00 PM', break: '00:45', workingHours: '08:15', status: 'On Time' },
+      { date: '21 Nov 2025', checkIn: '09:05 AM', checkOut: '05:55 PM', break: '00:30', workingHours: '08:20', status: 'On Time' },
+      { date: '20 Nov 2025', checkIn: '08:58 AM', checkOut: '06:10 PM', break: '00:40', workingHours: '08:32', status: 'On Time' },
       { date: '19 Nov 2025', checkIn: '09:12 AM', checkOut: '06:05 PM', break: '00:50', workingHours: '07:58', status: 'Late' },
-      { date: '18 Nov 2025', checkIn: '09:01 AM', checkOut: '05:45 PM', break: '00:35', workingHours: '08:09', status: 'Present' },
+      { date: '18 Nov 2025', checkIn: '09:01 AM', checkOut: '05:45 PM', break: '00:35', workingHours: '08:09', status: 'On Time' },
       { date: '17 Nov 2025', checkIn: '09:20 AM', checkOut: '06:15 PM', break: '00:30', workingHours: '08:25', status: 'Late' },
-      { date: '16 Nov 2025', checkIn: '09:00 AM', checkOut: '06:00 PM', break: '00:45', workingHours: '08:15', status: 'Present' },
-      { date: '15 Nov 2025', checkIn: '—', checkOut: '—', break: '—', workingHours: '—', status: 'Leave' },
-      { date: '14 Nov 2025', checkIn: '08:45 AM', checkOut: '05:50 PM', break: '00:35', workingHours: '08:30', status: 'Present' },
+      { date: '16 Nov 2025', checkIn: '09:00 AM', checkOut: '06:00 PM', break: '00:45', workingHours: '08:15', status: 'On Time' },
+      { date: '15 Nov 2025', checkIn: '08:50 AM', checkOut: '05:45 PM', break: '00:40', workingHours: '08:15', status: 'On Time' },
+      { date: '14 Nov 2025', checkIn: '08:45 AM', checkOut: '05:50 PM', break: '00:35', workingHours: '08:30', status: 'On Time' },
       { date: '13 Nov 2025', checkIn: '09:30 AM', checkOut: '06:20 PM', break: '00:40', workingHours: '07:50', status: 'Late' },
     ],
     []
@@ -52,10 +53,7 @@ const AttendancePage = () => {
           <div className="attendance-table-header">
             <div className="attendance-table-header-cell">
               <span>Date</span>
-              <span className="attendance-table-sort-icon" aria-hidden="true">
-                <span />
-                <span />
-              </span>
+              <img src={sortIcon} alt="Sort" className="attendance-table-sort-icon" />
             </div>
             <div className="attendance-table-header-cell">Check In</div>
             <div className="attendance-table-header-cell">Check Out</div>
@@ -73,7 +71,7 @@ const AttendancePage = () => {
                 <div className="attendance-table-cell">{row.break}</div>
                 <div className="attendance-table-cell">{row.workingHours}</div>
                 <div className="attendance-table-cell attendance-table-cell--status">
-                  <span className={`attendance-status attendance-status--${row.status.toLowerCase()}`}>
+                  <span className={`attendance-status attendance-status--${row.status.toLowerCase().replace(' ', '')}`}>
                     {row.status}
                   </span>
                 </div>
@@ -88,17 +86,17 @@ const AttendancePage = () => {
           <div className="attendance-card" key={`card-${row.date}-${index}`}>
             <div className="attendance-card-header">
               <span className="attendance-card-date">{row.date}</span>
-              <span className={`attendance-status attendance-status--${row.status.toLowerCase()}`}>
+              <span className={`attendance-status attendance-status--${row.status.toLowerCase().replace(' ', '')}`}>
                 {row.status}
               </span>
             </div>
             <div className="attendance-card-body">
               <div className="attendance-card-field">
-                <p>Check In</p>
+                <p>In</p>
                 <strong>{row.checkIn}</strong>
               </div>
               <div className="attendance-card-field">
-                <p>Check Out</p>
+                <p>Out</p>
                 <strong>{row.checkOut}</strong>
               </div>
               <div className="attendance-card-field">
@@ -106,7 +104,7 @@ const AttendancePage = () => {
                 <strong>{row.break}</strong>
               </div>
               <div className="attendance-card-field">
-                <p>Working Hours</p>
+                <p>Hours</p>
                 <strong>{row.workingHours}</strong>
               </div>
             </div>
