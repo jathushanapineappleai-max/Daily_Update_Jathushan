@@ -1,13 +1,18 @@
 /* src/styles/OrganizationalHierarchy.css */
+/* LEFT SIDE SHIFTED -30px TO COMPENSATE FOR arrow-left.png +30px WIDTH INCREASE */
+
 .org-hierarchy-page {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 1.5rem;
+  padding: 2rem 1rem;
   background: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
 }
 
-.org-hierarchy-header-card {
+.org-header-card {
   width: 100%;
   max-width: 1396px;
   min-height: 80px;
@@ -19,112 +24,205 @@
   gap: 1.5rem;
   padding: 0 2rem;
   box-sizing: border-box;
+  align-self: center;
 }
 
-.org-hierarchy-back-button {
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
+.org-back-button { width: 32px; height: 32px; border: none; background: transparent; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.org-back-button img { width: 100%; height: 100%; object-fit: contain; }
+.org-header-title { font-family: 'Roboto', sans-serif; font-weight: 500; font-size: 24px; line-height: 28px; color: #1e293b; margin: 0; }
 
-.org-hierarchy-back-button img {
+.org-chart-wrapper {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.org-hierarchy-header-title {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-  color: #1e293b;
-  margin: 0;
-}
-
-.org-hierarchy-body-card {
-  width: 100%;
-  max-width: 1396px;
-  min-height: 800px;
-  background: #fff;
-  border: 1px solid #dadada;
+  max-width: 1384px;
+  height: 775px;
+  align-self: center;
+  background: #FFFFFF;
+  border: 1px solid #DADADA;
   border-radius: 10px;
-  padding: 3rem 2rem;
-  overflow-x: auto;
+  overflow: hidden;
+  position: relative;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
 }
 
-.org-chart-wrapper {
-  min-width: 1400px;
-  padding: 60px 40px;
-  display: flex;
-  justify-content: center;
+.org-chart-canvas {
+  position: absolute;
+  width: 1085.26px;
+  height: 744.01px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
 }
 
-/* Perfect Node Styling */
-.org-node {
-  background: #ffffff;
-  border: 1px solid #dadada;
+/* LEVEL 1 */
+.org-ceo   { position: absolute; left: 452.63px; top: 40px;    z-index: 20; }
+.org-coo   { position: absolute; left: 30px;     top: 328px;   z-index: 30; }     /* -30px */
+.org-cto   { position: absolute; left: 876.63px; top: 328px;   z-index: 30; }     /* unchanged */
+
+/* ARROWS */
+.org-arrow-left  { 
+  position: absolute; 
+  width: 431.24px; 
+  height: 240.04px; 
+  left: 112.4px; 
+  top: 57px;   
+  pointer-events: none; 
+  z-index: 10; 
+}
+
+.org-arrow-right { 
+  position: absolute; 
+  width: 431px;    
+  height: 169px;    
+  left: 541.4px; 
+  top: 128px;  
+  pointer-events: none; 
+  z-index: 10; 
+}
+
+/* LEVEL 2 ARROWS */
+.org-arrow-down {
+  position: absolute;
+  width: 60px;
+  height: 54px;
+  left: 936.63px;
+  top: 390px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.org-arrow-down-multiple {
+  position: absolute;
+  width: 80px;
+  height: 170px;
+  left: 80px;        /* 110px → 80px (-30px) */
+  top: 390px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* LEVEL 2 CARDS */
+.org-project-manager { position: absolute; left: 876.63px; top: 475px; z-index: 40; } /* unchanged */
+.org-ccoo            { position: absolute; left: 30px;     top: 592px; z-index: 40; } /* -30px */
+
+/* LEVEL 3 ARROWS */
+.org-arrow-down-level3 {
+  position: absolute;
+  width: 60px;
+  height: 54px;
+  left: 936.63px;
+  top: 536px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.org-arrow-down-multiple2 {
+  position: absolute;
+  width: 421px;
+  height: 169px;
+  left: 16.5px;      /* 46.5px → 16.5px (-30px) */
+  top: 390px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.org-arrow-down-multiple3 {
+  position: absolute;
+  width: 424px;
+  height: 222px;
+  left: 119px;       /* 149px → 119px (-30px) */
+  top: 362px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.org-arrow-down-multiple4 {
+  position: absolute;
+  width: 632px;
+  height: 255px;
+  left: 119px;       /* 149px → 119px (-30px) */
+  top: 346.5px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 9;
+}
+
+/* LEVEL 3 CARDS */
+.org-uiux-lead {
+  position: absolute;
+  left: 876.63px;
+  top: 622px;
+  z-index: 50;
+}
+
+.org-chroo {
+  position: absolute;
+  left: 238px;       /* 268px → 238px (-30px) */
+  top: 592px;
+  z-index: 50;
+}
+
+.org-cmoo {
+  position: absolute;
+  left: 446px;       /* 476px → 446px (-30px) */
+  top: 592px;
+  z-index: 50;
+}
+
+.org-cfoo {
+  position: absolute;
+  left: 655px;       /* 685px → 655px (-30px) */
+  top: 592px;
+  z-index: 50;
+}
+
+/* CARD STYLES — UNCHANGED */
+.org-card {
+  position: absolute;
+  width: 180px;
+  height: 62px;
+  background: #FFFFFF;
+  border: 1px solid #DADADA;
   border-radius: 6px;
-  width: 200px;
-  padding: 16px 16px 12px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  position: relative;
-  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
 }
 
-.org-node:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
+.org-card--ceo { border: 2px solid #347E45 !important; box-shadow: 0 8px 25px rgba(52,126,69,0.2); }
+.org-card:hover { transform: translateY(-6px); }
 
-.org-avatar {
-  width: 56px;
-  height: 56px;
+.org-card__avatar {
+  position: absolute;
+  top: -31px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   overflow: hidden;
-  margin: -64px auto 10px;
-  border: 5px solid #fff;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  background: #6B4199;
 }
 
-.org-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.org-card__avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.org-info h3 {
-  margin: 0 0 4px 0;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  color: #347e45;
-}
+.org-card__text { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.org-card__text h3 { margin: 0; font-weight: 700; font-size: 16px; line-height: 19px; color: #347E45; text-align: center; }
+.org-card__text p  { margin: 0; font-weight: 500; font-size: 13px; line-height: 15px; color: #979494; text-align: center; }
 
-.org-info p {
-  margin: 0;
-  font-size: 13px;
-  color: #979494;
-  font-weight: 500;
-}
-
-/* Force correct spacing for asymmetric layout */
-.react-organizational-chart-node {
-  margin: 0 60px !important;
-}
-
-/* Responsive */
-@media (max-width: 1600px) {
-  .org-chart-wrapper { min-width: 1200px; }
-  .org-node { width: 180px; }
-}
-
-@media (max-width: 1400px) {
-  .org-chart-wrapper { min-width: 1000px; }
-  .org-node { width: 160px; }
-  .org-avatar { width: 48px; height: 48px; margin-top: -58px; }
+.org-hierarchy-page,
+.org-chart-wrapper,
+.org-chart-canvas {
+  overflow: hidden !important;
 }
