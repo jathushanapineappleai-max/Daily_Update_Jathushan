@@ -41,6 +41,9 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Full-bleed content (e.g., login) without page padding */
