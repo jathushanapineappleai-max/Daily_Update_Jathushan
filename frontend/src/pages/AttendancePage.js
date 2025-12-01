@@ -51,9 +51,9 @@ const AttendancePage = () => {
       <div className="attendance-table-wrapper">
         <div className="attendance-table">
           <div className="attendance-table-header">
-            <div className="attendance-table-header-cell">
+            <div className="attendance-table-header-cell attendance-table-header-cell--date">
               <span>Date</span>
-              <img src={sortIcon} alt="Sort" className="attendance-table-sort-icon" />
+              <img src={sortIcon} alt="Sort by Date" className="attendance-table-sort-icon" />
             </div>
             <div className="attendance-table-header-cell">Check In</div>
             <div className="attendance-table-header-cell">Check Out</div>
@@ -120,4 +120,3 @@ const AttendancePage = () => {
 };
 
 export default AttendancePage;
-

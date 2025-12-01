@@ -11,7 +11,7 @@ import arrowDownMultiple2 from "../assets/icons/arrow-down-multiple2.png";
 import arrowDownMultiple3 from "../assets/icons/arrow-down-multiple3.png";
 import arrowDownMultiple4 from "../assets/icons/arrow-down-multiple4.png";
 
-// Real profile images
+// Real profile images (will be used as realistic placeholders)
 import lakshan from "../assets/images/lakshan.png";
 import nivethiga from "../assets/images/nivethiga.png";
 import nayanan from "../assets/images/nayanan.png";
@@ -23,7 +23,21 @@ import "../styles/OrganizationalHierarchy.css";
 const OrganizationalHierarchy = () => {
   const navigate = useNavigate();
 
-  // Map names → images
+  // Placeholder data – EXACT same as current hard-coded version
+  // This will be replaced by API response later
+  const hierarchyData = [
+    { id: 1, name: "Lakshan", role: "CEO", position: "org-ceo", isCEO: true },
+    { id: 2, name: "Nivethiga", role: "COO", position: "org-coo" },
+    { id: 3, name: "Nayanan", role: "CTO", position: "org-cto" },
+    { id: 4, name: "Niroshan", role: "Project Manager", position: "org-project-manager" },
+    { id: 5, name: "Nivethiga", role: "CCOO", position: "org-ccoo" },
+    { id: 6, name: "Sanjeevan", role: "UI/UX Team Lead", position: "org-uiux-lead", isTeamLead: true },
+    { id: 7, name: "Nivethiga", role: "CHROO", position: "org-chroo" },
+    { id: 8, name: "Nivethiga", role: "CMOO", position: "org-cmoo" },
+    { id: 9, name: "Nivethiga", role: "CFOO", position: "org-cfoo" },
+  ];
+
+  // Map names to real images (fallback to placeholder if missing)
   const profileImages = {
     Lakshan: lakshan,
     Nivethiga: nivethiga,
@@ -32,10 +46,9 @@ const OrganizationalHierarchy = () => {
     Sanjeevan: sanjeevan,
   };
 
-  // Card component – now supports team lead style
   const Card = ({ name, role, isCEO = false, isTeamLead = false }) => {
-    const profilePic =
-      profileImages[name] || "https://via.placeholder.com/42/6B4199/FFFFFF?text=?";
+    const defaultPlaceholder = "https://via.placeholder.com/42/6B4199/FFFFFF?text=?";
+    const profilePic = profileImages[name] || defaultPlaceholder;
 
     return (
       <div
@@ -50,7 +63,7 @@ const OrganizationalHierarchy = () => {
             src={profilePic}
             alt={name}
             onError={(e) => {
-              e.target.src = "https://via.placeholder.com/42/6B4199/FFFFFF?text=?";
+              e.target.src = defaultPlaceholder;
             }}
           />
         </div>
@@ -75,53 +88,27 @@ const OrganizationalHierarchy = () => {
       <div className="org-chart-wrapper">
         <div className="org-chart-inner">
           <div className="org-chart-canvas">
-            {/* CEO */}
-            <div className="org-ceo">
-              <Card name="Lakshan" role="CEO" isCEO />
-            </div>
+            {/* Render all cards dynamically from data */}
+            {hierarchyData.map((person) => (
+              <div key={person.id} className={person.position}>
+                <Card
+                  name={person.name}
+                  role={person.role}
+                  isCEO={person.isCEO}
+                  isTeamLead={person.isTeamLead}
+                />
+              </div>
+            ))}
 
-            {/* Level 1 */}
+            {/* Arrows remain static (SVG or PNG) – no change needed */}
             <img src={arrowLeft} alt="" className="org-arrow-left" />
             <img src={arrowRight} alt="" className="org-arrow-right" />
-            <div className="org-coo">
-              <Card name="Nivethiga" role="COO" />
-            </div>
-            <div className="org-cto">
-              <Card name="Nayanan" role="CTO" />
-            </div>
-
-            {/* Level 2 */}
             <img src={arrowDown} alt="" className="org-arrow-down" />
             <img src={arrowDownMultiple} alt="" className="org-arrow-down-multiple" />
-
-            <div className="org-project-manager">
-              <Card name="Niroshan" role="Project Manager" />
-            </div>
-            <div className="org-ccoo">
-              <Card name="Nivethiga" role="CCOO" />
-            </div>
-
-            {/* Level 3 */}
-            <img src={arrowDown} alt="" className="org-arrow-down-level3" />
             <img src={arrowDownMultiple2} alt="" className="org-arrow-down-multiple2" />
             <img src={arrowDownMultiple3} alt="" className="org-arrow-down-multiple3" />
             <img src={arrowDownMultiple4} alt="" className="org-arrow-down-multiple4" />
-
-            {/* Sanjeevan – Team Lead with special card */}
-            <div className="org-uiux-lead">
-              <Card name="Sanjeevan" role="UI/UX Team Lead" isTeamLead />
-            </div>
-
-            {/* Other direct reports */}
-            <div className="org-chroo">
-              <Card name="Nivethiga" role="CHROO" />
-            </div>
-            <div className="org-cmoo">
-              <Card name="Nivethiga" role="CMOO" />
-            </div>
-            <div className="org-cfoo">
-              <Card name="Nivethiga" role="CFOO" />
-            </div>
+            <img src={arrowDown} alt="" className="org-arrow-down-level3" />
           </div>
         </div>
       </div>
