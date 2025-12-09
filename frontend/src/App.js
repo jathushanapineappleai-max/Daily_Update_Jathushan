@@ -28,7 +28,6 @@ import OrganizationalHierarchy from './pages/OrganizationalHierarchy';
 
 function AppShell() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const isAuthed = typeof window !== 'undefined' && !!localStorage.getItem('demoUser');
   const location = useLocation();
   const hideChrome = location.pathname.startsWith('/login') || location.pathname.startsWith('/logout');
 

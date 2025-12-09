@@ -1,7 +1,28 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
-const crypto = require('crypto');
+const { Op } = require('sequelize');
+const nodemailer = require('nodemailer');
+
+// Create transporter for Gmail SMTP
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
+});
+
+// Verify transporter configuration
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('SMTP configuration error:', error);
+  } else {
+    console.log('SMTP server is ready to send emails');
+  }
+});
 
 // Generate JWT Token
 const generateToken = (userId) => {
@@ -10,7 +31,13 @@ const generateToken = (userId) => {
   });
 };
 
-// Generate a random password
+// Hash password - this is the centralized password hashing function
+const hashPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+};
+
+// Generate a random password - for employee management component to use
 const generateRandomPassword = (length = 8) => {
   const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
   let password = '';
@@ -21,141 +48,43 @@ const generateRandomPassword = (length = 8) => {
   return password;
 };
 
-// Hash password
-const hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
+// Generate a 6-digit OTP
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// @desc    Register/Create user (for employee management)
-// @route   POST /api/auth/register
-// @access  Public (but typically used by admin/employee management)
-exports.register = async (req, res) => {
+// Send OTP via email
+const sendOTPEmail = async (email, otp) => {
+  const mailOptions = {
+    from: process.env.FROM_EMAIL,
+    to: email,
+    subject: 'PAI ERP Password Reset OTP',
+    text: `Your OTP for password reset is: ${otp}
+
+This OTP expires in 10 minutes.
+
+If you did not request this, please ignore this email.`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2>Password Reset OTP</h2>
+        <p>Your OTP for password reset is:</p>
+        <h1 style="color: #007bff; letter-spacing: 5px;">${otp}</h1>
+        <p>This OTP expires in 10 minutes.</p>
+        <hr>
+        <p style="font-size: 12px; color: #666;">
+          If you did not request this password reset, please ignore this email.
+        </p>
+      </div>
+    `
+  };
+
   try {
-    const { emp_id, first_name, last_name, email, password } = req.body;
-
-    // Check if user already exists
-    const existingUser = await User.findOne({
-      where: {
-        [require('sequelize').Op.or]: [
-          { email: email },
-          { emp_id: emp_id }
-        ]
-      }
-    });
-
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'User already exists with this email or employee ID'
-      });
-    }
-
-    // If no password provided, generate a random one
-    let finalPassword = password;
-    let generatedPassword = null;
-    
-    if (!password) {
-      generatedPassword = generateRandomPassword();
-      finalPassword = generatedPassword;
-    }
-
-    // Hash password
-    const hashedPassword = await hashPassword(finalPassword);
-
-    // Create user
-    const user = await User.create({
-      emp_id,
-      first_name,
-      last_name,
-      email,
-      password_hash: hashedPassword,
-      status: 'active'
-    });
-
-    res.status(201).json({
-      success: true,
-      message: 'User registered successfully',
-      user: {
-        id: user.id,
-        emp_id: user.emp_id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        status: user.status
-      },
-      generatedPassword: generatedPassword // Return generated password only if it was generated
-    });
+    await transporter.sendMail(mailOptions);
+    console.log(`OTP email sent successfully to ${email}`);
+    return true;
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error during registration',
-      error: error.message
-    });
-  }
-};
-
-// @desc    Create user with generated password (for admin to create employee accounts)
-// @route   POST /api/auth/create-user
-// @access  Private (admin only)
-exports.createUser = async (req, res) => {
-  try {
-    const { emp_id, first_name, last_name, email } = req.body;
-
-    // Check if user already exists
-    const existingUser = await User.findOne({
-      where: {
-        [require('sequelize').Op.or]: [
-          { email: email },
-          { emp_id: emp_id }
-        ]
-      }
-    });
-
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'User already exists with this email or employee ID'
-      });
-    }
-
-    // Generate random password
-    const generatedPassword = generateRandomPassword();
-
-    // Hash password
-    const hashedPassword = await hashPassword(generatedPassword);
-
-    // Create user
-    const user = await User.create({
-      emp_id,
-      first_name,
-      last_name,
-      email,
-      password_hash: hashedPassword,
-      status: 'active'
-    });
-
-    res.status(201).json({
-      success: true,
-      message: 'User created successfully with generated password',
-      user: {
-        id: user.id,
-        emp_id: user.emp_id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        status: user.status
-      },
-      generatedPassword: generatedPassword
-    });
-  } catch (error) {
-    console.error('Create user error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error during user creation',
-      error: error.message
-    });
+    console.error('Error sending OTP email:', error);
+    return false;
   }
 };
 
@@ -177,7 +106,7 @@ exports.login = async (req, res) => {
     // Check for user by emp_id or email
     const user = await User.findOne({
       where: {
-        [require('sequelize').Op.or]: [
+        [Op.or]: [
           { emp_id: identifier },
           { email: identifier }
         ]
@@ -261,24 +190,30 @@ exports.forgotPassword = async (req, res) => {
     }
 
     // Generate OTP (6 digits)
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = generateOTP();
     
-    // Hash OTP before saving to database
-    const salt = await bcrypt.genSalt(10);
-    const hashedOtp = await bcrypt.hash(otp, salt);
+    // Set expiration time (10 minutes from now)
+    const expires = new Date(Date.now() + 10 * 60 * 1000);
     
-    // In a real application, you would save the hashed OTP to the database
-    // and send the plain OTP to the user's email
-    // For now, we'll just simulate this
+    // Save OTP and expiration to user record
+    await user.update({
+      reset_otp: otp,
+      reset_otp_expires: expires
+    });
     
-    // Send OTP to user's email (in a real app, you would use nodemailer or similar)
-    console.log(`OTP for ${email}: ${otp}`); // This is just for demonstration
+    // Send OTP via email
+    const emailSent = await sendOTPEmail(email, otp);
+    
+    if (!emailSent) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send OTP email. Please try again.'
+      });
+    }
     
     res.status(200).json({
       success: true,
-      message: 'OTP sent to your email',
-      // In a real app, you wouldn't send the OTP in the response
-      // otp: otp // Remove this in production
+      message: 'OTP sent to your email'
     });
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -305,9 +240,44 @@ exports.verifyOtp = async (req, res) => {
       });
     }
 
-    // In a real application, you would check the OTP against the hashed OTP in the database
-    // For now, we'll just simulate this
-    
+    // Find user by email
+    const user = await User.findOne({
+      where: {
+        email: email
+      }
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid request'
+      });
+    }
+
+    // Check if OTP exists and is not expired
+    if (!user.reset_otp || !user.reset_otp_expires) {
+      return res.status(400).json({
+        success: false,
+        message: 'No OTP request found'
+      });
+    }
+
+    // Check if OTP is expired
+    if (user.reset_otp_expires < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: 'OTP has expired'
+      });
+    }
+
+    // Check if OTP matches
+    if (user.reset_otp !== otp) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid OTP'
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: 'OTP verified successfully'
@@ -353,12 +323,7 @@ exports.resetPassword = async (req, res) => {
       });
     }
 
-    // In a real application, you would:
-    // 1. Verify the OTP
-    // 2. Hash the new password
-    // 3. Update the user's password in the database
-    
-    // For now, we'll just simulate this
+    // Find user by email
     const user = await User.findOne({
       where: {
         email: email
@@ -372,13 +337,38 @@ exports.resetPassword = async (req, res) => {
       });
     }
 
-    // Hash new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    // Check if OTP exists and is not expired
+    if (!user.reset_otp || !user.reset_otp_expires) {
+      return res.status(400).json({
+        success: false,
+        message: 'No OTP request found'
+      });
+    }
 
-    // Update user password
+    // Check if OTP is expired
+    if (user.reset_otp_expires < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: 'OTP has expired'
+      });
+    }
+
+    // Check if OTP matches
+    if (user.reset_otp !== otp) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid OTP'
+      });
+    }
+
+    // Hash new password using our centralized function
+    const hashedPassword = await hashPassword(newPassword);
+
+    // Update user password and clear OTP
     await user.update({
-      password_hash: hashedPassword
+      password_hash: hashedPassword,
+      reset_otp: null,
+      reset_otp_expires: null
     });
 
     res.status(200).json({
@@ -447,9 +437,8 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    // Hash new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    // Hash new password using our centralized function
+    const hashedPassword = await hashPassword(newPassword);
 
     // Update user password
     await user.update({
@@ -476,7 +465,7 @@ exports.changePassword = async (req, res) => {
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: { exclude: ['password_hash'] }
+      attributes: { exclude: ['password_hash', 'reset_otp', 'reset_otp_expires'] }
     });
 
     res.status(200).json({
@@ -491,4 +480,12 @@ exports.getMe = async (req, res) => {
       error: error.message
     });
   }
+};
+
+// Export utility functions for other components to use
+// This allows employee management and other components to securely hash passwords
+// without implementing their own password hashing logic
+exports.utils = {
+  hashPassword,
+  generateRandomPassword
 };

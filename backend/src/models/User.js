@@ -10,6 +10,8 @@ module.exports = (sequelize) => {
     password_hash: { type: DataTypes.STRING(255), allowNull: false },
     status: { type: DataTypes.ENUM('active', 'inactive', 'terminated'), defaultValue: 'active' },
     report_to: { type: DataTypes.INTEGER, allowNull: true },
+    reset_otp: { type: DataTypes.STRING(10), allowNull: true },
+    reset_otp_expires: { type: DataTypes.DATE, allowNull: true },
     created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
   }, {
