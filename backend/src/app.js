@@ -10,7 +10,13 @@ const attendanceRoutes = require('./routes/attendance.routes');
 const app = express();
 app.use(express.json());
 
-// Enable CORS for frontend
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url} - IP: ${req.ip}`);
+  next();
+});
+
+// Enhanced CORS for frontend
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -22,6 +28,16 @@ app.use((req, res, next) => {
   } else {
     next();
   }
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+  });
 });
 
 // ✅ Sync DB (Safe Mode)

@@ -151,6 +151,23 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
+    // More specific error handling
+    if (error.name === 'SequelizeConnectionError' || error.name === 'SequelizeHostNotFoundError') {
+      return res.status(500).json({
+        success: false,
+        message: 'Database connection error. Please try again later.',
+        error: 'Database connection failed'
+      });
+    }
+    
+    if (error.name === 'SequelizeDatabaseError') {
+      return res.status(500).json({
+        success: false,
+        message: 'Database error occurred. Please try again later.',
+        error: 'Database operation failed'
+      });
+    }
+    
     res.status(500).json({
       success: false,
       message: 'Server error during login',

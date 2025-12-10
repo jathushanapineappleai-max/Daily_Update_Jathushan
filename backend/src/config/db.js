@@ -12,12 +12,16 @@ const sequelize = new Sequelize(
     dialect: "mysql",    // ✅ Works for both MySQL & MariaDB
     logging: false,
     pool: {
-      max: 10,           // max connections
+      max: 20,           // Increased max connections
       min: 0,
-      acquire: 30000,
+      acquire: 60000,    // Increased acquire timeout
       idle: 10000,
+      evict: 10000,      // Evict idle connections
     },
     timezone: "+05:30",  // Sri Lanka timezone (optional but recommended)
+    retry: {
+      max: 3             // Retry failed queries up to 3 times
+    }
   }
 );
 
@@ -28,6 +32,13 @@ const connectDB = async () => {
     console.log("✅ PAI ERP Database connected successfully!");
   } catch (error) {
     console.error("❌ Database connection failed:", error.message);
+    console.error("Error details:", {
+      code: error.original ? error.original.code : 'N/A',
+      errno: error.original ? error.original.errno : 'N/A',
+      syscall: error.original ? error.original.syscall : 'N/A',
+      hostname: error.original ? error.original.hostname : 'N/A'
+    });
+    
     // Instead of exiting, throw the error so it can be handled by the caller
     throw error;
   }

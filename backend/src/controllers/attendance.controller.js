@@ -1,5 +1,32 @@
 const { AttendanceRecord, User } = require('../models');
-const { Op, fn, col, literal } = require('sequelize');
+const { Op, fn, col, where } = require('sequelize');
+
+// Utility function to handle database errors
+const handleDatabaseError = (error, operation) => {
+  console.error(`${operation} error:`, error);
+  
+  if (error.name === 'SequelizeConnectionError' || error.name === 'SequelizeHostNotFoundError') {
+    return {
+      success: false,
+      message: 'Database connection error. Please try again later.',
+      error: 'Database connection failed'
+    };
+  }
+  
+  if (error.name === 'SequelizeDatabaseError') {
+    return {
+      success: false,
+      message: 'Database error occurred. Please try again later.',
+      error: 'Database operation failed'
+    };
+  }
+  
+  return {
+    success: false,
+    message: `Server error during ${operation}`,
+    error: error.message
+  };
+};
 
 // @desc    Clock in employee
 // @route   POST /api/attendance/employee/clock-in
@@ -62,12 +89,8 @@ exports.clockIn = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Clock in error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error during clock in',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'clock in');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -101,39 +124,18 @@ exports.clockOut = async (req, res) => {
       });
     }
     
-    // Check if user is currently on break and end the break automatically
-    let updatedRecord = attendanceRecord;
-    if (attendanceRecord.break_start) {
-      // End the break automatically before clocking out
-      const breakEndTime = new Date();
-      const breakStartTime = new Date(attendanceRecord.break_start);
-      
-      // Calculate break duration in seconds
-      const breakDurationSeconds = Math.floor((breakEndTime - breakStartTime) / 1000);
-      
-      // Update total break duration
-      const totalBreakDuration = (attendanceRecord.total_break_duration || 0) + breakDurationSeconds;
-      
-      // Update record to end break
-      updatedRecord = await attendanceRecord.update({
-        break_start: null,
-        total_break_duration: totalBreakDuration,
-        updated_at: new Date()
-      });
-    }
-    
     const clockOutTime = new Date();
     
     // Calculate working hours
-    const clockInTime = new Date(updatedRecord.clock_in);
-    const totalBreakDuration = updatedRecord.total_break_duration || 0;
+    const clockInTime = new Date(attendanceRecord.clock_in);
+    let totalBreakDuration = attendanceRecord.total_break_duration || 0;
     
     // Calculate working hours in hours (excluding break time)
     const workingMilliseconds = clockOutTime - clockInTime - (totalBreakDuration * 1000);
     const workingHours = workingMilliseconds / (1000 * 60 * 60); // Convert to hours
     
-    // Update record for clock out
-    const finalRecord = await updatedRecord.update({
+    // Update record
+    const updatedRecord = await attendanceRecord.update({
       clock_out: clockOutTime,
       working_hours: parseFloat(workingHours.toFixed(2)),
       updated_at: new Date()
@@ -143,18 +145,14 @@ exports.clockOut = async (req, res) => {
       success: true,
       message: 'Clocked out successfully',
       data: {
-        id: finalRecord.id,
-        clock_out: finalRecord.clock_out,
-        working_hours: finalRecord.working_hours
+        id: updatedRecord.id,
+        clock_out: updatedRecord.clock_out,
+        working_hours: updatedRecord.working_hours
       }
     });
   } catch (error) {
-    console.error('Clock out error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error during clock out',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'clock out');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -195,14 +193,6 @@ exports.startBreak = async (req, res) => {
       });
     }
     
-    // Check if total break duration has already reached the limit (1 hour = 3600 seconds)
-    if (attendanceRecord.total_break_duration >= 3600) {
-      return res.status(400).json({
-        success: false,
-        message: 'Daily break limit of 1 hour reached'
-      });
-    }
-    
     const breakStartTime = new Date();
     
     // Update record
@@ -220,12 +210,8 @@ exports.startBreak = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Start break error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error during start break',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'start break');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -265,53 +251,8 @@ exports.endBreak = async (req, res) => {
     // Calculate break duration in seconds
     const breakDurationSeconds = Math.floor((breakEndTime - breakStartTime) / 1000);
     
-    // Check if adding this break would exceed the daily limit (1 hour = 3600 seconds)
-    const currentTotalBreak = attendanceRecord.total_break_duration || 0;
-    if (currentTotalBreak + breakDurationSeconds > 3600) {
-      // Calculate maximum allowed break duration for this session
-      const maxAllowedBreak = 3600 - currentTotalBreak;
-      
-      // If max allowed is 0 or negative, deny the break end
-      if (maxAllowedBreak <= 0) {
-        // Update record to end break without adding more time
-        const updatedRecord = await attendanceRecord.update({
-          break_start: null,
-          updated_at: new Date()
-        });
-        
-        return res.status(400).json({
-          success: false,
-          message: 'Daily break limit of 1 hour already reached',
-          data: {
-            id: updatedRecord.id,
-            total_break_duration: updatedRecord.total_break_duration
-          }
-        });
-      }
-      
-      // Limit the break duration to stay within the daily limit
-      // Update total break duration to exactly reach the limit
-      const totalBreakDuration = 3600;
-      
-      // Update record
-      const updatedRecord = await attendanceRecord.update({
-        break_start: null,
-        total_break_duration: totalBreakDuration,
-        updated_at: new Date()
-      });
-      
-      return res.status(200).json({
-        success: true,
-        message: `Break ended with adjusted duration. Daily break limit of 1 hour reached`,
-        data: {
-          id: updatedRecord.id,
-          total_break_duration: updatedRecord.total_break_duration
-        }
-      });
-    }
-    
     // Update total break duration
-    const totalBreakDuration = currentTotalBreak + breakDurationSeconds;
+    const totalBreakDuration = (attendanceRecord.total_break_duration || 0) + breakDurationSeconds;
     
     // Update record
     const updatedRecord = await attendanceRecord.update({
@@ -329,12 +270,8 @@ exports.endBreak = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('End break error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error during end break',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'end break');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -360,12 +297,8 @@ exports.getTodayAttendance = async (req, res) => {
       data: attendanceRecord || null
     });
   } catch (error) {
-    console.error('Get today attendance error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching today\'s attendance',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'get today attendance');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -399,12 +332,8 @@ exports.getAttendanceSummary = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get attendance summary error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching attendance summary',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'get attendance summary');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -440,12 +369,8 @@ exports.getAllAttendanceRecords = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get all attendance records error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching attendance records',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'get all attendance records');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -483,12 +408,8 @@ exports.getEmployeeAttendanceRecords = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get employee attendance records error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching employee attendance records',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'get employee attendance records');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -512,12 +433,8 @@ exports.getAllEmployeesAttendanceRecords = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get all employees attendance records error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching all employees attendance records',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'get all employees attendance records');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -539,8 +456,8 @@ exports.getAttendanceTrends = async (req, res) => {
       attributes: [
         'date',
         [fn('COUNT', col('id')), 'total_records'],
-        [literal('SUM(CASE WHEN status = "on_time" THEN 1 ELSE 0 END)'), 'on_time_count'],
-        [literal('SUM(CASE WHEN status = "late" THEN 1 ELSE 0 END)'), 'late_count']
+        [fn('SUM', fn('CASE', where(col('status'), 'on_time'), 1, 0)), 'on_time_count'],
+        [fn('SUM', fn('CASE', where(col('status'), 'late'), 1, 0)), 'late_count']
       ],
       group: ['date'],
       order: [['date', 'ASC']]
@@ -553,12 +470,8 @@ exports.getAttendanceTrends = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get attendance trends error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching attendance trends',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'get attendance trends');
+    res.status(500).json(errorResponse);
   }
 };
 
@@ -568,7 +481,7 @@ exports.getAttendanceTrends = async (req, res) => {
 exports.getAttendanceByDepartment = async (req, res) => {
   try {
     // This would require department information which is not in the current model
-    // For now, we'll return a placeholder response.
+    // For now, we'll return a placeholder response
     res.status(200).json({
       success: true,
       data: {
@@ -577,11 +490,7 @@ exports.getAttendanceByDepartment = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Get attendance by department error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching attendance by department',
-      error: error.message
-    });
+    const errorResponse = handleDatabaseError(error, 'get attendance by department');
+    res.status(500).json(errorResponse);
   }
 };
