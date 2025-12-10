@@ -5,6 +5,7 @@ const { sequelize } = require("./models");
 
 // Route files
 const authRoutes = require('./routes/auth.routes');
+const attendanceRoutes = require('./routes/attendance.routes');
 
 const app = express();
 app.use(express.json());
@@ -60,5 +61,6 @@ app.get("/api/test-db", async (req, res) => {
 
 // Mount routers
 app.use('/api/auth', authRoutes);
+app.use('/api/attendance', attendanceRoutes);
 
 module.exports = app;
