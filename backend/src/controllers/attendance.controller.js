@@ -568,7 +568,7 @@ exports.getAttendanceTrends = async (req, res) => {
 exports.getAttendanceByDepartment = async (req, res) => {
   try {
     // This would require department information which is not in the current model
-    // For now, we'll return a placeholder response
+    // For now, we'll return a placeholder response.
     res.status(200).json({
       success: true,
       data: {
