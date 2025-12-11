@@ -8,6 +8,7 @@ module.exports = (sequelize) => {
     last_name: { type: DataTypes.STRING(50), allowNull: true },
     email: { type: DataTypes.STRING(100), allowNull: false, unique: true },
     password_hash: { type: DataTypes.STRING(255), allowNull: false },
+    role: { type: DataTypes.ENUM('admin', 'employee'), defaultValue: 'employee' },
     status: { type: DataTypes.ENUM('active', 'inactive', 'terminated'), defaultValue: 'active' },
     report_to: { type: DataTypes.INTEGER, allowNull: true },
     reset_otp: { type: DataTypes.STRING(10), allowNull: true },

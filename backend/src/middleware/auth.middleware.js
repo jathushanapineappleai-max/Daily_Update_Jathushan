@@ -47,14 +47,22 @@ exports.protect = async (req, res, next) => {
 // Grant access to specific roles
 exports.authorize = (...roles) => {
   return (req, res, next) => {
-    // This would need to be implemented based on your role system
-    // For now, we'll just allow all authenticated users
+    // Check if user is authenticated
     if (!req.user) {
       return res.status(403).json({
         success: false,
         message: 'User not authorized to access this route'
       });
     }
+    
+    // Check if user's role is in the allowed roles
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: 'User not authorized to access this route'
+      });
+    }
+    
     next();
   };
 };

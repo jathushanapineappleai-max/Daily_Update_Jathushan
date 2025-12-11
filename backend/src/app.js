@@ -6,6 +6,7 @@ const { sequelize } = require("./models");
 // Route files
 const authRoutes = require('./routes/auth.routes');
 const attendanceRoutes = require('./routes/attendance.routes');
+const sidebarRoutes = require('./routes/sidebar.routes');
 
 const app = express();
 app.use(express.json());
@@ -43,9 +44,22 @@ app.use((err, req, res, next) => {
 // ✅ Sync DB (Safe Mode)
 sequelize.sync({ alter: false });
 
+// Mount routers
+app.use('/api/auth', authRoutes);
+app.use('/api/attendance', attendanceRoutes);
+app.use('/api/sidebar', sidebarRoutes);
+
 // ✅ Test Route
 app.get("/", (req, res) => {
   res.send("PAI ERP Backend Running ✅");
+});
+
+// ✅ Simple test route for sidebar
+app.get("/api/test-sidebar", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Sidebar route is working"
+  });
 });
 
 // ✅ Database Connection Test Route
@@ -74,9 +88,5 @@ app.get("/api/test-db", async (req, res) => {
     });
   }
 });
-
-// Mount routers
-app.use('/api/auth', authRoutes);
-app.use('/api/attendance', attendanceRoutes);
 
 module.exports = app;

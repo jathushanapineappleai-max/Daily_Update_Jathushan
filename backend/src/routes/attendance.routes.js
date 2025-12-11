@@ -12,7 +12,7 @@ const {
   getAttendanceTrends,
   getAttendanceByDepartment
 } = require('../controllers/attendance.controller');
-const { protect } = require('../middleware/auth.middleware');
+const { protect, authorize } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -37,18 +37,18 @@ router.route('/employee/summary')
 
 // Admin routes
 router.route('/admin/records')
-  .get(protect, getAllAttendanceRecords);
+  .get(protect, authorize('admin'), getAllAttendanceRecords);
 
 router.route('/admin/records/:userId')
-  .get(protect, getEmployeeAttendanceRecords);
+  .get(protect, authorize('admin'), getEmployeeAttendanceRecords);
 
 router.route('/admin/records/all')
-  .get(protect, getAllEmployeesAttendanceRecords);
+  .get(protect, authorize('admin'), getAllEmployeesAttendanceRecords);
 
 router.route('/admin/analytics/trends')
-  .get(protect, getAttendanceTrends);
+  .get(protect, authorize('admin'), getAttendanceTrends);
 
 router.route('/admin/analytics/departments')
-  .get(protect, getAttendanceByDepartment);
+  .get(protect, authorize('admin'), getAttendanceByDepartment);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { AttendanceRecord, User } = require('../models');
+const { AttendanceRecord, User, sequelize } = require('../models');
 const { Op, fn, col, where } = require('sequelize');
 
 // Utility function to handle database errors
@@ -456,8 +456,8 @@ exports.getAttendanceTrends = async (req, res) => {
       attributes: [
         'date',
         [fn('COUNT', col('id')), 'total_records'],
-        [fn('SUM', fn('CASE', where(col('status'), 'on_time'), 1, 0)), 'on_time_count'],
-        [fn('SUM', fn('CASE', where(col('status'), 'late'), 1, 0)), 'late_count']
+        [sequelize.literal('SUM(CASE WHEN status = "on_time" THEN 1 ELSE 0 END)'), 'on_time_count'],
+        [sequelize.literal('SUM(CASE WHEN status = "late" THEN 1 ELSE 0 END)'), 'late_count']
       ],
       group: ['date'],
       order: [['date', 'ASC']]
