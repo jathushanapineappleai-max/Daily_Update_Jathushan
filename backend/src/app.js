@@ -7,6 +7,7 @@ const { sequelize } = require("./models");
 const authRoutes = require('./routes/auth.routes');
 const attendanceRoutes = require('./routes/attendance.routes');
 const sidebarRoutes = require('./routes/sidebar.routes');
+const employeeRoutes = require('./routes/employee.routes');
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,9 @@ app.use((req, res, next) => {
   }
 });
 
+// Serve static files from uploads directory
+app.use('/uploads', express.static('uploads'));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
@@ -48,6 +52,7 @@ sequelize.sync({ alter: false });
 app.use('/api/auth', authRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/sidebar', sidebarRoutes);
+app.use('/api/employees', employeeRoutes);
 
 // ✅ Test Route
 app.get("/", (req, res) => {

@@ -11,6 +11,8 @@ module.exports = (sequelize) => {
     role: { type: DataTypes.ENUM('admin', 'employee'), defaultValue: 'employee' },
     status: { type: DataTypes.ENUM('active', 'inactive', 'terminated'), defaultValue: 'active' },
     report_to: { type: DataTypes.INTEGER, allowNull: true },
+    department_id: { type: DataTypes.INTEGER, allowNull: true },
+    designation: { type: DataTypes.STRING(100), allowNull: true },
     reset_otp: { type: DataTypes.STRING(10), allowNull: true },
     reset_otp_expires: { type: DataTypes.DATE, allowNull: true },
     created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
@@ -84,6 +86,8 @@ module.exports = (sequelize) => {
     // TrainerTrainee
     User.hasMany(models.TrainerTrainee, { foreignKey: 'trainer_user_id', as: 'TrainedTrainees' });
     User.hasMany(models.TrainerTrainee, { foreignKey: 'trainee_user_id', as: 'TrainedBy' });
+    // Department
+    User.belongsTo(models.Department, { foreignKey: 'department_id' });
   };
 
   return User;
