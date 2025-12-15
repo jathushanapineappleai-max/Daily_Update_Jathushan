@@ -25,15 +25,15 @@ async function addSampleEmployee() {
     // Step 2: Create Employee - Personal Information
     console.log('2️⃣ Creating employee personal information...');
     const personalData = {
-      first_name: "Robert",
-      last_name: "Wilson",
-      email: "robert.wilson@example.com",
-      emp_id: "EMP009",
-      gender: "male",
-      dob: "1987-09-30",
-      phone: "+1222333444",
-      address: "987 Cedar St, Big City, Country",
-      password: "securePassword222"
+      first_name: "Jennifer",
+      last_name: "Taylor",
+      email: "jennifer.taylor@example.com",
+      emp_id: "EMP010",
+      gender: "female",
+      dob: "1991-12-10",
+      phone: "+1444555666",
+      address: "147 Birch St, Small City, Country",
+      password: "securePassword333"
     };
 
     const personalResponse = await axios.post(
@@ -53,9 +53,9 @@ async function addSampleEmployee() {
     // Step 3: Add Education Information
     console.log('3️⃣ Adding education information...');
     const educationData = {
-      qualification: "PhD in Physics",
-      institution: "Science University",
-      year_of_completion: 2014
+      qualification: "Bachelor of Commerce",
+      institution: "Business College",
+      year_of_completion: 2013
     };
 
     await axios.post(
@@ -74,9 +74,9 @@ async function addSampleEmployee() {
     // Step 4: Add Professional Experience
     console.log('4️⃣ Adding professional experience...');
     const professionalData = {
-      position: "Research Scientist",
-      company_name: "Research Labs Inc.",
-      years_of_experience: 9.5
+      position: "Financial Analyst",
+      company_name: "Finance Corp",
+      years_of_experience: 11.2
     };
 
     await axios.post(
@@ -95,10 +95,10 @@ async function addSampleEmployee() {
     // Step 5: Set Work Information
     console.log('5️⃣ Setting work information...');
     const workData = {
-      joined_date: "2023-11-25",
-      designation: "Senior Research Scientist",
+      joined_date: "2023-12-01",
+      designation: "Senior Financial Analyst",
       department_id: null, // Skip department for now
-      management_role: "Research Lead",
+      management_role: "Finance Lead",
       report_to: null
     };
 

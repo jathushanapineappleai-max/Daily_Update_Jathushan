@@ -105,21 +105,28 @@ exports.updateEmployeePersonal = async (req, res) => {
 
     const { first_name, last_name, email, emp_id, gender, dob, phone, address, password } = req.body;
 
-    // Check if another employee already has this email or emp_id
+    // Get current user to check their existing email and emp_id
+    const currentUser = await User.findByPk(userId);
+    if (!currentUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employee not found'
+      });
+    }
+
+    // Check if another employee already has this email or emp_id (excluding current user)
+    let whereClause = {
+      [Op.or]: [
+        { email: email },
+        { emp_id: emp_id }
+      ]
+    };
+
+    // Exclude current user from the check
+    whereClause.id = { [Op.ne]: userId };
+
     const existingUser = await User.findOne({
-      where: {
-        [Op.and]: [
-          {
-            [Op.or]: [
-              { email: email },
-              { emp_id: emp_id }
-            ]
-          },
-          {
-            id: { [Op.ne]: userId }
-          }
-        ]
-      }
+      where: whereClause
     });
 
     if (existingUser) {
@@ -129,24 +136,15 @@ exports.updateEmployeePersonal = async (req, res) => {
       });
     }
 
-    // Get user
-    const user = await User.findByPk(userId);
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'Employee not found'
-      });
-    }
-
     // Update password if provided
-    let password_hash = user.password_hash;
+    let password_hash = currentUser.password_hash;
     if (password) {
       const salt = await bcrypt.genSalt(10);
       password_hash = await bcrypt.hash(password, salt);
     }
 
     // Update user
-    await user.update({
+    await currentUser.update({
       first_name,
       last_name: last_name || null,
       email,
@@ -177,7 +175,7 @@ exports.updateEmployeePersonal = async (req, res) => {
       success: true,
       message: 'Employee personal information updated successfully',
       data: {
-        user
+        user: currentUser
       }
     });
   } catch (error) {

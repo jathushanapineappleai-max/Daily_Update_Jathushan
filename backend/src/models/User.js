@@ -88,6 +88,8 @@ module.exports = (sequelize) => {
     User.hasMany(models.TrainerTrainee, { foreignKey: 'trainee_user_id', as: 'TrainedBy' });
     // Department
     User.belongsTo(models.Department, { foreignKey: 'department_id' });
+    // Document
+    User.hasMany(models.Document, { foreignKey: 'user_id', as: 'Documents' });
   };
 
   return User;
