@@ -110,7 +110,13 @@ exports.login = async (req, res) => {
           { emp_id: identifier },
           { email: identifier }
         ]
-      }
+      },
+      include: [
+        {
+          model: require('../models').EmployeeDetail,
+          as: 'EmployeeDetail'
+        }
+      ]
     });
 
     if (!user) {
@@ -147,7 +153,8 @@ exports.login = async (req, res) => {
         last_name: user.last_name,
         email: user.email,
         role: user.role,
-        status: user.status
+        status: user.status,
+        profile_image: user.EmployeeDetail ? user.EmployeeDetail.image_path : null
       }
     });
   } catch (error) {
@@ -483,12 +490,21 @@ exports.changePassword = async (req, res) => {
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: { exclude: ['password_hash', 'reset_otp', 'reset_otp_expires'] }
+      attributes: { exclude: ['password_hash', 'reset_otp', 'reset_otp_expires'] },
+      include: [
+        {
+          model: require('../models').EmployeeDetail,
+          as: 'EmployeeDetail'
+        }
+      ]
     });
 
     res.status(200).json({
       success: true,
-      user
+      user: {
+        ...user.toJSON(),
+        profile_image: user.EmployeeDetail ? user.EmployeeDetail.image_path : null
+      }
     });
   } catch (error) {
     console.error('Get me error:', error);

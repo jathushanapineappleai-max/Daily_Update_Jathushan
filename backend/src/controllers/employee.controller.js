@@ -342,6 +342,76 @@ exports.uploadEmployeeDocument = async (req, res) => {
   }
 };
 
+// @desc    Upload employee profile photo
+// @route   POST /api/employees/:id/profile-photo
+// @access  Private (Admin)
+exports.uploadEmployeeProfilePhoto = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    
+    // Check if user exists
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employee not found'
+      });
+    }
+
+    // Check if file was uploaded
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file uploaded'
+      });
+    }
+
+    // Check if uploaded file is an image
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedImageTypes.includes(req.file.mimetype)) {
+      // Delete uploaded file
+      const { deleteFile } = require('../utils/fileUpload');
+      deleteFile(req.file.path);
+      
+      return res.status(400).json({
+        success: false,
+        message: 'Only image files (JPEG, PNG, GIF, WEBP) are allowed for profile photos'
+      });
+    }
+
+    // Get or create employee detail
+    let employeeDetail = await EmployeeDetail.findOne({ where: { user_id: userId } });
+    if (!employeeDetail) {
+      employeeDetail = await EmployeeDetail.create({
+        user_id: userId,
+        image_path: req.file.path
+      });
+    } else {
+      // Delete old profile photo if exists
+      if (employeeDetail.image_path) {
+        const { deleteFile } = require('../utils/fileUpload');
+        deleteFile(employeeDetail.image_path);
+      }
+      
+      // Update with new profile photo
+      await employeeDetail.update({
+        image_path: req.file.path
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Profile photo uploaded successfully',
+      data: {
+        profile_photo: employeeDetail.image_path
+      }
+    });
+  } catch (error) {
+    const errorResponse = handleControllerError(error, 'upload employee profile photo');
+    res.status(500).json(errorResponse);
+  }
+};
+
 // @desc    Set employee work information
 // @route   POST /api/employees/:id/work-info
 // @access  Private (Admin)

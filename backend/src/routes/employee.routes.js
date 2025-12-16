@@ -5,12 +5,13 @@ const {
   addEmployeeEducation,
   addEmployeeProfessional,
   uploadEmployeeDocument,
+  uploadEmployeeProfilePhoto,
   setEmployeeWorkInfo,
   getEmployeeOverview,
   getAllEmployees
 } = require('../controllers/employee.controller');
 const { protect, authorize } = require('../middleware/auth.middleware');
-const { upload } = require('../utils/fileUpload');
+const { upload, uploadConfigs } = require('../utils/fileUpload');
 
 const router = express.Router();
 
@@ -37,6 +38,15 @@ router.route('/:id/documents')
     authorize('admin'), 
     upload.single('document'), 
     uploadEmployeeDocument
+  );
+
+// Employee profile photo upload
+router.route('/:id/profile-photo')
+  .post(
+    protect, 
+    authorize('admin'), 
+    uploadConfigs.profilePhoto.single('image'), 
+    uploadEmployeeProfilePhoto
   );
 
 // Employee work information

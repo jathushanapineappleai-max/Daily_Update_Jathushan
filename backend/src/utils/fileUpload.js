@@ -20,24 +20,42 @@ const storage = multer.diskStorage({
   }
 });
 
-// File filter for PDF only
-const fileFilter = (req, file, cb) => {
-  // Accept only PDF files
-  if (file.mimetype === 'application/pdf') {
-    cb(null, true);
-  } else {
-    cb(new Error('Only PDF files are allowed'), false);
-  }
+// File filter for different upload types
+const createFileFilter = (allowedTypes) => {
+  return (req, file, cb) => {
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Only ${allowedTypes.join(', ')} files are allowed`), false);
+    }
+  };
 };
 
-// Create upload middleware
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB limit
-  }
-});
+// Create different upload configurations
+const uploadConfigs = {
+  // For documents (PDF only)
+  document: multer({
+    storage: storage,
+    fileFilter: createFileFilter(['application/pdf']),
+    limits: {
+      fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
+  }),
+  
+  // For profile photos (images only)
+  profilePhoto: multer({
+    storage: storage,
+    fileFilter: createFileFilter([
+      'image/jpeg', 
+      'image/png', 
+      'image/gif', 
+      'image/webp'
+    ]),
+    limits: {
+      fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
+  })
+};
 
 // Function to delete a file
 const deleteFile = (filePath) => {
@@ -47,6 +65,7 @@ const deleteFile = (filePath) => {
 };
 
 module.exports = {
-  upload,
+  upload: uploadConfigs.document, // Default to document upload
+  uploadConfigs,
   deleteFile
 };
