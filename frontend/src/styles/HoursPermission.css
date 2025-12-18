@@ -1,0 +1,221 @@
+/* ---------- overlay & popup (existing) ---------- */
+.h-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 18, 21, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.h-popup {
+  width: 920px;
+  height: 660px;
+  max-width: calc(100% - 48px);
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 40px 48px 48px 48px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(20, 30, 40, 0.07);
+}
+
+/* close button */
+.h-close-btn { position: absolute; right: 20px; top: 36px; border: none; background: transparent; padding: 0; cursor: pointer; }
+.h-close-circle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; box-shadow: none; }
+.h-close-icon { width: 14px; height: 14px; object-fit: contain; }
+
+/* header */
+.h-title { font-size: 28px; margin: 0 0 18px 0; color: #111827; font-weight: 700; }
+
+.h-form { padding-top: 30px; display: block; }
+
+.h-label { display: block; font-size: 16px; color: #1E293B; margin-bottom: 8px; font-weight: 600; }
+
+/* shared input wrapper styles (ensure max-height 50px for visible elements) */
+.h-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #fff;
+  box-sizing: border-box;
+  min-height: 44px;
+  margin-bottom: 16px;
+  max-height: 50px; /* ensure max height */
+  overflow: hidden;
+}
+
+/* visible text / file / date style normalization */
+.h-input input[type="date"],
+.h-input input[type="text"],
+.h-input input[type="file"],
+.h-input input[readonly],
+.h-input select,
+.h-input textarea {
+  max-height: 50px;
+  border: 0;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #1f2937;
+}
+
+/* small explicit class for textual inputs */
+.h-input-text {
+  max-height: 50px;
+}
+
+/* textarea tweaks - keep max-height 50px visually; allow vertical resize but capped */
+.h-input textarea {
+  font-size: 14px;
+  color: #243245;
+  resize: vertical;
+  max-height: 50px;
+  overflow: auto;
+}
+
+/* Date input */
+.h-date {
+  padding-right: 56px;
+  max-width: 300px;
+  position: relative;
+}
+.h-date input[type="date"] {
+  padding-right: 6px;
+  max-width: 333px;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+}
+.h-date input[type="date"]::-webkit-calendar-picker-indicator { display: none; -webkit-appearance: none; }
+.h-date input[type="date"]::-webkit-clear-button,
+.h-date input[type="date"]::-webkit-inner-spin-button { display: none; -webkit-appearance: none; }
+
+/* custom calendar icon */
+.h-date-icon-wrapper {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8fbef;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.h-date-icon { width: 16px; height: 16px; object-fit: contain; display: block; }
+
+/* visually hidden native date input */
+.h-hidden-date {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+}
+
+/* grid row */
+.h-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* time select specifics */
+.h-time select { padding: 0; background: transparent; cursor: pointer; }
+
+/* select icon */
+.h-select-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.8;
+}
+.h-select-icon-rot { transform: translateY(-50%) rotate(180deg); }
+
+/* upload row */
+.h-upload-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; margin-bottom: 6px; }
+.h-info-icon { width: 16px; height: 16px; object-fit: contain; opacity: 0.9; }
+.h-pill {
+  margin-left: 0%;
+ background: #f2f2f3;
+  color: #7a7a7a;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  z-index: 2;  
+  position: relative;
+}
+
+.hd-pill::before {
+  content: "";
+  position: absolute;
+  left: -8px;                   /* move tail a bit left so it visually connects */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid #f2f2f3; /* match the pill background */
+  z-index: 1;
+}
+
+/* fake upload field */
+.h-upload { padding-right: 48px; }
+.h-upload-fake { width: 100%; display: inline-block; font-size: 14px; color: #7d8a95; cursor: pointer; user-select: none; }
+.h-upload-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; object-fit: contain; }
+
+/* error styling - red border and small text (no inset shadow) */
+.h-error {
+  color: #d32f2f;
+  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+.h-input-invalid {
+  
+  box-shadow: none !important;
+}
+
+/* ensure aria-invalid inputs have visible border (no inset) */
+.h-input input[aria-invalid="true"],
+.h-input textarea[aria-invalid="true"],
+.h-input select[aria-invalid="true"] {
+  border-color: transparent; /* inner element has no border; we rely on wrapper .h-input-invalid */
+}
+
+/* small responsive */
+@media (max-width: 900px) {
+  .h-row { grid-template-columns: 1fr; }
+  .h-date { max-width: 100%; }
+  .h-popup { padding: 24px; }
+}
+
+/* keep things accessible */
+.h-input[role="button"] { cursor: pointer; }

@@ -1,0 +1,174 @@
+/* OVERLAY */
+.fd-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 19, 35, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* POPUP BOX */
+.fd-popup-box {
+  background: #ffffff;
+  width: 420px;
+  padding: 32px 30px;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+}
+
+/* Close */
+.fd-popup-box .fd-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+}
+
+.fd-popup-box .fd-close-btn img {
+  width: 22px;
+}
+
+/* Profile */
+.fd-popup-box .fd-profile-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+/* Name */
+.fd-popup-box .fd-username {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: #1e293b;
+}
+
+.fd-popup-box .fd-role {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* CONTENT BOX */
+.fd-popup-box .fd-content-box {
+  border: 1px solid #e5e7eb;
+  padding: 20px 22px;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.fd-popup-box .fd-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.fd-popup-box .fd-row label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.fd-popup-box .fd-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* PROOF BUTTON */
+.fd-popup-box .fd-proof-btn {
+  background: #1e7e34;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  border: none;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.fd-popup-box .fd-proof-btn img {
+  width: 15px;
+}
+
+/* STATUS LABEL */
+.fd-popup-box .fd-status-label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* STATUS BOX */
+.fd-popup-box .fd-status-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-top: 8px;
+}
+
+/* Option */
+.fd-popup-box .fd-status-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+/* Divider */
+.fd-popup-box .fd-status-divider {
+  width: 1px;
+  height: 18px;
+  background: #e5e7eb;
+  margin: 0 10px;
+}
+
+/* RADIO BASE - ALWAYS WHITE WHEN INACTIVE */
+.fd-popup-box .fd-radio {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background: #ffffff !important;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+/* ACTIVE COLORS */
+
+/* Pending = red */
+.fd-popup-box .fd-radio.pending.active {
+  background: #F45B69 !important;
+  border-color: #F45B69 !important;
+}
+
+/* Rejected = yellow */
+.fd-popup-box .fd-radio.rejected.active {
+  background: #E9F493 !important;
+  border-color: #E9F493 !important;
+}
+
+/* Approved = green */
+.fd-popup-box .fd-radio.approved.active {
+  background: #22C55E !important;
+  border-color: #22C55E !important;
+}
+
+/* UPDATE BUTTON */
+.fd-popup-box .fd-update-btn {
+  margin-top: 20px;
+  width: 100%;
+  background: #029026;
+  border: none;
+  padding: 14px 0;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}

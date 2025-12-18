@@ -1,16 +1,23 @@
+// AdminDashboard.js
 import React from 'react';
-import './Pages.css';
+import '../styles/dashboard.css';
+import DashboardWidgets from '../sections/admin_dashboard/DashboardWidgets';
+import DashboardOverview from '../sections/admin_dashboard/DashboardOverview';
 
 const AdminDashboard = () => {
   return (
     <div className="page-container">
-      <h1 className="page-title">Admin Dashboard</h1>
-      <div className="placeholder-content">
-        <p>Dashboard content will be displayed here</p>
+      {/* Dashboard Widgets Section */}
+      <div className="widgets-section">
+        <DashboardWidgets />
+      </div>
+
+      {/* Attendance Overview Section */}
+      <div className="overview-section">
+        <DashboardOverview />
       </div>
     </div>
   );
 };
 
 export default AdminDashboard;
-

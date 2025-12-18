@@ -9,6 +9,16 @@ const attendanceRoutes = require('./routes/attendance.routes');
 const sidebarRoutes = require('./routes/sidebar.routes');
 const employeeRoutes = require('./routes/employee.routes');
 
+// Leave Management Routes (from teammate's code)
+const leaveRoutes = require('./routes/leave.routes');
+const leavereqRoutes = require('./routes/leavereq.routes');
+const leaveBalanceRoutes = require('./routes/leavebalance.routes');
+
+// Rules & Regulations Routes (from teammate's code)
+const ruleCategoryRoutes = require('./routes/rulecategory.routes');
+const ruleRoutes = require('./routes/rule.routes');
+const roleRoutes = require('./routes/role.routes');
+
 const app = express();
 app.use(express.json());
 
@@ -53,6 +63,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/sidebar', sidebarRoutes);
 app.use('/api/employees', employeeRoutes);
+
+// Leave Management Routes
+app.use('/api', leaveRoutes);
+app.use('/api', leavereqRoutes);
+app.use('/api/leave-balance', leaveBalanceRoutes);
+
+// Rules & Regulations Routes
+app.use('/api', ruleCategoryRoutes);
+app.use('/api', ruleRoutes);
+app.use('/roles', roleRoutes);
 
 // ✅ Test Route
 app.get("/", (req, res) => {

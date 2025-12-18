@@ -1,0 +1,283 @@
+/* ==========================================================
+   ADD EMPLOYEE - STEP 2 PAGE (Educational & Professional Info)
+   ========================================================== */
+
+.employee-step2-page {
+  background: #f9fafb;
+  font-family: "Roboto", sans-serif;
+  color: #1e293b;
+  padding: 20px 40px;
+  margin-left: 0px;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.employee-header {
+  background: #ffffff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  height: 80px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.header-left h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.back-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 21px;
+  border: 2px solid #979494;
+  background: #dadada;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #1e293b;
+}
+
+.circle.active {
+  border-color: #347e45;
+  background: #ffffff;
+  color: #347e45;
+}
+
+.line {
+  width: 100px;
+  height: 4px;
+  background: #dadada;
+  border-radius: 2px;
+}
+
+.line.active {
+  background: #347e45;
+}
+
+/* Info Boxes */
+.info-box {
+  background: #ffffff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-header h3 {
+  font-size: 22px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.add-btn {
+  width: 50px;
+  height: 50px;
+  background: #347e45;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.plus-icon {
+  width: 19px;
+  height: 38px;
+
+}
+
+/* Divider line */
+hr {
+  border: 1px solid #dadada;
+  margin: 16px 0;
+}
+
+/* Form grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #1e293b;
+}
+
+input,
+select {
+  height: 48px;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 0 16px;
+  font-size: 16px;
+  color: #1e293b;
+  background: #ffffff;
+}
+
+input::placeholder,
+select {
+  color: #979494;
+}
+
+.input-icon {
+  position: relative;
+}
+
+.dropdown-icon {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+/* Buttons */
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.cancel-btn,
+.create-btn {
+  width: 160px;
+  height: 50px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn {
+  background: #ffffff;
+  border: 1px solid #dadada;
+  color: #1e293b;
+}
+
+.cancel-btn:hover {
+  background: #f3f4f6;
+}
+
+.create-btn {
+  background: #347e45;
+  color: #ffffff;
+  border: none;
+}
+
+.create-btn:hover {
+  background: #2b6538;
+}
+
+/* ==========================================================
+   RESPONSIVE DESIGN
+   ========================================================== */
+
+/* Tablet View */
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pagination .line {
+    width: 60px;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .employee-step2-page {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .employee-header {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    gap: 10px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-row {
+    flex-direction: column;
+  }
+
+  .cancel-btn,
+  .create-btn {
+    width: 100%;
+  }
+
+  .add-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .plus-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .header-left h2 {
+    font-size: 20px;
+  }
+
+  .info-header h3 {
+    font-size: 20px;
+  }
+
+  input,
+  select {
+    font-size: 14px;
+  }
+}

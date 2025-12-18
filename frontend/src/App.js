@@ -25,6 +25,11 @@ import Logout from './pages/Logout';
 
 // New Page Added
 import OrganizationalHierarchy from './pages/OrganizationalHierarchy';
+import EmployeeOverview from './pages/EmployeeOverview';
+import EditEmployee from './pages/EditEmployee';
+import NewEmployee from './pages/NewEmployee';
+import AddEmployeeStep2 from './pages/AddEmployeeStep2';
+import AddEmployeeStep3 from './pages/AddEmployeeStep3';
 
 function AppShell() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -52,7 +57,12 @@ function AppShell() {
             <Route path="/dashboard" element={<AdminDashboard />} />
             <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
             <Route path="/employees" element={<EmployeesPage />} />
+            <Route path="/employees/new" element={<NewEmployee />} />
+            <Route path="/employees/step2" element={<AddEmployeeStep2 />} />
+            <Route path="/employees/step3" element={<AddEmployeeStep3 />} />
             <Route path="/employees/:id" element={<EmployeeProfilePage />} />
+            <Route path="/employees/:id/overview" element={<EmployeeOverview />} />
+            <Route path="/employees/:id/edit" element={<EditEmployee />} />
             <Route path="/attendance" element={<AttendancePage />} />
             <Route path="/leave" element={<LeavePage />} />
             <Route path="/recruitment" element={<RecruitmentPage />} />

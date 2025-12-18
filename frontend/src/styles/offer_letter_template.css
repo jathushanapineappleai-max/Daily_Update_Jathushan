@@ -1,0 +1,444 @@
+/* =========================================================
+   ✅ OFFER LETTER PAGE WRAPPER
+========================================================= */
+.offer-page-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* =========================================================
+   ✅ MAIN CARD
+========================================================= */
+.offer-template-wrapper {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 26px 30px;
+  width: 100%;
+  max-width: 1150px;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   ✅ HEADER
+========================================================= */
+.offer-template-header {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+  margin-bottom: 22px;
+}
+
+.offer-template-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* =========================================================
+   ✅ FORM GRID
+========================================================= */
+.offer-template-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px 28px;
+}
+
+.offer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.offer-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* ✅ INPUTS */
+.offer-group input,
+.offer-group select {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #1e293b;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.offer-group input:focus,
+.offer-group select:focus {
+  border-color: #347E45;
+  outline: none;
+}
+
+/* ✅ LIGHT PLACEHOLDERS */
+.offer-group input::placeholder {
+  color: #9ca3af;
+}
+
+.offer-group select {
+  color: #9ca3af;
+}
+
+.offer-group select:focus {
+  color: #1e293b;
+}
+
+/* =========================================================
+   ✅ CUSTOM DROPDOWN ICON (Figma Style)
+========================================================= */
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-wrapper select {
+  width: 100%;
+  appearance: none;
+  background: #ffffff;
+  padding-right: 40px;
+}
+/* ---------------------------
+   DROPDOWN ICON (corrected)
+   - closed: points DOWN (0deg)
+   - open/focused: points UP (180deg)
+   --------------------------- */
+
+.dropdown-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg); /* closed -> down */
+  width: 14px;
+  opacity: 0.9;
+  pointer-events: none;
+  transition: transform .18s ease;
+}
+
+/* when wrapper has .open or receives focus-within (keyboard focus),
+   rotate arrow to point UP */
+.custom-select-wrapper.open .dropdown-icon,
+.custom-select-wrapper:focus-within .dropdown-icon,
+.custom-select-wrapper select:active ~ .dropdown-icon {
+  transform: translateY(-50%) rotate(180deg); /* open -> up */
+}
+
+/* ---------------------------
+   Option / select styling (limited by browser support)
+   Works in many browsers for basic colors, but the native popup
+   may ignore some styles on some platforms.
+   --------------------------- */
+
+.custom-select-wrapper select {
+  width: 100%;
+  appearance: none;
+  background: #ffffff;
+  padding-right: 40px;
+  border-radius: 6px; /* affects control, not the native popup in some browsers */
+  color: #1e293b;
+}
+
+/* placeholder color preserved when no selection */
+.custom-select-wrapper select option[value=""] {
+  color: #9ca3af;
+}
+
+/* attempt to style native option list (may be ignored by some browsers) */
+.custom-select-wrapper select option {
+  background: #ffffff;
+  color: #374151;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+/* if you want the control to look more like your Figma panel,
+   add a subtle border/shadow on focus */
+.custom-select-wrapper select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 126, 69, 0.06);
+  border-color: #347E45;
+}
+
+/* error state for the select control */
+.custom-select-wrapper .error-input,
+.custom-select-wrapper select.error-input {
+  border-color: #dc2626 !important;
+  background: #fff1f2;
+}
+
+/* small compatibility helpers */
+.custom-select-wrapper select::-ms-expand { /* hide IE arrow */
+  display: none;
+}
+
+/* INLINE CUSTOM SELECT (Role field) */
+.inline-custom-select {
+  position: relative;
+  width: 100%;
+  font-family: inherit;
+}
+
+/* toggle looks like other inputs */
+.inline-select-toggle {
+  width: 100%;
+  height: 40px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+/* placeholder muted color */
+.inline-select-text {
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* arrow icon */
+.inline-select-icon {
+  width: 14px;
+  transition: transform .18s ease;
+  opacity: 0.9;
+  pointer-events: none;
+  margin-left: 12px;
+}
+
+/* menu panel */
+.inline-select-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e6eef3;      /* subtle bluish border like your screenshot */
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  z-index: 100;
+  padding: 8px;
+  box-sizing: border-box;
+  max-height: 240px;
+  overflow: auto;
+}
+
+/* item appearance */
+.inline-select-item {
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: #0f172a;
+  font-size: 15px;
+  line-height: 1.2;
+  background: transparent;
+}
+
+/* last item margin fix */
+.inline-select-item:last-child { margin-bottom: 0; }
+
+/* hover / highlight */
+.inline-select-item:hover,
+.inline-select-item.highlighted {
+  background: #f8fafc; /* very light */
+}
+
+/* selected item style (visible like your screenshot) */
+.inline-select-item.selected {
+  background: #f1f5f9;  /* light grey / subtle */
+  color: #0f172a;
+  border-radius: 8px;
+}
+
+/* keep focus outlines friendly */
+.inline-select-item:focus { outline: none; box-shadow: 0 0 0 3px rgba(52,126,69,0.06); }
+
+/* error state (if needed) */
+.offer-group .inline-select-toggle.error-input {
+  border-color: #dc2626 !important;
+  background: #fff1f2;
+}
+
+/* =========================================================
+   ✅ DATE INPUT (FIXED WIDTH + ICON)
+========================================================= */
+.date-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.date-input-wrapper input {
+  width: 100% !important;
+  box-sizing: border-box;
+  padding-right: 40px;
+  cursor: pointer;
+  color: #9ca3af;
+}
+
+/* ✅ Prevent browser shrinking */
+input[type="date"] {
+  min-width: 100% !important;
+}
+
+.figma-date:focus {
+  color: #1e293b;
+}
+
+/* ✅ Hide browser default calendar */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+}
+
+/* ✅ Custom Calendar Icon */
+.date-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+/* =========================================================
+   ✅ CANCEL + PREVIEW INSIDE CARD (RIGHT)
+========================================================= */
+.offer-inner-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* ✅ CANCEL */
+.cancel-btn {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #1e293b;
+  padding: 10px 26px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ✅ PREVIEW */
+.preview-btn {
+  background: #347E45;
+  color: #ffffff;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.preview-btn:hover {
+  background: #4fae6d;
+}
+
+/* =========================================================
+   ✅ SAVE BUTTON — OUTSIDE BELOW PREVIEW
+========================================================= */
+.offer-save-outside {
+  max-width: 1150px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+  padding-right: 30px;   /* ✅ moves Save slightly left */
+}
+
+.save-btn {
+  background: #347E45;
+  color: #ffffff;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+.save-btn:hover {
+  background: #4fae6d;
+}
+
+/* =========================================================
+   ✅ RESPONSIVE
+========================================================= */
+@media (max-width: 992px) {
+  .offer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 1024px) {
+  .offer-page-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 500px;
+}
+}
+@media (max-width: 480px) {
+  .offer-page-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
+}
+
+@media (max-width: 600px) {
+  .offer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .offer-inner-footer,
+  .offer-save-outside {
+    justify-content: center;
+    padding-right: 0;
+  }
+    .offer-page-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
+
+  .save-btn {
+    width: 100%;
+  }
+}
+/* ✅ ERROR INPUT */
+.error-input {
+  border-color: #dc2626 !important;
+  background: #fff1f2;
+}
+
+/* ✅ ERROR TEXT */
+.error-text {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+}

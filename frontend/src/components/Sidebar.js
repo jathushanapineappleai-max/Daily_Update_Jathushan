@@ -33,55 +33,38 @@ const Sidebar = ({ isOpen, onNavigate }) => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    // Fetch menu items from backend based on user role
-    const fetchMenuItems = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) return;
+    // Define menu items for both roles (admin and staff)
+    const adminMenu = [
+      { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+      { path: '/employees', label: 'Employees', icon: 'employee' },
+      { path: '/leave', label: 'Leaves', icon: 'leave' },
+      { path: '/recruitment', label: 'Recruitment', icon: 'recruitment' },
+      { path: '/projects', label: 'Projects', icon: 'project' },
+      { path: '/payroll', label: 'Payroll', icon: 'payroll' },
+      { path: '/templates', label: 'Templates', icon: 'project' },
+      { path: '/settings', label: 'Settings', icon: 'setting' },
+      { path: '/logout', label: 'Logout', icon: 'logout' }
+    ];
 
-        const response = await fetch('/api/sidebar/menu', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+    const staffMenu = [
+      { path: '/employee-dashboard', label: 'Dashboard', icon: 'dashboard' },
+      { path: '/tasks', label: 'My Tasks', icon: 'task' },
+      { path: '/leaves', label: 'Leaves', icon: 'leave' },
+      { path: '/performance', label: 'Performance', icon: 'performance' },
+      { path: '/settings', label: 'Settings', icon: 'setting' },
+      { path: '/logout', label: 'Logout', icon: 'logout' }
+    ];
 
-        const data = await response.json();
-        if (data.success) {
-          setMenuItems(data.data.menuItems);
-        }
-      } catch (error) {
-        console.error('Error fetching menu items:', error);
-        // Fallback to original menu structure if API fails
-        const adminMenu = [
-          { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-          { path: '/employees', label: 'Employees', icon: 'employee' },
-          { path: '/leave', label: 'Leaves', icon: 'leave' },
-          { path: '/recruitment', label: 'Recruitment', icon: 'recruitment' },
-          { path: '/projects', label: 'Projects', icon: 'project' },
-          { path: '/payroll', label: 'Payroll', icon: 'payroll' },
-          { path: '/templates', label: 'Templates', icon: 'project' },
-          { path: '/settings', label: 'Settings', icon: 'setting' },
-          { path: '/logout', label: 'Logout', icon: 'logout' }
-        ];
+    // Combine both menus for demonstration purposes
+    // In a real app, you would show only the relevant menu based on user role
+    const combinedMenu = [...adminMenu, ...staffMenu];
+    
+    // Remove duplicates (logout appears in both)
+    const uniqueMenu = combinedMenu.filter((item, index, self) =>
+      index === self.findIndex((t) => t.path === item.path)
+    );
 
-        const staffMenu = [
-          { path: '/employee-dashboard', label: 'Dashboard', icon: 'dashboard' },
-          { path: '/tasks', label: 'My Tasks', icon: 'task' },
-          { path: '/leaves', label: 'Leaves', icon: 'leave' },
-          { path: '/performance', label: 'Performance', icon: 'performance' },
-          { path: '/settings', label: 'Settings', icon: 'setting' },
-          { path: '/logout', label: 'Logout', icon: 'logout' }
-        ];
-
-        // For demo purposes, we'll show admin menu
-        // In a real app, this would be determined by the user's role
-        setMenuItems(adminMenu);
-      }
-    };
-
-    fetchMenuItems();
+    setMenuItems(uniqueMenu);
   }, []);
 
   const sidebarClass = `sidebar${isOpen ? ' open' : ''}`;

@@ -1,0 +1,195 @@
+/* OVERLAY */
+.hp-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 19, 35, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.hp-popup-box {
+  background: #ffffff;
+  width: 420px;
+  padding: 32px 30px;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+}
+
+/* Close */
+.hp-popup-box .hp-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hp-popup-box .hp-close-btn img {
+  width: 22px;
+}
+
+/* Profile */
+.hp-popup-box .hp-profile-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  margin: 0 auto 10px auto;
+  display: block;
+}
+
+/* User Info */
+.hp-popup-box .hp-username {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: #1e293b;
+}
+
+.hp-popup-box .hp-role {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+/* CONTENT BOX */
+.hp-popup-box .hp-content-box {
+  border: 1px solid #dadada;
+  border-radius: 12px;
+  padding: 20px 22px;
+  text-align: left;
+}
+
+/* ROWS */
+.hp-popup-box .hp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.hp-popup-box .hp-row label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.hp-popup-box .hp-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Small Proof Button */
+.hp-popup-box .hp-proof-btn {
+  background: #1e7e34;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  height: 34px;
+  cursor: pointer;
+}
+
+.hp-popup-box .hp-proof-btn img {
+  width: 15px;
+}
+
+/* DESCRIPTION */
+.hp-popup-box .hp-description-block {
+  margin-bottom: 14px;
+}
+
+.hp-popup-box .hp-description-block label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.hp-popup-box .hp-description-block p {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* STATUS TITLE */
+.hp-popup-box .hp-status-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+/* STATUS BOX */
+.hp-popup-box .hp-status-box {
+  border: 1px solid #dadada;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Option */
+.hp-popup-box .hp-status-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Divider */
+.hp-popup-box .hp-status-divider {
+  width: 1px;
+  height: 18px;
+  background: #e5e7eb;
+}
+
+/* RADIO DOT with Border */
+.hp-popup-box .hp-radio {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background: white;
+  transition: 0.2s ease;
+}
+
+/* ACTIVE COLORS */
+.hp-popup-box .hp-radio.pending.active {
+  background: #F45B69;
+  border-color: #F45B69;
+}
+
+.hp-popup-box .hp-radio.rejected.active {
+  background: #E9F493;
+  border-color: #E9F493;
+}
+
+.hp-popup-box .hp-radio.approved.active {
+  background: #22C55E;
+  border-color: #22C55E;
+}
+
+/* UPDATE BUTTON */
+.hp-popup-box .hp-update-btn {
+  margin-top: 20px;
+  width: 100%;
+  background: #03962b;
+  padding: 14px 0;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.hp-popup-box .hp-update-btn:hover {
+  background: #047a25;
+}

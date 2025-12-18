@@ -3,6 +3,10 @@
   flex-direction: column;
   gap: 1.5rem;
   align-items: flex-start;
+  background-color: #FFFFFF;
+  min-height: calc(100vh - 40px);
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .attendance-header-card {
@@ -273,7 +277,10 @@
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
-  .attendance-page { gap: 1rem; }
+  .attendance-page { 
+    gap: 1rem; 
+    padding: 15px;
+  }
   .attendance-header-card,
   .attendance-table-wrapper,
   .attendance-card-list,

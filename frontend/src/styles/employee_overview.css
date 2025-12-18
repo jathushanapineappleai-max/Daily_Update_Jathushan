@@ -1,0 +1,381 @@
+/* ========= PAGE WRAPPER ========= */
+.eov-page {
+  background: #ffffff;
+  font-family: "Roboto", sans-serif;
+  color: #1e293b;
+  padding: 2px 3px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* Width wrapper */
+.eov-width {
+  max-width: 1580px;
+  margin: 0 auto;
+}
+
+/* ========= HEADER ========= */
+.eov-header {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  height: 80px;
+  padding: 0 24px;
+}
+
+.eov-back-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-right: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.eov-back-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.eov-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #1e293b;
+  margin-top: 10px;
+}
+
+/* ========= MAIN LAYOUT ========= */
+.eov-container {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 16px;
+  align-items: flex-start;
+}
+
+/* ========= LEFT PANEL ========= */
+.eov-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* profile card */
+.eov-profile-card {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #dadada;
+  padding: 12px;
+}
+
+.eov-profile-img {
+  width: 250px;
+  height: 250px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* name + id */
+.eov-basic {
+  position: relative;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #dadada;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eov-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.eov-role {
+  font-size: 12px;
+  color: #347e45;
+  margin: 2px 0 0;
+}
+
+.eov-id-badge {
+  background: #d3ffdc;
+  color: #347e45;
+  font-weight: 700;
+  font-size: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* promotions */
+.eov-promotions {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dadada;
+  padding: 16px;
+}
+
+.eov-promotions-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* timeline */
+.eov-timeline {
+  position: relative;
+  padding-left: 24px;
+}
+
+.eov-timeline::before {
+  content: "";
+  position: absolute;
+  left: 15.5px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #347e45;
+  height: 160px;
+  margin-top: 20px;
+}
+
+.eov-timeline-item {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.eov-timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.eov-dot {
+  position: absolute;
+  left: -16px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #347e45;
+}
+
+.eov-txt h5 {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+  margin-left: 20px;
+}
+
+.eov-txt span {
+  font-size: 12px;
+  color: #979494;
+  margin-left: 20px;
+}
+
+/* left green buttons */
+.eov-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.eov-green-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  background: #347e45;
+  color: #ffffff;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 0 14px;
+}
+
+.eov-green-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+
+.eov-green-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.98);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14), inset 0 -2px 0 rgba(0,0,0,0.03);
+}
+
+/* ========= RIGHT PANEL ========= */
+.eov-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* status row */
+.eov-status-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.eov-status-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dadada;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.eov-status-card img {
+  width: 22px;
+  height: 22px;
+}
+
+.eov-docs {
+  border-color: #f45b69;
+}
+
+.eov-green-txt {
+  color: #347e45;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.eov-dark-txt {
+  color: #1e293b;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.eov-red-txt {
+  color: #f45b69;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.eov-status-pill {
+  background: #d3ffdc;
+  color: #347e45;
+  border-radius: 24px;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ========= INFO CARDS ========= */
+.eov-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dadada;
+  padding: 20px;
+}
+
+.eov-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.eov-card-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.eov-card-header img {
+  width: 24px;
+  height: 24px;
+  margin-top: -15px;
+}
+
+/* grid inside card */
+.eov-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: -20px;
+}
+
+.eov-info {
+  border-radius: 12px;
+  border: 1px solid #dadada;
+  padding: 10px 16px;
+  position: relative;
+  height: 60px;
+  margin-top: 20px;
+}
+
+.eov-info label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #347e45;
+}
+
+.eov-info p {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1e293b;
+  margin-top: -2px;
+}
+
+/* icon inside card input */
+.eov-has-icon img {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+}
+
+/* ========= RESPONSIVE ========= */
+@media (max-width: 1200px) {
+  .eov-container {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+
+  .eov-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .eov-container {
+    grid-template-columns: 1fr;
+  }
+
+  .eov-left {
+    max-width: 360px;
+  }
+
+  .eov-status-row {
+    grid-template-columns: 1fr;
+  }
+
+  .eov-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .eov-page {
+    padding: 16px;
+  }
+
+  .eov-grid {
+    grid-template-columns: 1fr;
+  }
+}

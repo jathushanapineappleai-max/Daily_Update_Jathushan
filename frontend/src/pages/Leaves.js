@@ -1,10 +1,11 @@
-
-import React from "react";
+// src/pages/leaves.js
+import React, { useState } from "react";
 import pplus from '../assets/icons/+icon.png';
 import LeaveStats from '../sections/leaves/LeaveStats';
 import LeaveCalendar from '../sections/leaves/LeaveCalendar';
 import HolidayList from '../sections/leaves/HolidayList';
 import "../styles/leaves.css";
+import MainPopup from "../sections/leaves/hooks/popup/Mainpopup";
 
 /**
  * Small reusable Apply button component.
@@ -20,7 +21,7 @@ const Apply = ({ onClick, label = "Apply" }) => {
       aria-label={label}
     >
       <span className="apply-icon">
-        {/* alt="" because icon is decorative */}
+        {/* icon is decorative */}
         <img src={pplus} alt="" className="plus-icon" />
       </span>
 
@@ -30,8 +31,15 @@ const Apply = ({ onClick, label = "Apply" }) => {
 };
 
 export default function LeavesPage() {
-  const handleApply = () => {
-    alert("Apply button clicked");
+  // state to control MainPopup visibility
+  const [showMainPopup, setShowMainPopup] = useState(false);
+
+  const openApplyPopup = () => {
+    setShowMainPopup(true);
+  };
+
+  const closeApplyPopup = () => {
+    setShowMainPopup(false);
   };
 
   return (
@@ -39,7 +47,7 @@ export default function LeavesPage() {
       <div className="leaves-top-section">
         <h1>Leaves</h1>
         <div className="leaves-actions">
-          <Apply onClick={handleApply} label="Apply Leave" />
+          <Apply onClick={openApplyPopup} label="Apply Leave" />
         </div>
       </div>
 
@@ -50,6 +58,9 @@ export default function LeavesPage() {
         </div>
         <HolidayList />
       </div>
+
+      {/* Render MainPopup when requested */}
+      {showMainPopup && <MainPopup onClose={closeApplyPopup} />}
     </div>
   );
 }

@@ -1,0 +1,379 @@
+/* HalfdayPopup.css (updated) */
+/* Popup container */
+.hd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 22, 34, 0.06);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 36px;
+  z-index: 9999;
+  font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+}
+.hd-popup {
+  width: 800px;
+  height: 600px;
+  max-width: calc(100% - 48px);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 36px 56px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(8, 30, 40, 0.08);
+  color: #12202b;
+  z-index: 10000;
+}
+/* Title */
+.hd-title {
+  font-size: 24px;
+  color: #1E293B;
+  margin-bottom: 24px;
+  font-weight: 600;
+  font-style: SemiBold;
+}
+/* Close button */
+.hd-close-btn {
+  position: absolute;
+  right: 20px;
+  top: 36px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+/* Grey circle around close icon */
+.hd-close-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  box-shadow: none;
+}
+/* Close icon */
+.hd-close-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+/* Form wrapper: includes labels, inputs and buttons (excludes title & close button) */
+.hd-form {
+  padding-top: 30px;
+  width: 100%;
+}
+/* Label (used for all labels) */
+.hd-label {
+  display: block;
+  font-size: 16px; /* slightly smaller so layout feels balanced */
+  color: #1E293B;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+/* Shared input wrapper styles */
+.hd-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #fff;
+  box-sizing: border-box;
+  min-height: 44px;
+  max-height: 50px;
+  margin-bottom: 0; /* field-level spacing handled by .hd-field */
+  width: 100%;
+}
+/* Ensure the field container is the positioned ancestor for dropdowns */
+.hd-field {
+  flex: 1;
+  min-width: 0; /* important so long text doesn't force overflow */
+  position: relative; /* <- important so absolute menus align to the field width */
+}
+/* Visible text / file / date style normalization */
+.hd-input input[type="date"],
+.hd-input input[type="text"],
+.hd-input input[type="file"],
+.hd-input input[readonly] {
+  border: 0;
+  
+  font-size: 14px;
+  width: 100%;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+/* Select icon (for dropdowns) */
+.hd-select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  transition: transform 180ms ease;
+  pointer-events: none; /* icon itself doesn't capture clicks */
+}
+/* rotated state (180deg). Use this class when the dropdown is open */
+.hd-select-icon.hd-rotated {
+  transform: translateY(-50%) rotate(180deg);
+}
+/* Date input: date input + icon to the right */
+.hd-date {
+  padding-right: 56px;
+  position: relative;
+}
+.hd-date input[type="date"] {
+  padding-right: 6px;
+  /* ensure the browser default UI is suppressed so only our icon shows */
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+}
+/* hide webkit calendar picker indicator */
+.hd-date input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+/* additional vendor hides (best-effort) */
+.hd-date input[type="date"]::-webkit-clear-button,
+.hd-date input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+  -webkit-appearance: none;
+}
+/* custom date icon wrapper */
+.hd-date-icon-wrapper {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px; /* clickable area */
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8fbef;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.hd-date-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+}
+/* Visually hide native date input but keep it in DOM & usable programmatically */
+.hd-hidden-date {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+}
+/* Ensure visible input uses monospace-ish spacing for digits (optional) */
+.hd-input.hd-date input[type="text"] {
+  font-variant-numeric: tabular-nums;
+}
+/* Small visual cue for disabled/readonly fake control (optional) */
+.hd-input input[readonly] {
+  cursor: pointer;
+}
+/* Textarea for reason */
+.hd-textarea {
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  width: 100%;
+  min-height: 44px;
+  max-height: 50px;
+  resize: none;
+  margin-bottom: 16px;
+  outline: none;
+  box-shadow: none;
+  border-color: #e6e6e6;
+}
+/* Upload row label + pill */
+.hd-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+.hd-info-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  opacity: 0.9;
+}
+/* Replace existing .hd-pill and .hd-pill::before */
+.hd-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;                 /* smaller, matches your screenshot better */
+  padding: 8px 14px;            /* horizontal padding controls width */
+  min-width: 0;
+  background: #f2f2f3;
+  color: #7a7a7a;
+  font-size: 13px;
+  border-radius: 999px;
+  z-index: 2;
+  white-space: nowrap;          /* keep text on single line */
+  box-sizing: border-box;
+}
+
+.hd-pill::before {
+  content: "";
+  position: absolute;
+  left: -4px;                   /* move tail a bit left so it visually connects */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid #f2f2f3; /* match the pill background */
+  z-index: 1;
+}
+/* Upload field (fake input) */
+.hd-upload {
+  padding-right: 48px;
+}
+.hd-upload-fake {
+  width: 100%;
+  display: inline-block;
+  font-size: 14px;
+  color: #7d8a95;
+  cursor: pointer;
+  user-select: none;
+}
+/* Upload icon on the right */
+.hd-upload-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+/* Error messages */
+.hd-error {
+  color: #d32f2f;
+  font-size: 12px;
+  margin-top: 2px;
+  margin-bottom: 0%;
+  display: block;
+}
+
+.hd-input input[aria-invalid="true"],
+.hd-textarea[aria-invalid="true"] {
+ outline: none;
+  box-shadow: none;
+  border-color: #e6e6e6;
+}
+/* Submit row */
+.hdsubmit-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+/* ===== New layout: side-by-side fields wrapper =====
+   Use --hd-field-gap to easily adjust horizontal spacing between the two fields.
+*/
+.hd-fields-row {
+  display: flex;
+  gap: var(--hd-field-gap, 32px);
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 12px; /* keep overall spacing consistent */
+}
+/* Each field (e.g. Date or Start Time) gets its own column */
+.hd-field {
+  /* flex and positioning already declared above */
+}
+/* Make label a little less tall for compactness inside the row */
+.hd-field .hd-label {
+  margin-bottom: 8px;
+}
+/* On small screens, stack the fields */
+@media (max-width: 680px) {
+  .hd-fields-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+/* ---------- Start Time select dropdown specific styles ---------- */
+/* Make the toggle look like the other hd-input controls */
+.hd-select-toggle {
+  display: flex;
+  align-items: center;
+  /*justify-content: space-between;*/
+  width : 360px; /* changed from 120% -> 100% to match parent input width */
+  background: transparent;
+  border: 0;
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: #979494;
+}
+/* Dropdown menu container
+   Position relative to .hd-field (so its width == visible field width) */
+.hd-select-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 2px; /* align with hd-input inner padding */
+  right: 12px;
+  width: 325px;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(8, 30, 40, 0.06);
+  z-index: 11000;
+  padding: 8px 0;
+  max-height: 220px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+/* Individual option */
+.hd-select-item {
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hd-select-item:hover,
+.hd-select-item[aria-selected="true"] {
+  background: #f4f6f8;
+}
+/* Small muted placeholder */
+.hd-select-placeholder {
+  color: #7d8a95;
+  font-size: 14px;
+}
+/* When the dropdown is open, ensure the input border sits above overlay by increasing z */
+.hd-field .hd-input {
+  z-index: 1;
+}
+/* Prevent long words from breaking the layout */
+.hd-select-item,
+.hd-select-toggle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

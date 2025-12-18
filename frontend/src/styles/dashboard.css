@@ -1,3 +1,44 @@
 /* dashboard styles placeholder */
-.page-container { padding: 16px; }
+.page-container { 
+  padding: 16px; 
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Reduced spacing between sections */
+  width: 100%;
+  max-width: 1164px;
+  margin: 0; /* Ensure no centering that could cause misalignment */
+  box-sizing: border-box;
+  overflow: visible; /* Prevent internal scrolling */
+  height: auto; /* Allow flexible height */
+}
 
+.widgets-section {
+  width: 100%;
+  max-width: 1164px;
+  box-sizing: border-box;
+  overflow: visible; /* Prevent internal scrolling */
+  height: auto; /* Allow flexible height */
+}
+
+.overview-section {
+  width: 100%;
+  max-width: 1164px;
+  box-sizing: border-box;
+  overflow: visible; /* Prevent internal scrolling */
+  height: auto; /* Allow flexible height */
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .widgets-section,
+  .overview-section {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}

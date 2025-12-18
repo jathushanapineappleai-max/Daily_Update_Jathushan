@@ -1,0 +1,332 @@
+/* EmployeesPage.css */
+
+/* Container */
+.emppage-container {
+  width: 100%;
+  max-width: 1250px;
+  margin: 24px auto;
+  box-sizing: border-box;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1f2937;
+  min-height: calc(100vh - 48px);
+  background-color: #FFFFFF;
+}
+
+/* Shared box styling */
+.emp-box {
+  background: #ffffff;
+  border: 1px solid #e6eef2;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 62px;
+  box-shadow: 0 1px 0 rgba(16,24,40,0.03);
+}
+
+/* Header specific */
+.emp-box--header {
+  max-width: 1170px;
+  padding-right: 20px;
+}
+
+.emp-title {
+  width: 118px;
+  height: 28px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f1724;
+}
+
+/* Header actions wrapper to keep the button aligned */
+.emp-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Toggle group (current/former) */
+.emp-box--toggles {
+  padding: 22px;
+  min-height: 110px;
+  max-width: 1170px;
+}
+
+/* Group wrapper */
+.emp-toggle-group {
+  display: flex;
+  gap: 16px; /* requested gap */
+  align-items: center;
+}
+
+/* Toggle buttons shared style (neutral / outline by default) */
+.emp-toggle-btn {
+  width: 260px;
+  height: 58px;
+  border-radius: 35px;
+  gap: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+  border: 2px solid #0f1724; /* outline color when inactive */
+  background: transparent;    /* neutral by default */
+  color: #0f1724;             /* text color when inactive */
+}
+
+/* Active state: filled black background, white text */
+.emp-toggle-btn--active {
+  background: #0f1724;     /* filled */
+  color: #ffffff;          /* text becomes white */
+  border-color: #0f1724;   /* match border to fill */
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(31,41,55,0.06);
+}
+
+/* Keep hover for inactive buttons (subtle) */
+.emp-toggle-btn:not(.emp-toggle-btn--active):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(31,41,55,0.04);
+}
+
+/* Focus visuals */
+.emp-toggle-btn:focus {
+  outline-offset: 2px;
+}
+
+/* Icon inside button */
+.emp-btn-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: inline-block;
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  align-self: center; /* Center icon vertically */
+}
+
+/* Text inside button */
+.emp-btn-text {
+  display: inline-block;
+  margin-left: 8px;
+  line-height: 1;
+  align-self: center; /* Center text vertically */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Container where the selected list will render */
+.emp-list-container {
+  background: #ffffff;
+  border: 1px solid #e6eef2;
+  border-radius: 12px;
+  padding: 18px;
+  box-sizing: border-box;
+  min-height: 160px;
+  box-shadow: 0 1px 0 rgba(16,24,40,0.03);
+}
+
+/* Pagination container inside the list */
+.emp-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding: 16px 0;
+}
+
+/* Ensure images used in the layout scale nicely */
+.emp-list-container img,
+.emp-box img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1440px) {
+  .emppage-container {
+    padding: 12px;
+    padding-bottom: 40px;
+  }
+
+  /* Stack toggles on narrower screens and allow controls to flow below */
+  .emp-toggle-group {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch; /* allow full-width items */
+  }
+
+  .emp-toggle-btn {
+    width: 100%;
+    min-width: 0;
+    height: 56px;
+    font-size: 18px;
+  }
+
+  .emp-btn-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: inline-block;
+    margin-left: 0;
+  }
+
+  .emp-btn-text {
+    display: inline-block;
+    margin-left: 8px;
+    line-height: 1;
+  }
+
+  /* Keep header layout but allow vertical stacking when space is tight */
+  .emp-box {
+    padding: 14px;
+  }
+
+  .emp-box--header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  /* Allow header actions to wrap */
+  .emp-header-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding-left: 0;
+  }
+
+  /* Slightly reduce title size to help fit */
+  .emp-title {
+    font-size: 18px;
+    width: auto;
+    height: auto;
+  }
+
+  /* Allow the right placeholder to shrink on medium screens */
+  .emp-box-right {
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .emp-pagination {
+    justify-content: flex-end;
+    padding-right: 20px;
+  }
+}
+
+/* Mobile-specific tweaks (max-width: 480px) */
+@media (max-width: 480px) {
+  .emppage-container {
+    width: 100%;
+    max-width: 380px;
+    padding: 10px;
+    gap: 12px;
+    padding-bottom: 40px;
+    padding-left: 0px;
+    margin-left: 0%;
+    padding-right: 0px;
+  }
+
+  /* Stack boxes vertically and reduce padding */
+  .emp-box {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 12px;
+    padding-left: 0px;
+    padding-right: 0px;
+    gap: 10px;
+    width: 100%;
+    max-width: 370px;
+  }
+
+  .emp-box--header {
+    padding-right: 0px;
+    padding-left: 0px;
+    width: 100%;
+    max-width: 370px;
+    display: flex;
+    flex-direction: row;     /* keep title and actions on same row */
+    align-items: center;
+    justify-content: space-between; /* title left, actions right */
+    gap: 8px;
+  }
+
+  .emp-title {
+    order: 0;
+    margin-left: 2%;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 700;
+    width: auto;
+    height: auto;
+  }
+
+  .emp-header-actions {
+    order: 1;
+    width: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-left: 0;
+    margin-right: 2%;
+    margin-bottom: 0;
+    align-self: center;
+  }
+
+  /* Toggle group becomes a vertical list that fills width */
+  .emp-toggle-group {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    padding-left: 10px;
+  }
+
+  .emp-toggle-btn {
+    width: 100%;
+    height: 48px;
+    border-radius: 12px;
+    padding: 0 12px;
+    justify-content: left;
+    min-width: 200px;
+  }
+
+  .emp-btn-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0%;
+  }
+
+  .emp-btn-text {
+    margin-left: 0px;
+    margin-right: 14%;
+    font-size: 12px;
+  }
+
+  .emp-list-container {
+    padding: 12px;
+    min-height: 120px;
+    width: 100%;
+    max-width: 370px;
+  }
+
+  .emp-header-actions > * {
+    max-width: 48%;
+  }
+}

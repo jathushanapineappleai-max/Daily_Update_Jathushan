@@ -1,0 +1,311 @@
+/* =============================
+   PAGE WRAPPER
+=============================*/
+.edit-wrapper {
+  padding: 20px;
+  background: #FFFFFF;
+  font-family: "Roboto", sans-serif;
+}
+
+/* =============================
+   HEADER BOX
+=============================*/
+.edit-header-box {
+  width: 100%;
+  max-width: 1384px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.edit-header-box h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.back-btn img {
+  width: 32px;
+  height: 32px;
+}
+
+/* =============================
+   MAIN GRID
+=============================*/
+.edit-grid {
+  margin-top: 20px;
+  display: flex;
+  gap: 25px;
+}
+
+/* Left Column */
+.left-col {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* =============================
+   PROFILE CARD
+=============================*/
+.profile-card {
+  position: relative;
+}
+
+.profile-img {
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.profile-edit-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* =============================
+   DOCUMENT CARD
+=============================*/
+.doc-card {
+  background: #fff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.doc-card h4 {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.doc-field {
+  margin-bottom: 15px;
+}
+
+.doc-field.error .doc-input {
+  border: 1px solid #f45b69;
+}
+
+.doc-field label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.doc-input {
+  margin-top: 6px;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.doc-input span {
+  color: #979494;
+}
+
+.doc-input img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain; /* keeps the icon clean */
+  cursor: pointer;
+}
+
+/* =============================
+   RIGHT PANEL
+=============================*/
+.right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* =============================
+   INFO CARD (TOP)
+=============================*/
+.info-card {
+  background: #fff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.info-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.info-field {
+  border: 1px solid #347e45;
+  border-radius: 10px;
+  padding: 12px;
+  position: relative;
+  height: 60px;
+  
+}
+
+.info-field.normal {
+  border-color: #dadada;
+}
+
+.info-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #347e45;
+  
+}
+
+.info-field p {
+  margin-top: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.info-field .icon {
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* =============================
+   BOTTOM SECTION (3 CARDS)
+=============================*/
+.bottom-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.small-card {
+  background: #fff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.small-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.small-field {
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  height: 60px;
+}
+
+.small-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #347e45;
+}
+
+.small-field p {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.view-btn {
+  margin-top: 8px;
+  border: 1px solid #347e45;
+  border-radius: 10px;
+  background: transparent;
+  color: #347e45;
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 50px;
+}
+
+/* =============================
+   FOOTER BUTTONS
+=============================*/
+.footer-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.cancel-btn {
+  background: #fff;
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background: #347e45;
+  border-radius: 10px;
+  color: #fff;
+  padding: 14px 24px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* =============================
+   RESPONSIVE
+=============================*/
+@media (max-width: 1400px) {
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bottom-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .edit-grid {
+    flex-direction: column;
+  }
+
+  .left-col {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .bottom-info {
+    grid-template-columns: 1fr;
+  }
+}
