@@ -1,9 +1,15 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
-// Minimal placeholder guard: always allow for now
 export default function PrivateRoute() {
-  const isAuthed = true; // replace with real auth later
-  return isAuthed ? <Outlet /> : <Navigate to="/login" replace />;
+  const { isAuthenticated, loading } = useAuth();
+  
+  // Show nothing while checking authentication status
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 }
 

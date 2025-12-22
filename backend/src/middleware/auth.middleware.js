@@ -3,6 +3,13 @@ const { User } = require('../models');
 
 // Protect routes
 exports.protect = async (req, res, next) => {
+  // Add cache control headers to prevent caching of protected routes
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+
   let token;
 
   // Check for token in headers
@@ -12,7 +19,8 @@ exports.protect = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
 
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
+      const secret = process.env.JWT_SECRET || 'fallback_secret';
+      const decoded = jwt.verify(token, secret);
 
       // Get user from token
       req.user = await User.findByPk(decoded.id, {

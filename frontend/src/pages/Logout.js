@@ -1,12 +1,19 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 export default function Logout() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  
   useEffect(() => {
-    try { localStorage.removeItem('demoUser'); } catch (e) {}
+    // Perform logout
+    logout();
+    
+    // Navigate to login page
     navigate('/login', { replace: true });
-  }, [navigate]);
+  }, [navigate, logout]);
+  
   return null;
 }
 

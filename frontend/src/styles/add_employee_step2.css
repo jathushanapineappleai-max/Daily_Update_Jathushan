@@ -2,8 +2,14 @@
    ADD EMPLOYEE - STEP 2 PAGE (Educational & Professional Info)
    ========================================================== */
 
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
 .employee-step2-page {
-  background: #f9fafb;
+  background: #ffffff;
   font-family: "Roboto", sans-serif;
   color: #1e293b;
   padding: 20px 40px;
@@ -43,11 +49,11 @@
   cursor: pointer;
 }
 
-/* Pagination */
+/* Pagination (Step Indicator - Figma Specification) */
 .pagination {
   display: flex;
   align-items: center;
-  gap: 8px;
+  position: relative;
 }
 
 .circle {
@@ -55,30 +61,48 @@
   height: 30px;
   border-radius: 21px;
   border: 2px solid #979494;
-  background: #dadada;
+  background: #DADADA;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 15px;
+  line-height: 18px;
+  text-align: center;
   color: #1e293b;
+  box-sizing: border-box;
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: circlePop 0.3s ease;
 }
 
 .circle.active {
-  border-color: #347e45;
-  background: #ffffff;
-  color: #347e45;
+  border: 2px solid #347E45;
+  background: #347E45;
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+.circle.done {
+  border: 2px solid #347E45;
+  background: #347E45;
+  color: #FFFFFF;
 }
 
 .line {
-  width: 100px;
-  height: 4px;
-  background: #dadada;
-  border-radius: 2px;
+  width: 117px;
+  height: 5px;
+  background: #DADADA;
+  z-index: 1;
+  margin: 0 -15px;
+  transition: all 0.3s ease;
 }
 
 .line.active {
-  background: #347e45;
+  background: #347E45;
+  animation: lineFill 0.3s ease;
 }
 
 /* Info Boxes */
@@ -103,21 +127,32 @@
 }
 
 .add-btn {
-  width: 50px;
-  height: 50px;
-  background: #347e45;
-  border: none;
-  border-radius: 10px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding: 0;
+  gap: 10px;
+  width: 50px;
+  height: 50px;
+  background: #347E45;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .plus-icon {
   width: 19px;
   height: 38px;
-
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 38px;
+  color: #FFFFFF;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
 }
 
 /* Divider line */
@@ -155,6 +190,10 @@ select {
   font-size: 16px;
   color: #1e293b;
   background: #ffffff;
+  appearance: none; /* Remove default browser styles */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-sizing: border-box;
 }
 
 input::placeholder,
@@ -164,16 +203,20 @@ select {
 
 .input-icon {
   position: relative;
+  height: 48px;
+  box-sizing: border-box;
 }
 
 .dropdown-icon {
   position: absolute;
-  right: 12px;
-  top: 12px;
+  right: 16px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
   width: 24px;
   height: 24px;
   object-fit: contain;
-  opacity: 0.8;
+  pointer-events: none;
 }
 
 /* Buttons */
@@ -224,7 +267,30 @@ select {
     grid-template-columns: repeat(2, 1fr);
   }
   .pagination .line {
-    width: 60px;
+    width: 80px;
+    margin: 0 -10px;
+  }
+}
+
+/* Animation keyframes */
+@keyframes circlePop {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lineFill {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 117px;
   }
 }
 
@@ -258,11 +324,22 @@ select {
   .add-btn {
     width: 40px;
     height: 40px;
+    padding: 0;
+    position: absolute;
+    right: 24px;
+    top: 24px;
   }
 
   .plus-icon {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 28px;
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  .input-icon {
+    height: 48px;
+    box-sizing: border-box;
   }
 }
 
@@ -279,5 +356,6 @@ select {
   input,
   select {
     font-size: 14px;
+    box-sizing: border-box;
   }
 }

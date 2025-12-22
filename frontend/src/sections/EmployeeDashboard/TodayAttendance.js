@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './TodayAttendance.css';
 import checkInIcon from '../../assets/icons/checkin.png';
 import breakTimeIcon from '../../assets/icons/break_time.png';
@@ -18,6 +18,11 @@ const TodayAttendance = () => {
     checkOut: '00:00 p.m',
     totalDays: '0 days'
   });
+  
+  // Refs for animation
+  const totalDaysRef = useRef(null);
+  const containerRef = useRef(null);
+  const cardsRef = useRef([]);
 
   // Timer effect
   useEffect(() => {
@@ -59,17 +64,80 @@ const TodayAttendance = () => {
 
     return () => clearInterval(timer);
   }, [checkInTime, breakStartTime, attendanceState, totalBreakTime]);
+  
+  // Animate Total Days counter on mount
+  useEffect(() => {
+    if (totalDaysRef.current) {
+      // Quick counting animation for Total Days
+      let count = 0;
+      const target = 150; // Simulate a realistic number of total days
+      const duration = 1500; // 1.5 seconds
+      const increment = target === 0 ? 0 : Math.ceil(target / (duration / 16));
+      
+      const animateCounter = () => {
+        if (count < target) {
+          count = Math.min(count + increment, target);
+          setDisplayTime(prev => ({
+            ...prev,
+            totalDays: `${count} days`
+          }));
+          requestAnimationFrame(animateCounter);
+        }
+      };
+      
+      // Start animation after a short delay
+      const timeout = setTimeout(() => {
+        animateCounter();
+      }, 300);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, []);
+  
+  // Add entrance animations
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.classList.add('ta-container-enter');
+      
+      // Staggered card animations
+      setTimeout(() => {
+        cardsRef.current.forEach((card, index) => {
+          if (card) {
+            setTimeout(() => {
+              card.classList.add('ta-card-enter');
+            }, index * 100);
+          }
+        });
+      }, 100);
+    }
+  }, []);
 
   const handleCheckIn = () => {
     const now = new Date();
     setCheckInTime(now);
     setAttendanceState('checkedIn');
+    
+    // Add animation feedback
+    if (cardsRef.current[0]) {
+      cardsRef.current[0].classList.add('ta-card-action-feedback');
+      setTimeout(() => {
+        cardsRef.current[0].classList.remove('ta-card-action-feedback');
+      }, 1000);
+    }
   };
 
   const handleTakeBreak = () => {
     const now = new Date();
     setBreakStartTime(now);
     setAttendanceState('onBreak');
+    
+    // Add animation feedback
+    if (cardsRef.current[1]) {
+      cardsRef.current[1].classList.add('ta-card-action-feedback');
+      setTimeout(() => {
+        cardsRef.current[1].classList.remove('ta-card-action-feedback');
+      }, 1000);
+    }
   };
 
   const handleBackToWork = () => {
@@ -79,11 +147,27 @@ const TodayAttendance = () => {
     }
     setBreakStartTime(null);
     setAttendanceState('checkedIn');
+    
+    // Add animation feedback
+    if (cardsRef.current[1]) {
+      cardsRef.current[1].classList.add('ta-card-action-feedback');
+      setTimeout(() => {
+        cardsRef.current[1].classList.remove('ta-card-action-feedback');
+      }, 1000);
+    }
   };
 
   const handleCheckOutClick = () => {
     // Show confirmation modal instead of directly checking out
     setShowCheckoutModal(true);
+    
+    // Add animation feedback
+    if (cardsRef.current[2]) {
+      cardsRef.current[2].classList.add('ta-card-action-feedback');
+      setTimeout(() => {
+        cardsRef.current[2].classList.remove('ta-card-action-feedback');
+      }, 1000);
+    }
   };
 
   const handleCheckOutConfirm = () => {
@@ -101,21 +185,51 @@ const TodayAttendance = () => {
     setAttendanceState('checkedOut');
     setBreakStartTime(null);
     setShowCheckoutModal(false);
+    
+    // Add animation feedback
+    if (cardsRef.current[2]) {
+      cardsRef.current[2].classList.add('ta-card-action-feedback');
+      setTimeout(() => {
+        cardsRef.current[2].classList.remove('ta-card-action-feedback');
+      }, 1000);
+    }
   };
 
   const handleCheckOutCancel = () => {
     setShowCheckoutModal(false);
   };
 
+  // Function to add pulse animation to active card
+  const addActiveCardPulse = () => {
+    // Remove pulse from all cards first
+    cardsRef.current.forEach(card => {
+      if (card) {
+        card.classList.remove('ta-card-active-pulse');
+      }
+    });
+    
+    // Add pulse to active card based on state
+    if (attendanceState === 'checkedIn' && cardsRef.current[0]) {
+      cardsRef.current[0].classList.add('ta-card-active-pulse');
+    } else if (attendanceState === 'onBreak' && cardsRef.current[1]) {
+      cardsRef.current[1].classList.add('ta-card-active-pulse');
+    }
+  };
+
+  // Add pulse animation to active card when state changes
+  useEffect(() => {
+    addActiveCardPulse();
+  }, [attendanceState]);
+
   return (
-    <div className="today-attendance-container">
+    <div className="today-attendance-container" ref={containerRef}>
       <h2 className="ta-title">Today Attendance</h2>
       
       <div className="ta-content">
         {/* Left Column - Check In & Break Time */}
         <div className="ta-column">
           {/* Check In Card */}
-          <div className="ta-card">
+          <div className="ta-card" ref={(el) => cardsRef.current[0] = el}>
             <div className="ta-card-icon">
               <img src={checkInIcon} alt="Check In" />
             </div>
@@ -126,7 +240,7 @@ const TodayAttendance = () => {
           </div>
 
           {/* Break Time Card */}
-          <div className="ta-card">
+          <div className="ta-card" ref={(el) => cardsRef.current[1] = el}>
             <div className="ta-card-icon">
               <img src={breakTimeIcon} alt="Break Time" />
             </div>
@@ -140,7 +254,7 @@ const TodayAttendance = () => {
         {/* Right Column - Check Out & Total Days */}
         <div className="ta-column">
           {/* Check Out Card */}
-          <div className="ta-card">
+          <div className="ta-card" ref={(el) => cardsRef.current[2] = el}>
             <div className="ta-card-icon">
               <img src={checkOutIcon} alt="Check Out" />
             </div>
@@ -151,13 +265,13 @@ const TodayAttendance = () => {
           </div>
 
           {/* Total Days Card */}
-          <div className="ta-card">
+          <div className="ta-card" ref={(el) => cardsRef.current[3] = el}>
             <div className="ta-card-icon">
               <img src={totalDaysIcon} alt="Total Days" />
             </div>
             <div className="ta-card-content">
               <p className="ta-card-label">Total Days</p>
-              <p className="ta-card-time">{displayTime.totalDays}</p>
+              <p className="ta-card-time" ref={totalDaysRef}>{displayTime.totalDays}</p>
             </div>
           </div>
         </div>

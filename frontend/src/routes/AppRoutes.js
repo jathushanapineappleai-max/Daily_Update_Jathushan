@@ -13,6 +13,7 @@ import ForgotPassword from '../pages/ForgotPassword';
 import EnterOTP from '../pages/Enter-OTP';
 import UpdatePassword from '../pages/Update password';
 import NotFound from '../pages/NotFound';
+import Unauthorized from '../pages/Unauthorized';
 import Attendence from '../pages/Attendence';
 import AttendancePage from '../pages/AttendancePage';
 import OrganizationalHierarchy from '../pages/OrganizationalHierarchy';
@@ -30,24 +31,28 @@ export default function AppRoutes() {
       <Route path="/enter-otp" element={<EnterOTP />} />
       <Route path="/update-password" element={<UpdatePassword />} />
 
+      {/* Admin Routes */}
       <Route element={<PrivateRoute />}> 
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<AdminDashboard />} />
-        <Route path="/employees" element={<EmployeesPage />} />
-        <Route path="/employees/new" element={<NewEmployee />} />
-        <Route path="/employees/step2" element={<AddEmployeeStep2 />} />
-        <Route path="/employees/step3" element={<AddEmployeeStep3 />} />
-        <Route path="/employees/:id" element={<EmployeeProfile />} />
-        <Route path="/employees/:id/overview" element={<EmployeeOverview />} />
-        <Route path="/employees/:id/edit" element={<EditEmployee />} />
-        <Route path="/attendance" element={<AttendancePage />} />
-        <Route path="/leaves" element={<Leaves />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/org-hierarchy" element={<OrganizationalHierarchy />} />
+        <Route element={<RoleRoute allow={['admin']} />}> 
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<AdminDashboard />} />
+          <Route path="/employees" element={<EmployeesPage />} />
+          <Route path="/employees/new" element={<NewEmployee />} />
+          <Route path="/employees/step2" element={<AddEmployeeStep2 />} />
+          <Route path="/employees/step3" element={<AddEmployeeStep3 />} />
+          <Route path="/employees/:id" element={<EmployeeProfile />} />
+          <Route path="/employees/:id/overview" element={<EmployeeOverview />} />
+          <Route path="/employees/:id/edit" element={<EditEmployee />} />
+          <Route path="/attendance" element={<AttendancePage />} />
+          <Route path="/leaves" element={<Leaves />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/org-hierarchy" element={<OrganizationalHierarchy />} />
+        </Route>
       </Route>
 
+      {/* Catch-all for unauthorized access */}
+      <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

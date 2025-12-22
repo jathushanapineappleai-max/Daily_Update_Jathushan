@@ -90,41 +90,62 @@
 }
 
 /* ==========================================================
-   PAGINATION
+   PAGINATION (Step Indicator - Figma Specification)
    ========================================================== */
 
 .pagination {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  position: relative;
 }
 
 .circle {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: 21px;
   border: 2px solid #979494;
-  background: #dadada;
+  background: #DADADA;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
   font-size: 15px;
+  line-height: 18px;
+  text-align: center;
   color: #1e293b;
+  box-sizing: border-box;
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: circlePop 0.3s ease;
 }
 
 .circle.active {
-  border-color: #347e45;
-  background: #ffffff;
-  color: #347e45;
+  border: 2px solid #347E45;
+  background: #347E45;
+  color: #FFFFFF;
+  transform: scale(1.1);
+}
+
+.circle.done {
+  border: 2px solid #347E45;
+  background: #347E45;
+  color: #FFFFFF;
 }
 
 .line {
-  width: 100px;
-  height: 4px;
-  background: #dadada;
-  border-radius: 2px;
+  width: 117px;
+  height: 5px;
+  background: #DADADA;
+  z-index: 1;
+  margin: 0 -15px;
+  transition: all 0.3s ease;
+}
+
+.line.active {
+  background: #347E45;
+  animation: lineFill 0.3s ease;
 }
 
 /* ==========================================================
@@ -178,7 +199,6 @@
 .profile-box {
   width: 50px;
   height: 50px;
-  background: #dadada;
   border-radius: 10px;
 }
 
@@ -301,6 +321,28 @@ select {
   border: none;
 }
 
+/* Animation keyframes */
+@keyframes circlePop {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lineFill {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 117px;
+  }
+}
+
 /* ==========================================================
    ✅ FULL RESPONSIVE BREAKPOINTS
    ========================================================== */
@@ -316,7 +358,8 @@ select {
   }
 
   .line {
-    width: 60px;
+    width: 80px;
+    margin: 0 -10px;
   }
 }
 
@@ -383,6 +426,11 @@ select {
     width: 26px;
     height: 26px;
     font-size: 13px;
+  }
+  
+  .line {
+    width: 50px;
+    margin: 0 -8px;
   }
 }
 

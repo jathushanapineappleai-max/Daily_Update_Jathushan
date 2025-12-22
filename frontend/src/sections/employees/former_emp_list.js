@@ -1,13 +1,15 @@
-// former_emp_list.js
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/former_emp_list.css";
 import filter from "../../assets/icons/filterricon.png";
 import search from "../../assets/icons/searchicon.png";
-import greenicon from "../../assets/icons/editicon.png";
-import blueicon from "../../assets/icons/editblueicon.png";
+import greenicon from "../../assets/icons/editicon.png";       // Overview
+import blueicon from "../../assets/icons/editblueicon.png";   // Edit
 import tempp from "../../assets/icons/img.png";
 
 const FormerEmpList = () => {
+  const navigate = useNavigate();
+  
   const employees = [
     {
       id: "01",
@@ -65,6 +67,16 @@ const FormerEmpList = () => {
     },
   ];
 
+  // 🔥 Navigate to Employee Overview (GREEN button)
+  const openOverview = (empId) => {
+    navigate(`/employees/${empId}/overview`);
+  };
+
+  // 🔥 Navigate to Edit Employee (BLUE button)
+  const openEdit = (empId) => {
+    navigate(`/employees/${empId}/edit`);
+  };
+
   return (
     <div className="fsection">
       <div className="header-box">
@@ -106,11 +118,13 @@ const FormerEmpList = () => {
               <td>{emp.role}</td>
               <td>{emp.mgmtRole}</td>
               <td>
-                <button className="action-btn">
-                  <img src={greenicon} alt="Green Action" />
+                {/* 🟢 GREEN button = Overview */}
+                <button className="action-btn" onClick={() => openOverview(emp.id)}>
+                  <img src={greenicon} alt="View Overview" />
                 </button>
-                <button className="action-btn">
-                  <img src={blueicon} alt="Blue Action" />
+                {/* 🔵 BLUE button = Edit Employee */}
+                <button className="action-btn" onClick={() => openEdit(emp.id)}>
+                  <img src={blueicon} alt="Edit Employee" />
                 </button>
               </td>
             </tr>
@@ -122,4 +136,3 @@ const FormerEmpList = () => {
 };
 
 export default FormerEmpList;
-

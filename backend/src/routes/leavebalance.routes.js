@@ -2,17 +2,22 @@
 const express = require('express');
 const router = express.Router();
 const leaveBalanceController = require('../controllers/leavebalance.controller');
+const { protect, authorize } = require('../middleware/auth.middleware');
 
 // GET list
-router.get('/', leaveBalanceController.getAll);
+// Only admin can get all leave balances
+router.get('/', protect, authorize('admin'), leaveBalanceController.getAll);
 
 // GET single
-router.get('/:id', leaveBalanceController.getById);
+// Only admin can get a single leave balance
+router.get('/:id', protect, authorize('admin'), leaveBalanceController.getById);
 
 // Manual move from leave request -> leave_balance
-router.post('/move-from-request', leaveBalanceController.moveFromRequest);
+// Only admin can manually move leave balances
+router.post('/move-from-request', protect, authorize('admin'), leaveBalanceController.moveFromRequest);
 
 // Manual revert
-router.post('/revert-from-request', leaveBalanceController.revertFromRequest);
+// Only admin can manually revert leave balances
+router.post('/revert-from-request', protect, authorize('admin'), leaveBalanceController.revertFromRequest);
 
 module.exports = router;

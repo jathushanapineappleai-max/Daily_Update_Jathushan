@@ -1,11 +1,12 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import './CheckoutConfirmModal.css';
 import checkoutIcon from '../assets/icons/checkout_red.png';
 
 const CheckoutConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <div className="checkout-modal-overlay">
       <div className="checkout-modal">
         {/* Icon - PNG with circle already included */}
@@ -28,6 +29,8 @@ const CheckoutConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };
 
 export default CheckoutConfirmModal;

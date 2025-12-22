@@ -1,7 +1,7 @@
 const app = require("./app");   // ✅ CORRECT PATH
 const { connectDB } = require("./config/db");
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -13,12 +13,15 @@ process.on('uncaughtException', (err) => {
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Log the full error details
+  console.error('Full error details:', reason);
   // Don't exit, just log the error
+  // process.exit(1); // Removed to prevent termination
 });
 
 // ✅ Connect Database First
 connectDB().then(() => {
-  const server = app.listen(PORT, () => {
+  const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 PAI ERP Server running on port ${PORT}`);
   });
 

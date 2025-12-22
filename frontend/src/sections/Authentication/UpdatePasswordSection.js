@@ -6,7 +6,7 @@ import errorIcon from '../../assets/icons/error.png';
 import PasswordUpdateSuccess from '../../modals/PasswordUpdateSuccess';
 import PasswordResetFailed from '../../modals/PasswordResetFailed';
 
-export default function UpdatePasswordSection({ onUpdated }) {
+export default function UpdatePasswordSection({ onBack, onUpdated }) {
   const [pw1, setPw1] = useState('');
   const [pw2, setPw2] = useState('');
   const [show1, setShow1] = useState(false);
@@ -34,7 +34,7 @@ export default function UpdatePasswordSection({ onUpdated }) {
 
   const canSubmit = !validatePw1(pw1) && pw2 !== '';
 
-  const update = () => {
+  const update = async () => {
     setTouched({ pw1: true, pw2: true });
     const e1 = validatePw1(pw1);
     const e2 = validatePw2(pw2, pw1);
@@ -48,13 +48,20 @@ export default function UpdatePasswordSection({ onUpdated }) {
       return;
     }
 
-    // Show success modal
-    setShowSuccessModal(true);
+    // Call the onUpdated function to attempt password update
+    // The parent component will handle success/error states
+    const result = await onUpdated?.(pw1, pw2);
+    
+    // If the password reset was successful, show the success modal
+    if (result?.success) {
+      setShowSuccessModal(true);
+    }
   };
 
   const handleBackToLogin = () => {
     setShowSuccessModal(false);
-    onUpdated?.(pw1);
+    // Navigate back to login/welcome screen
+    onBack?.();
   };
 
   const handleFailedModalClose = () => {

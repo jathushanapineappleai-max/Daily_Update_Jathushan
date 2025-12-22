@@ -11,7 +11,7 @@
 
 /* Modal Container */
 .checkout-modal {
-  position: absolute;
+  position: relative;
   width: 436px;
   height: 438px;
   background: #FFFFFF;
@@ -21,15 +21,15 @@
   align-items: center;
   padding: 0px;
   gap: 5px;
+  z-index: 1001;
 }
 
 /* Icon Group */
 .checkout-modal-icon-group {
-  position: absolute;
+  position: relative;
   width: 88px;
   height: 88px;
-  left: 174px;
-  top: 39px;
+  margin-top: 39px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,11 +44,10 @@
 
 /* Title */
 .checkout-modal-title {
-  position: absolute;
+  position: relative;
   width: 376px;
   height: 70px;
-  left: calc(50% - 376px/2);
-  top: 155px;
+  margin-top: 27px;
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -62,11 +61,10 @@
 
 /* Confirm Button (Yes) */
 .checkout-modal-btn-confirm {
-  position: absolute;
+  position: relative;
   width: 376px;
   height: 56px;
-  left: calc(50% - 376px/2);
-  top: 285px;
+  margin-top: 53px;
   background: #F45B69;
   border: none;
   border-radius: 10px;
@@ -97,11 +95,11 @@
 
 /* Cancel Button (No) */
 .checkout-modal-btn-cancel {
-  position: absolute;
+  position: relative;
   width: 376px;
   height: 56px;
-  left: calc(50% - 376px/2);
-  top: 352px;
+  margin-top: 12px;
+  margin-bottom: 39px;
   background: #FFFFFF;
   border: 1px solid #DADADA;
   border-radius: 10px;

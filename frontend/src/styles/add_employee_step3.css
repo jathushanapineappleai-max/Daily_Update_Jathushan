@@ -3,7 +3,7 @@
    ========================================================== */
 
 .add-employee-step3 {
-  background: #f9fafb;
+  background: #ffffff;
   font-family: "Roboto", sans-serif;
   color: #1e293b;
   padding: 0 20px 60px;
@@ -40,11 +40,11 @@
   object-fit: contain;
 }
 
-/* ---------- Pagination ---------- */
+/* ---------- Pagination (Step Indicator - Figma Specification) ---------- */
 .pagination {
   display: flex;
   align-items: center;
-  gap: 8px;
+  position: relative;
 }
 
 .circle {
@@ -52,33 +52,48 @@
   height: 30px;
   border-radius: 21px;
   border: 2px solid #979494;
-  background: #dadada;
+  background: #DADADA;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+  text-align: center;
+  color: #1e293b;
+  box-sizing: border-box;
+  z-index: 2;
+  position: relative;
+  transition: all 0.3s ease;
+  animation: circlePop 0.3s ease;
 }
 
 .circle.active {
-  border-color: #347e45;
-  background: #ffffff;
-  color: #347e45;
+  border: 2px solid #347E45;
+  background: #347E45;
+  color: #FFFFFF;
+  transform: scale(1.1);
 }
 
 .circle.done {
-  background: #347e45;
-  color: #ffffff;
-  border-color: #347e45;
+  border: 2px solid #347E45;
+  background: #347E45;
+  color: #FFFFFF;
 }
 
 .line {
-  width: 100px;
-  height: 4px;
-  background: #dadada;
+  width: 117px;
+  height: 5px;
+  background: #DADADA;
+  z-index: 1;
+  margin: 0 -15px;
+  transition: all 0.3s ease;
 }
 
 .line.active {
-  background: #347e45;
+  background: #347E45;
+  animation: lineFill 0.3s ease;
 }
 
 /* ---------- White boxes ---------- */
@@ -119,25 +134,25 @@ hr {
   margin-bottom: 6px;
 }
 
+/* NIC header row - puts label and mandatory row on same line */
+.nic-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
 /* Mandatory pill like your Figma (“! + Both sides required…”) */
 .mandatory-row {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
 }
 
-.mandatory-dot {
+.info-icon {
   width: 18px;
   height: 18px;
-  border-radius: 4px;
-  background: #dadada;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 12px;
-  color: #1e293b;
+  object-fit: contain;
 }
 
 .mandatory-pill {
@@ -147,6 +162,7 @@ hr {
   font-size: 10px;
   line-height: 100%;
   color: #979494;
+  white-space: nowrap;
 }
 
 /* Upload field */
@@ -331,6 +347,28 @@ label {
   cursor: pointer;
 }
 
+/* Animation keyframes */
+@keyframes circlePop {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lineFill {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 117px;
+  }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1200px) {
   .upload-grid {
@@ -340,7 +378,8 @@ label {
     grid-template-columns: repeat(2, 1fr);
   }
   .line {
-    width: 70px;
+    width: 80px;
+    margin: 0 -10px;
   }
 }
 
@@ -366,6 +405,13 @@ label {
     right: 16px;
     left: 16px;
   }
+  
+  /* Adjust NIC header row for mobile */
+  .nic-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -381,6 +427,7 @@ label {
     font-size: 14px;
   }
   .line {
-    width: 40px;
+    width: 50px;
+    margin: 0 -8px;
   }
 }

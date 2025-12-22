@@ -9,6 +9,7 @@ import calendarIcon from "../assets/icons/calender.png";
 import dropdownIcon from "../assets/icons/dropdown.png";
 import successIcon from "../assets/icons/success.png";
 import closeIcon from "../assets/icons/Close.png";
+import infoIcon from "../assets/icons/inicon.png"; // Added info icon
 
 export default function AddEmployeeStep3() {
   const navigate = useNavigate();
@@ -95,11 +96,12 @@ export default function AddEmployeeStep3() {
         <div className="upload-grid">
           {/* NIC */}
           <div className="upload-col">
-            <label className="upload-title">NIC</label>
-
-            <div className="mandatory-row">
-              <div className="mandatory-dot">!</div>
-              <div className="mandatory-pill">Both sides of NIC required.</div>
+            <div className="nic-header-row">
+              <label className="upload-title">NIC</label>
+              <div className="mandatory-row">
+                <img src={infoIcon} alt="info" className="info-icon" />
+                <div className="mandatory-pill">Both sides of NIC required.</div>
+              </div>
             </div>
 
             <label className="upload-field">
@@ -120,11 +122,12 @@ export default function AddEmployeeStep3() {
 
           {/* Birth Certificate */}
           <div className="upload-col">
-            <label className="upload-title">Birth Certificate</label>
-
-            <div className="mandatory-row">
-              <div className="mandatory-dot">!</div>
-              <div className="mandatory-pill">Both sides of Birth Certificate required.</div>
+            <div className="nic-header-row">
+              <label className="upload-title">Birth Certificate</label>
+              <div className="mandatory-row">
+                <img src={infoIcon} alt="info" className="info-icon" />
+                <div className="mandatory-pill">Both sides of Birth Certificate required.</div>
+              </div>
             </div>
 
             <label className="upload-field">
@@ -152,13 +155,6 @@ export default function AddEmployeeStep3() {
           {/* Educational Certificate */}
           <div className="upload-col">
             <label className="upload-title">Educational Certificate</label>
-
-            <div className="mandatory-row">
-              <div className="mandatory-dot">!</div>
-              <div className="mandatory-pill">
-                Both sides of Educational Certificate required.
-              </div>
-            </div>
 
             <label className="upload-field">
               <img src={uploadIcon} alt="upload" />

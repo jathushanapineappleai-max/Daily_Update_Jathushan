@@ -30,9 +30,10 @@ app.use((req, res, next) => {
 
 // Enhanced CORS for frontend
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // For development, allow all origins
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-User-ID, X-User-Role, X-Employee-ID');
   res.header('Access-Control-Allow-Credentials', true);
   
   if (req.method === 'OPTIONS') {
@@ -56,7 +57,9 @@ app.use((err, req, res, next) => {
 });
 
 // ✅ Sync DB (Safe Mode)
-sequelize.sync({ alter: false });
+// Disabled automatic sync to prevent 'too many keys' error
+// Models should be managed through migrations
+// sequelize.sync({ alter: false });
 
 // Mount routers
 app.use('/api/auth', authRoutes);

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 import logo from '../assets/images/logo.png';
 import pineappleBrand from '../assets/images/pineappleai.png';
+import { getSidebarMenu } from '../integration/sidebarAPI';
 
 import dashboardIcon from '../assets/icons/dashboard.png';
 import employeeIcon from '../assets/icons/employee.png';
@@ -33,38 +34,27 @@ const Sidebar = ({ isOpen, onNavigate }) => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    // Define menu items for both roles (admin and staff)
-    const adminMenu = [
-      { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-      { path: '/employees', label: 'Employees', icon: 'employee' },
-      { path: '/leave', label: 'Leaves', icon: 'leave' },
-      { path: '/recruitment', label: 'Recruitment', icon: 'recruitment' },
-      { path: '/projects', label: 'Projects', icon: 'project' },
-      { path: '/payroll', label: 'Payroll', icon: 'payroll' },
-      { path: '/templates', label: 'Templates', icon: 'project' },
-      { path: '/settings', label: 'Settings', icon: 'setting' },
-      { path: '/logout', label: 'Logout', icon: 'logout' }
-    ];
+    const fetchMenuItems = async () => {
+      try {
+        const response = await getSidebarMenu();
+        if (response.success) {
+          setMenuItems(response.data.menuItems);
+        }
+      } catch (error) {
+        console.error('Error fetching sidebar menu:', error);
+        // Fallback to hardcoded menu if API fails
+        const fallbackMenu = [
+          { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+          { path: '/employees', label: 'Employees', icon: 'employee' },
+          { path: '/leave', label: 'Leaves', icon: 'leave' },
+          { path: '/settings', label: 'Settings', icon: 'setting' },
+          { path: '/logout', label: 'Logout', icon: 'logout' }
+        ];
+        setMenuItems(fallbackMenu);
+      }
+    };
 
-    const staffMenu = [
-      { path: '/employee-dashboard', label: 'Dashboard', icon: 'dashboard' },
-      { path: '/tasks', label: 'My Tasks', icon: 'task' },
-      { path: '/leaves', label: 'Leaves', icon: 'leave' },
-      { path: '/performance', label: 'Performance', icon: 'performance' },
-      { path: '/settings', label: 'Settings', icon: 'setting' },
-      { path: '/logout', label: 'Logout', icon: 'logout' }
-    ];
-
-    // Combine both menus for demonstration purposes
-    // In a real app, you would show only the relevant menu based on user role
-    const combinedMenu = [...adminMenu, ...staffMenu];
-    
-    // Remove duplicates (logout appears in both)
-    const uniqueMenu = combinedMenu.filter((item, index, self) =>
-      index === self.findIndex((t) => t.path === item.path)
-    );
-
-    setMenuItems(uniqueMenu);
+    fetchMenuItems();
   }, []);
 
   const sidebarClass = `sidebar${isOpen ? ' open' : ''}`;
@@ -77,15 +67,27 @@ const Sidebar = ({ isOpen, onNavigate }) => {
       </div>
       <nav className="sidebar-nav">
         {menuItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-            onClick={onNavigate}
-          >
-            <img className="nav-icon" src={iconMap[item.icon]} alt={`${item.label} icon`} />
-            <span className="nav-label">{item.label}</span>
-          </NavLink>
+          (item.path === '/logout' ? (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className="nav-item"
+              onClick={onNavigate}
+            >
+              <img className="nav-icon" src={iconMap[item.icon]} alt={`${item.label} icon`} />
+              <span className="nav-label">{item.label}</span>
+            </NavLink>
+          ) : (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+              onClick={onNavigate}
+            >
+              <img className="nav-icon" src={iconMap[item.icon]} alt={`${item.label} icon`} />
+              <span className="nav-label">{item.label}</span>
+            </NavLink>
+          ))
         ))}
       </nav>
     </div>

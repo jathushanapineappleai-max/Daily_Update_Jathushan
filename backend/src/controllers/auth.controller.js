@@ -385,6 +385,15 @@ exports.resetPassword = async (req, res) => {
         message: 'Invalid OTP'
       });
     }
+    
+    // Check if new password is the same as current password
+    const isSameAsCurrent = await bcrypt.compare(newPassword, user.password_hash);
+    if (isSameAsCurrent) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password cannot be the same as your current password'
+      });
+    }
 
     // Hash new password using our centralized function
     const hashedPassword = await hashPassword(newPassword);
@@ -459,6 +468,15 @@ exports.changePassword = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: 'Current password is incorrect'
+      });
+    }
+    
+    // Check if new password is the same as current password
+    const isSameAsCurrent = await bcrypt.compare(newPassword, user.password_hash);
+    if (isSameAsCurrent) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password cannot be the same as your current password'
       });
     }
 

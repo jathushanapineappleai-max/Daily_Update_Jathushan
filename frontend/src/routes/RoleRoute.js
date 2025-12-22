@@ -1,9 +1,12 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
+import useRoleGuard from '../hooks/useRoleGuard';
 
-// Minimal placeholder role guard: always allow for now
 export default function RoleRoute({ allow = [] }) {
-  const hasRole = true; // replace with real role check later
-  return hasRole ? <Outlet /> : <Navigate to="/" replace />;
+  const { hasAccess } = useRoleGuard(allow);
+  
+  // If user has access, render the child routes
+  // Otherwise, redirect to unauthorized page or login
+  return hasAccess ? <Outlet /> : <Navigate to="/unauthorized" replace />;
 }
 

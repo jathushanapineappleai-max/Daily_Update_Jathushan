@@ -6,6 +6,8 @@ import './App.css';
 // Layout Components
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
+// import ProtectedRoute from './components/ProtectedRoute'; // No longer used, replaced with RoleProtectedRoute
+import RoleProtectedRoute from './components/RoleProtectedRoute';
 
 // Pages
 import AdminDashboard from './pages/AdminDashboard';
@@ -22,6 +24,14 @@ import Attendence from './pages/Attendence';
 import Login from './pages/Login';
 import TemplatesPage from './pages/TemplatesPage';
 import Logout from './pages/Logout';
+import Unauthorized from './pages/Unauthorized';
+
+// Additional Pages
+import TasksPage from './pages/TasksPage';
+import PerformancePage from './pages/PerformancePage';
+import SettingsPage from './pages/SettingsPage';
+import ProjectsPage from './pages/ProjectsPage';
+import PayrollPage from './pages/PayrollPage';
 
 // New Page Added
 import OrganizationalHierarchy from './pages/OrganizationalHierarchy';
@@ -48,34 +58,40 @@ function AppShell() {
         {!hideChrome && <Header onToggleSidebar={() => setSidebarOpen((v) => !v)} />}
         <div className={`page-content ${hideChrome ? 'page-content--full' : ''}`}>
           <Routes>
-            {/* Auth Pages */}
+            {/* Public Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
 
-            {/* Admin Routes */}
-            <Route path="/dashboard" element={<AdminDashboard />} />
-            <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
-            <Route path="/employees" element={<EmployeesPage />} />
-            <Route path="/employees/new" element={<NewEmployee />} />
-            <Route path="/employees/step2" element={<AddEmployeeStep2 />} />
-            <Route path="/employees/step3" element={<AddEmployeeStep3 />} />
-            <Route path="/employees/:id" element={<EmployeeProfilePage />} />
-            <Route path="/employees/:id/overview" element={<EmployeeOverview />} />
-            <Route path="/employees/:id/edit" element={<EditEmployee />} />
-            <Route path="/attendance" element={<AttendancePage />} />
-            <Route path="/leave" element={<LeavePage />} />
-            <Route path="/recruitment" element={<RecruitmentPage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/templates" element={<TemplatesPage />} />
+            {/* Admin-only Routes */}
+            <Route path="/dashboard" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminDashboard /></RoleProtectedRoute>} />
+            <Route path="/employee-dashboard" element={<RoleProtectedRoute allowedRoles={['employee']}><EmployeeDashboard /></RoleProtectedRoute>} />
+            <Route path="/projects" element={<RoleProtectedRoute allowedRoles={['admin']}><ProjectsPage /></RoleProtectedRoute>} />
+            <Route path="/payroll" element={<RoleProtectedRoute allowedRoles={['admin']}><PayrollPage /></RoleProtectedRoute>} />
+            <Route path="/employees" element={<RoleProtectedRoute allowedRoles={['admin']}><EmployeesPage /></RoleProtectedRoute>} />
+            <Route path="/employees/new" element={<RoleProtectedRoute allowedRoles={['admin']}><NewEmployee /></RoleProtectedRoute>} />
+            <Route path="/employees/step2" element={<RoleProtectedRoute allowedRoles={['admin']}><AddEmployeeStep2 /></RoleProtectedRoute>} />
+            <Route path="/employees/step3" element={<RoleProtectedRoute allowedRoles={['admin']}><AddEmployeeStep3 /></RoleProtectedRoute>} />
+            <Route path="/employees/:id" element={<RoleProtectedRoute allowedRoles={['admin']}><EmployeeProfilePage /></RoleProtectedRoute>} />
+            <Route path="/employees/:id/overview" element={<RoleProtectedRoute allowedRoles={['admin']}><EmployeeOverview /></RoleProtectedRoute>} />
+            <Route path="/employees/:id/edit" element={<RoleProtectedRoute allowedRoles={['admin']}><EditEmployee /></RoleProtectedRoute>} />
+            <Route path="/attendance" element={<RoleProtectedRoute allowedRoles={['admin']}><AttendancePage /></RoleProtectedRoute>} />
+            <Route path="/leave" element={<RoleProtectedRoute allowedRoles={['admin']}><LeavePage /></RoleProtectedRoute>} />
+            <Route path="/recruitment" element={<RoleProtectedRoute allowedRoles={['admin']}><RecruitmentPage /></RoleProtectedRoute>} />
+            <Route path="/reports" element={<RoleProtectedRoute allowedRoles={['admin']}><ReportsPage /></RoleProtectedRoute>} />
+            <Route path="/templates" element={<RoleProtectedRoute allowedRoles={['admin']}><TemplatesPage /></RoleProtectedRoute>} />
 
             {/* New Route Added */}
-            <Route path="/org-hierarchy" element={<OrganizationalHierarchy />} />
+            <Route path="/org-hierarchy" element={<RoleProtectedRoute allowedRoles={['admin']}><OrganizationalHierarchy /></RoleProtectedRoute>} />
 
             {/* Staff Self-Service Routes */}
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/leaves" element={<Leaves />} />
-            <Route path="/my-attendance" element={<Attendence />} />
+            <Route path="/tasks" element={<RoleProtectedRoute allowedRoles={['employee']}><TasksPage /></RoleProtectedRoute>} />
+            <Route path="/performance" element={<RoleProtectedRoute allowedRoles={['employee']}><PerformancePage /></RoleProtectedRoute>} />
+            <Route path="/profile" element={<RoleProtectedRoute allowedRoles={['admin', 'employee']}><Profile /></RoleProtectedRoute>} />
+            <Route path="/leaves" element={<RoleProtectedRoute allowedRoles={['admin', 'employee']}><Leaves /></RoleProtectedRoute>} />
+            <Route path="/my-attendance" element={<RoleProtectedRoute allowedRoles={['admin', 'employee']}><Attendence /></RoleProtectedRoute>} />
+            <Route path="/settings" element={<RoleProtectedRoute allowedRoles={['admin', 'employee']}><SettingsPage /></RoleProtectedRoute>} />
           </Routes>
         </div>
       </div>

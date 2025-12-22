@@ -1,8 +1,7 @@
 .error-modal {
   position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 20px;
+  right: 20px;
   width: 591px;
   max-width: calc(100vw - 40px);
   height: 70px;
@@ -71,7 +70,7 @@
     width: calc(100% - 40px);
     left: 20px;
     right: 20px;
-    transform: none;
+    bottom: 20px;
     height: 65px;
     gap: 12px;
   }
@@ -87,7 +86,7 @@
     width: calc(100% - 24px);
     left: 12px;
     right: 12px;
-    transform: none;
+    bottom: 12px;
     height: 60px;
   }
   .error-modal .message {

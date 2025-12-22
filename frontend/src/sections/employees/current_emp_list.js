@@ -307,8 +307,8 @@ import "../../styles/current_emp_list.css";
 
 import filter from "../../assets/icons/filterricon.png";
 import search from "../../assets/icons/searchicon.png";
-import greenicon from "../../assets/icons/editicon.png";       // Edit employee
-import blueicon from "../../assets/icons/editblueicon.png";   // Overview
+import greenicon from "../../assets/icons/editicon.png";       // Overview (was Edit)
+import blueicon from "../../assets/icons/editblueicon.png";   // Edit (was Overview)
 import tempimg from "../../assets/icons/img.png";
 
 const CurrentEmpList = () => {
@@ -356,13 +356,13 @@ const CurrentEmpList = () => {
       managerAvatar: tempimg,
     },
   ];
-
-  // 🔥 Navigate to Employee Overview
+  
+  // 🔥 Navigate to Employee Overview (GREEN button)
   const openOverview = (empId) => {
     navigate(`/employees/${empId}/overview`);
   };
 
-  // 🔥 Navigate to Edit Employee
+  // 🔥 Navigate to Edit Employee (BLUE button)
   const openEdit = (empId) => {
     navigate(`/employees/${empId}/edit`);
   };
@@ -434,20 +434,20 @@ const CurrentEmpList = () => {
 
               {/* ACTION BUTTONS */}
               <td>
-                {/* 🟢 GREEN button = Edit Employee */}
-                <button
-                  className="cemp-action-btn"
-                  onClick={() => openEdit(emp.id)}
-                >
-                  <img src={greenicon} alt="Edit Employee" />
-                </button>
-
-                {/* 🔵 BLUE button = Overview */}
+                {/* 🟢 GREEN button = Overview */}
                 <button
                   className="cemp-action-btn"
                   onClick={() => openOverview(emp.id)}
                 >
-                  <img src={blueicon} alt="View Overview" />
+                  <img src={greenicon} alt="View Overview" />
+                </button>
+
+                {/* 🔵 BLUE button = Edit Employee */}
+                <button
+                  className="cemp-action-btn"
+                  onClick={() => openEdit(emp.id)}
+                >
+                  <img src={blueicon} alt="Edit Employee" />
                 </button>
               </td>
             </tr>

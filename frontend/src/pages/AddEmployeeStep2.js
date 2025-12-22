@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 // ✅ Local PNG icons
 import backIcon from "../assets/icons/back.png";
 import dropdownIcon from "../assets/icons/dropdown.png";
-import plusIcon from "../assets/icons/plus.png";
 
 export default function AddEmployeeStep2() {
   const navigate = useNavigate();
@@ -32,11 +31,11 @@ export default function AddEmployeeStep2() {
         </div>
 
         <div className="pagination">
-          <div className="circle active">1</div>
+          <div className="circle done">1</div>
           <div className="line active"></div>
           <div className="circle active">2</div>
           <div className="line"></div>
-          <div className="circle"></div>
+          <div className="circle">3</div>
         </div>
       </div>
 
@@ -45,7 +44,7 @@ export default function AddEmployeeStep2() {
         <div className="info-header">
           <h3>Educational Information</h3>
           <button className="add-btn">
-            <img src={plusIcon} alt="Add" className="plus-icon" />
+            <span className="plus-icon">+</span>
           </button>
         </div>
         <hr />
@@ -111,7 +110,7 @@ export default function AddEmployeeStep2() {
         <div className="info-header">
           <h3>Professional Information</h3>
           <button className="add-btn">
-            <img src={plusIcon} alt="Add" className="plus-icon" />
+            <span className="plus-icon">+</span>
           </button>
         </div>
         <hr />
