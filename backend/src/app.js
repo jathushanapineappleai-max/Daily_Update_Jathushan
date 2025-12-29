@@ -19,6 +19,7 @@ const ruleCategoryRoutes = require('./routes/rulecategory.routes');
 const ruleRoutes = require('./routes/rule.routes');
 const roleRoutes = require('./routes/role.routes');
 
+
 const app = express();
 app.use(express.json());
 
@@ -77,6 +78,7 @@ app.use('/api', ruleCategoryRoutes);
 app.use('/api', ruleRoutes);
 app.use('/roles', roleRoutes);
 
+
 // ✅ Test Route
 app.get("/", (req, res) => {
   res.send("PAI ERP Backend Running ✅");
@@ -106,7 +108,8 @@ app.get("/api/test-db", async (req, res) => {
       message: "✅ Database connection successful!",
       database: dbName,
       connection: true,
-      tables: tables.length
+      tables: tables.length,
+      version: process.env.PROJECT_VERSION || '1.0.0'
     });
   } catch (error) {
     res.status(500).json({

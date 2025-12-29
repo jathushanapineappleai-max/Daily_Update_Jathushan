@@ -25,7 +25,7 @@ export default function MainPopup({ onClose = () => {} }) {
   const [showHoursPermission, setShowHoursPermission] = useState(false);
   const [showCompulsoryLeave, setShowCompulsoryLeave] = useState(false);
   const [showMainContent, setShowMainContent] = useState(true);
-  const [thought, setThought] = useState(null); // used by think()
+  const [, setThought] = useState(null); // used by think()
   const dropdownRef = useRef(null);
 
   // think() - user asked to include a "think" function. It stores a short debug note and logs.

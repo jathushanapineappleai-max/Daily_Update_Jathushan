@@ -93,15 +93,8 @@ If you did not request this, please ignore this email.`,
 // @access  Public
 exports.login = async (req, res) => {
   try {
-    const { identifier, password, rememberMe } = req.body;
-
-    // Validate input
-    if (!identifier || !password) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide Employee ID/Email and password'
-      });
-    }
+    // Use validated data from middleware instead of raw req.body
+    const { identifier, password, rememberMe } = req.validatedData || req.body;
 
     // Check for user by emp_id or email
     const user = await User.findOne({
@@ -189,15 +182,8 @@ exports.login = async (req, res) => {
 // @access  Public
 exports.forgotPassword = async (req, res) => {
   try {
-    const { email } = req.body;
-
-    // Validate email
-    if (!email) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide email address'
-      });
-    }
+    // Use validated data from middleware instead of raw req.body
+    const { email } = req.validatedData || req.body;
 
     // Check for user
     const user = await User.findOne({
@@ -255,15 +241,8 @@ exports.forgotPassword = async (req, res) => {
 // @access  Public
 exports.verifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
-
-    // Validate input
-    if (!email || !otp) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide email and OTP'
-      });
-    }
+    // Use validated data from middleware instead of raw req.body
+    const { email, otp } = req.validatedData || req.body;
 
     // Find user by email
     const user = await User.findOne({
@@ -322,31 +301,8 @@ exports.verifyOtp = async (req, res) => {
 // @access  Public
 exports.resetPassword = async (req, res) => {
   try {
-    const { email, otp, newPassword, confirmPassword } = req.body;
-
-    // Validate input
-    if (!email || !otp || !newPassword || !confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide all required fields'
-      });
-    }
-
-    // Check if passwords match
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: 'Passwords do not match'
-      });
-    }
-
-    // Validate password strength
-    if (newPassword.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: 'Password must be at least 6 characters long'
-      });
-    }
+    // Use validated data from middleware instead of raw req.body
+    const { email, otp, newPassword, confirmPassword } = req.validatedData || req.body;
 
     // Find user by email
     const user = await User.findOne({
@@ -424,32 +380,9 @@ exports.resetPassword = async (req, res) => {
 // @access  Private
 exports.changePassword = async (req, res) => {
   try {
-    const { currentPassword, newPassword, confirmPassword } = req.body;
+    // Use validated data from middleware instead of raw req.body
+    const { currentPassword, newPassword, confirmPassword } = req.validatedData || req.body;
     const userId = req.user.id;
-
-    // Validate input
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide all required fields'
-      });
-    }
-
-    // Check if passwords match
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: 'New passwords do not match'
-      });
-    }
-
-    // Validate password strength
-    if (newPassword.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: 'New password must be at least 6 characters long'
-      });
-    }
 
     // Get user
     const user = await User.findByPk(userId);

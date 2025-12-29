@@ -278,7 +278,6 @@ export default function LeavePopup({ onClose = () => {}, onSubmit = () => {} }) 
               value={category}
               aria-label="Leave category"
               aria-haspopup="listbox"
-              aria-expanded={isCategoryOpen}
               onClick={toggleCategoryDropdown}
               tabIndex={0}
             />

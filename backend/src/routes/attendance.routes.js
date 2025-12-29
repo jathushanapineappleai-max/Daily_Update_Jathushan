@@ -10,7 +10,8 @@ const {
   getEmployeeAttendanceRecords,
   getAllEmployeesAttendanceRecords,
   getAttendanceTrends,
-  getAttendanceByDepartment
+  getAttendanceByDepartment,
+  getTodayAttendanceCount
 } = require('../controllers/attendance.controller');
 const { protect, authorize } = require('../middleware/auth.middleware');
 
@@ -50,5 +51,8 @@ router.route('/admin/analytics/trends')
 
 router.route('/admin/analytics/departments')
   .get(protect, authorize('admin'), getAttendanceByDepartment);
+
+router.route('/admin/analytics/today-count')
+  .get(protect, authorize('admin'), getTodayAttendanceCount);
 
 module.exports = router;

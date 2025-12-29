@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../styles/EmployeesPage.css';
 import NewEmpButton from "../components/Buttons/ActionButton";
 import cempicon from "../assets/icons/currentemp.png";
@@ -11,7 +10,6 @@ import Pagination from '../components/Pagination';
 const EmployeesPage = () => {
   // view: 'current' | 'former'
   const [view, setView] = useState('current');
-  const navigate = useNavigate();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);

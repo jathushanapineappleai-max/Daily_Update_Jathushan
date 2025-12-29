@@ -15,7 +15,7 @@ import UpdatePassword from '../pages/Update password';
 import NotFound from '../pages/NotFound';
 import Unauthorized from '../pages/Unauthorized';
 import Attendence from '../pages/Attendence';
-import AttendancePage from '../pages/AttendancePage';
+import AttendanceAdmin from '../pages/AttendanceAdmin';
 import OrganizationalHierarchy from '../pages/OrganizationalHierarchy';
 import NewEmployee from '../pages/NewEmployee';
 import AddEmployeeStep2 from '../pages/AddEmployeeStep2';
@@ -43,7 +43,7 @@ export default function AppRoutes() {
           <Route path="/employees/:id" element={<EmployeeProfile />} />
           <Route path="/employees/:id/overview" element={<EmployeeOverview />} />
           <Route path="/employees/:id/edit" element={<EditEmployee />} />
-          <Route path="/attendance" element={<AttendancePage />} />
+          <Route path="/attendance" element={<AttendanceAdmin />} />
           <Route path="/leaves" element={<Leaves />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/profile" element={<Profile />} />

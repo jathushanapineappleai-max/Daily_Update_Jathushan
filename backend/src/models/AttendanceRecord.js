@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
     break_start: { type: DataTypes.DATE, allowNull: true },
     total_break_duration: { type: DataTypes.INTEGER, defaultValue: 0 }, // in seconds
     working_hours: { type: DataTypes.FLOAT, defaultValue: 0 }, // in hours
-    status: { type: DataTypes.ENUM('on_time', 'late', 'early_departure', 'absent'), defaultValue: 'absent' },
+    status: { type: DataTypes.ENUM('on_time', 'late', 'early_arrival', 'early_departure', 'absent'), defaultValue: 'absent' },
     method: { type: DataTypes.ENUM('biometric', 'manual', 'mobile'), defaultValue: 'manual' },
     is_spoof_detected: { type: DataTypes.BOOLEAN, defaultValue: false },
     created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },

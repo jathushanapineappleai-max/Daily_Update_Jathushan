@@ -17,7 +17,7 @@ export default function OfferLetterTemplate() {
       }
       document.addEventListener("mousedown", onDocClick);
       return () => document.removeEventListener("mousedown", onDocClick);
-    }, []);
+    }, [wrapperRef]);
 
     useEffect(() => { if (!open) setHighlighted(-1); }, [open]);
 

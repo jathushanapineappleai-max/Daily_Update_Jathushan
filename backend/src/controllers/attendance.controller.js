@@ -53,10 +53,27 @@ exports.clockIn = async (req, res) => {
     
     const clockInTime = new Date();
     
-    // Determine if late (assuming 9:00 AM as deadline)
-    const lateThreshold = new Date();
-    lateThreshold.setHours(9, 0, 0, 0);
-    const status = clockInTime > lateThreshold ? 'late' : 'on_time';
+    // Determine status based on new thresholds: on-time window is 6:45 AM to 7:00 AM (inclusive)
+    const onTimeStart = new Date();
+    onTimeStart.setHours(6, 45, 0, 0); // 6:45 AM - start of on-time window
+    const onTimeEnd = new Date();
+    onTimeEnd.setHours(7, 0, 0, 0); // 7:00 AM - end of on-time window
+    
+    // Extract time components for comparison (hours and minutes only)
+    const clockInHours = clockInTime.getHours();
+    const clockInMinutes = clockInTime.getMinutes();
+    const clockInTotalMinutes = clockInHours * 60 + clockInMinutes;
+    const onTimeStartTotalMinutes = 6 * 60 + 45; // 6:45 AM = 405 minutes from midnight
+    const onTimeEndTotalMinutes = 7 * 60 + 0; // 7:00 AM = 420 minutes from midnight
+    
+    let status;
+    if (clockInTotalMinutes >= onTimeStartTotalMinutes && clockInTotalMinutes <= onTimeEndTotalMinutes) {
+      status = 'on_time'; // On time if within the window (inclusive)
+    } else if (clockInTotalMinutes < onTimeStartTotalMinutes) {
+      status = 'early_arrival'; // Early arrival if before the window
+    } else {
+      status = 'late'; // Late if after the window
+    }
     
     let attendanceRecord;
     
@@ -85,7 +102,8 @@ exports.clockIn = async (req, res) => {
       data: {
         id: attendanceRecord.id,
         clock_in: attendanceRecord.clock_in,
-        status: attendanceRecord.status
+        status: attendanceRecord.status,
+        total_break_duration: attendanceRecord.total_break_duration || 0
       }
     });
   } catch (error) {
@@ -147,7 +165,8 @@ exports.clockOut = async (req, res) => {
       data: {
         id: updatedRecord.id,
         clock_out: updatedRecord.clock_out,
-        working_hours: updatedRecord.working_hours
+        working_hours: updatedRecord.working_hours,
+        total_break_duration: updatedRecord.total_break_duration || 0
       }
     });
   } catch (error) {
@@ -266,6 +285,7 @@ exports.endBreak = async (req, res) => {
       message: 'Break ended successfully',
       data: {
         id: updatedRecord.id,
+        break_start: updatedRecord.break_start,
         total_break_duration: updatedRecord.total_break_duration
       }
     });
@@ -480,17 +500,74 @@ exports.getAttendanceTrends = async (req, res) => {
 // @access  Private (Admin)
 exports.getAttendanceByDepartment = async (req, res) => {
   try {
-    // This would require department information which is not in the current model
-    // For now, we'll return a placeholder response
+    // Join attendance records with users to get department information
+    const attendanceByDepartment = await AttendanceRecord.findAll({
+      attributes: [
+        [fn('COUNT', col('AttendanceRecord.id')), 'total_records'],
+        [fn('COUNT', where(col('AttendanceRecord.status'), 'on_time')), 'on_time_count'],
+        [fn('COUNT', where(col('AttendanceRecord.status'), 'late')), 'late_count'],
+        [fn('AVG', col('AttendanceRecord.working_hours')), 'avg_working_hours']
+      ],
+      include: [{
+        model: User,
+        attributes: ['department'],
+        required: true
+      }],
+      group: ['User.department'],
+      raw: true
+    });
+    
+    // Transform the data to include attendance rate percentages
+    const departments = attendanceByDepartment.map(dept => {
+      const total = parseInt(dept.total_records);
+      const onTime = parseInt(dept.on_time_count);
+      const late = parseInt(dept.late_count);
+      const attendanceRate = total > 0 ? ((onTime + late) / total) * 100 : 0;
+      
+      return {
+        name: dept.department || 'Unknown Department',
+        total_records: total,
+        on_time_count: onTime,
+        late_count: late,
+        avg_working_hours: parseFloat(dept.avg_working_hours?.toFixed(2)) || 0,
+        attendance_rate: parseFloat(attendanceRate.toFixed(2))
+      };
+    });
+    
     res.status(200).json({
       success: true,
       data: {
-        departments: [],
-        message: 'Department data not implemented - requires Department model integration'
+        departments: departments
       }
     });
   } catch (error) {
     const errorResponse = handleDatabaseError(error, 'get attendance by department');
+    res.status(500).json(errorResponse);
+  }
+};
+
+// @desc    Get today's attendance count
+// @route   GET /api/attendance/admin/analytics/today-count
+// @access  Private (Admin)
+exports.getTodayAttendanceCount = async (req, res) => {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    
+    const count = await AttendanceRecord.count({
+      where: {
+        date: today,
+        clock_in: { [Op.not]: null } // Only count those who have clocked in
+      }
+    });
+    
+    res.status(200).json({
+      success: true,
+      data: {
+        count: count
+      }
+    });
+  } catch (error) {
+    const errorResponse = handleDatabaseError(error, 'get today attendance count');
     res.status(500).json(errorResponse);
   }
 };

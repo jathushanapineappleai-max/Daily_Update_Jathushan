@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import './Header.css';
 import defaultProfile from '../assets/images/default_profile.png';
@@ -7,6 +7,29 @@ import bellIcon from '../assets/icons/bell.png';
 
 const Header = ({ onToggleSidebar }) => {
   const { user, loading } = useAuth();
+  
+  // State for database info and project version
+  const [dbInfo, setDbInfo] = useState({ database: 'Loading...', version: 'Loading...' });
+  
+  // Fetch database info from backend
+  useEffect(() => {
+    const fetchDbInfo = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001'}/test-db`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.database) {
+            setDbInfo(prev => ({ ...prev, database: data.database, version: data.version }));
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching database info:', error);
+        setDbInfo(prev => ({ ...prev, database: 'Error loading', version: 'Error loading' }));
+      }
+    };
+    
+    fetchDbInfo();
+  }, []);
   
   // Get greeting based on time of day
   const getGreeting = () => {
@@ -56,6 +79,9 @@ const Header = ({ onToggleSidebar }) => {
       <div className="header-title">
         <div className="title">Hello {getFirstName()} <span className="wave" aria-hidden="true">👋</span></div>
         <div className="subtitle">{getGreeting()}</div>
+        <div className="db-info">
+          DB: {dbInfo.database} | Version: {dbInfo.version}
+        </div>
       </div>
 
       {/* Notification square (green border) with centered icon */}

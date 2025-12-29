@@ -12,7 +12,7 @@ export default function HoursPermissionPopup({ onClose = () => {} }) {
   const SubmitButton = hSubmitbtn;
 
   // basic form state
-  const [category, setCategory] = useState('Hours Permission');
+  const [category] = useState('Hours Permission');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [reason, setReason] = useState('');
@@ -167,8 +167,8 @@ export default function HoursPermissionPopup({ onClose = () => {} }) {
     }
     // enforce max length when typing (consider selection)
     const cur = visibleDateRef.current && visibleDateRef.current.value ? visibleDateRef.current.value : '';
-    const selStart = visibleDateRef.current && visibleDateRef.current.selectionStart || 0;
-    const selEnd = visibleDateRef.current && visibleDateRef.current.selectionEnd || 0;
+    const selStart = (visibleDateRef.current && visibleDateRef.current.selectionStart) || 0;
+    const selEnd = (visibleDateRef.current && visibleDateRef.current.selectionEnd) || 0;
     const selectionLength = Math.max(0, selEnd - selStart);
     if (cur.length - selectionLength >= 10 && e.key.length === 1 && /[0-9/]/.test(e.key)) {
       e.preventDefault();

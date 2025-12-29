@@ -23,6 +23,10 @@ export default function UpdatePasswordSection({ onBack, onUpdated }) {
   const validatePw1 = (v) => {
     if (!v) return 'Password is required';
     if (v.length < 8) return 'Password must be at least 8 characters';
+    // Check for at least one uppercase, one lowercase, one number, and one special character
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/.test(v)) {
+      return 'Password must contain uppercase, lowercase, number, and special character';
+    }
     return '';
   };
 

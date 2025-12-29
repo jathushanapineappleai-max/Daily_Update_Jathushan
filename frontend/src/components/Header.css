@@ -17,9 +17,9 @@
 .header-title {
   position: absolute;
   width: max-content;
-  height: 39px;
+  min-height: 45px; /* Increased to accommodate db-info */
   left: 20px; /* Figma */
-  top: calc(50% - 39px/2 + 0.5px); /* Figma */
+  top: calc(50% - 45px/2 + 0.5px); /* Adjusted for new height */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -55,6 +55,15 @@
   font-size: 20px;
   line-height: 1;
   vertical-align: middle;
+}
+
+.db-info {
+  font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #64748b;
+  margin-top: 4px;
+  white-space: nowrap;
 }
 
 
@@ -146,10 +155,12 @@
 /* Mobile layout overrides */
 @media (max-width:768px){
   /* Single compact row */
-  .header{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px;}
+  .header{display:flex;align-items:center;gap:8px;height:64px;padding:0 12px; justify-content: flex-start;}
 
-  /* Hide desktop title/subtitle */
-  .header-title{display:none !important;}
+  /* Hide desktop title/subtitle, but keep db-info visible */
+  .header-title{display:flex !important; flex-direction: column; align-items: flex-start; justify-content: center; margin-right: auto; padding-right: 10px;}
+  .header-title .title, .header-title .subtitle{display:none !important;}
+  .header-title .db-info{display:block !important; font-size: 10px; color: #64748b; margin: 0; padding: 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
   /* Hamburger */
   .hamburger-btn{display:block;position:relative;width:36px;height:36px;border:1px solid #DADADA;border-radius:6px;background:#fff;}

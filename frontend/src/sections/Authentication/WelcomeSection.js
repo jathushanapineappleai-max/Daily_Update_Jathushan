@@ -29,6 +29,10 @@ export default function WelcomeSection({ onLogin, onForgot }) {
   const validatePassword = (value) => {
     if (!value) return 'Password is required';
     if (value.length < 8) return 'Password must be at least 8 characters';
+    // Check for at least one uppercase, one lowercase, one number, and one special character
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/.test(value)) {
+      return 'Password must contain uppercase, lowercase, number, and special character';
+    }
     return '';
   };
 
