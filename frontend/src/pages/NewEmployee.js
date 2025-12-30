@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import "../styles/new_employee.css";
 import { useNavigate } from "react-router-dom";
+import employeeAPI from "../integration/employeeAPI"; // Import the employee API
 
 // ✅ Local icon imports
 import backIcon from "../assets/icons/back.png";
@@ -10,10 +11,11 @@ import defaultProfile from "../assets/icons/profile_default.png";
 
 export default function NewEmployee() {
   const navigate = useNavigate();
-  const dateInputRef = useRef(null);        // For calendar
-  const fileInputRef = useRef(null);        // ✅ For image upload
+  const dateInputRef = useRef(null); // For calendar
+  const fileInputRef = useRef(null); // ✅ For image upload
 
   const [preview, setPreview] = useState(null); // ✅ Image preview state
+  const [loading, setLoading] = useState(false); // Loading state for API calls
 
   const [formData, setFormData] = useState({
     name: "",
@@ -33,6 +35,11 @@ export default function NewEmployee() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   // ✅ Password Generator
@@ -80,10 +87,43 @@ export default function NewEmployee() {
   };
 
   // ✅ Handle Submit
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (validateForm()) {
-      console.log("✅ Employee Step 1 Data:", formData);
-      navigate("/employees/step2");
+      setLoading(true);
+      try {
+        // Prepare data for API call
+        const employeeData = {
+          first_name: formData.name,
+          email: formData.userEmail,
+          emp_id: formData.empId,
+          gender: formData.gender,
+          dob: formData.dob,
+          phone: formData.phone,
+          address: formData.address,
+          password: formData.password,
+        };
+
+        // Call the API to create employee personal information
+        const response = await employeeAPI.createEmployeePersonal(employeeData);
+
+        if (response.success) {
+          // Store the user ID in session storage for the next steps
+          sessionStorage.setItem("newEmployeeId", response.data.user_id);
+
+          // Navigate to step 2
+          navigate("/employees/step2");
+        } else {
+          alert(response.message || "Failed to create employee");
+        }
+      } catch (error) {
+        console.error("Error creating employee:", error);
+        alert(
+          "An error occurred while creating the employee: " +
+            (error.message || "Unknown error")
+        );
+      } finally {
+        setLoading(false);
+      }
     } else {
       alert("Please fill all required fields correctly.");
     }
@@ -99,7 +139,7 @@ export default function NewEmployee() {
         </div>
 
         <div className="pagination">
-          <div className="circle active">1</div>
+          <div className={`circle ${true ? "active" : ""}`}>1</div>
           <div className="line"></div>
           <div className="circle">2</div>
           <div className="line"></div>
@@ -184,8 +224,9 @@ export default function NewEmployee() {
               onChange={handleChange}
             >
               <option value="">Choose your gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
             {errors.gender && <small className="error">{errors.gender}</small>}
           </div>
@@ -205,7 +246,9 @@ export default function NewEmployee() {
                 src={calendarIcon}
                 alt="Calendar"
                 className="calendar-icon"
-                onClick={() => dateInputRef.current.showPicker()}
+                onClick={() =>
+                  dateInputRef.current && dateInputRef.current.showPicker()
+                }
               />
             </div>
             {errors.dob && <small className="error">{errors.dob}</small>}
@@ -234,7 +277,9 @@ export default function NewEmployee() {
               value={formData.address}
               onChange={handleChange}
             />
-            {errors.address && <small className="error">{errors.address}</small>}
+            {errors.address && (
+              <small className="error">{errors.address}</small>
+            )}
           </div>
 
           {/* Email */}
@@ -317,11 +362,19 @@ export default function NewEmployee() {
         </div>
 
         <div className="button-row">
-          <button className="cancel-btn" onClick={() => navigate("/employees")}>
+          <button
+            className="cancel-btn"
+            onClick={() => navigate("/employees")}
+            disabled={loading}
+          >
             Cancel
           </button>
-          <button className="create-btn" onClick={handleCreate}>
-            Create
+          <button
+            className="create-btn"
+            onClick={handleCreate}
+            disabled={loading}
+          >
+            {loading ? "Creating..." : "Create"}
           </button>
         </div>
       </div>

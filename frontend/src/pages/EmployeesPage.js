@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/EmployeesPage.css';
 import NewEmpButton from "../components/Buttons/ActionButton";
 import cempicon from "../assets/icons/currentemp.png";
@@ -12,10 +12,19 @@ const EmployeesPage = () => {
   // view: 'current' | 'former'
   const [view, setView] = useState('current');
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1); // children can call setTotalPages(...) when they know counts
+
+  // Check if we need to refresh after returning from edit
+  useEffect(() => {
+    if (location.state?.refresh) {
+      // Clear the refresh state to avoid repeated refreshes
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Reset page & total pages when switching view (so we don't show a stale page)
   useEffect(() => {
@@ -70,11 +79,13 @@ const EmployeesPage = () => {
           <CurrentEmpList
             page={currentPage}
             setTotalPages={setTotalPages}
+            key={`current-${location.state?.refresh ? 'refresh' : 'normal'}`} // Force re-render when refresh is needed
           />
         ) : (
           <FormerEmpList
             page={currentPage}
             setTotalPages={setTotalPages}
+            key={`former-${location.state?.refresh ? 'refresh' : 'normal'}`} // Force re-render when refresh is needed
           />
         )}
 

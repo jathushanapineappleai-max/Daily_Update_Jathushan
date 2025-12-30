@@ -1,7 +1,6 @@
-
-
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import employeeAPI from "../integration/employeeAPI"; // Import the employee API
 
 import "../styles/employee_overview.css";
 
@@ -18,14 +17,122 @@ import breakfastIcon from "../assets/icons/breakfast.png";
 
 export default function EmployeeOverview() {
   const navigate = useNavigate();
+  const { id } = useParams(); // Get the employee ID from the URL
+  const [employeeData, setEmployeeData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch employee data from the backend
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        setLoading(true);
+        const response = await employeeAPI.getEmployeeById(id);
+
+        if (response.success) {
+          setEmployeeData(response.data.user);
+        } else {
+          setError(response.message || "Failed to fetch employee data");
+        }
+      } catch (err) {
+        console.error("Error fetching employee data:", err);
+        setError("An error occurred while fetching employee data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEmployeeData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="eov-page">
+        <div className="eov-width">
+          <div className="eov-header">
+            <button
+              type="button"
+              className="eov-back-btn"
+              onClick={() => navigate("/employees")}
+            >
+              <img src={backIcon} alt="Back" className="eov-back-icon" />
+            </button>
+            <h2 className="eov-title">Employee Overview</h2>
+          </div>
+          <div className="loading">Loading employee data...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="eov-page">
+        <div className="eov-width">
+          <div className="eov-header">
+            <button
+              type="button"
+              className="eov-back-btn"
+              onClick={() => navigate("/employees")}
+            >
+              <img src={backIcon} alt="Back" className="eov-back-icon" />
+            </button>
+            <h2 className="eov-title">Employee Overview</h2>
+          </div>
+          <div className="error">Error: {error}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!employeeData) {
+    return (
+      <div className="eov-page">
+        <div className="eov-width">
+          <div className="eov-header">
+            <button
+              type="button"
+              className="eov-back-btn"
+              onClick={() => navigate("/employees")}
+            >
+              <img src={backIcon} alt="Back" className="eov-back-icon" />
+            </button>
+            <h2 className="eov-title">Employee Overview</h2>
+          </div>
+          <div className="error">Employee data not found</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  // Get profile image or use default
+  const profileImage = employeeData.EmployeeDetail?.image_path
+    ? `${process.env.REACT_APP_API_BASE_URL?.replace("/api", "")}${
+        employeeData.EmployeeDetail.image_path
+      }`
+    : profilePic;
 
   return (
     <div className="eov-page">
       <div className="eov-width">
-
         {/* HEADER */}
         <div className="eov-header">
-          <button type="button" className="eov-back-btn" onClick={() => navigate("/employees")}>
+          <button
+            type="button"
+            className="eov-back-btn"
+            onClick={() => navigate("/employees")}
+          >
             <img src={backIcon} alt="Back" className="eov-back-icon" />
           </button>
           <h2 className="eov-title">Employee Overview</h2>
@@ -33,76 +140,62 @@ export default function EmployeeOverview() {
 
         {/* MAIN CONTENT */}
         <div className="eov-container">
-
           {/* LEFT PANEL */}
           <div className="eov-left">
             <div className="eov-profile-card">
-              <img src={profilePic} alt="Profile" className="eov-profile-img" />
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="eov-profile-img"
+              />
             </div>
 
             <div className="eov-basic">
               <div>
-                <h3 className="eov-name">S. Sanjeevan</h3>
-                <p className="eov-role">UI/UX Engineer</p>
+                <h3 className="eov-name">
+                  {employeeData.first_name} {employeeData.last_name || ""}
+                </h3>
+                <p className="eov-role">{employeeData.designation || "N/A"}</p>
               </div>
-              <div className="eov-id-badge">52</div>
+              <div className="eov-id-badge">{employeeData.emp_id}</div>
             </div>
 
             <div className="eov-promotions">
               <h4 className="eov-promotions-title">Promotions</h4>
-
-              <div className="eov-timeline">
-                <div className="eov-timeline-item">
-                  <div className="eov-dot" />
-                  <div className="eov-txt">
-                    <h5>UI/UX Engineer Team Lead</h5>
-                    <span>14th Oct 2025</span>
-                  </div>
+              {employeeData.professional &&
+              employeeData.professional.length > 0 ? (
+                <div className="eov-timeline">
+                  {employeeData.professional.map((promo, index) => (
+                    <div key={index} className="eov-timeline-item">
+                      <div className="eov-dot" />
+                      <div className="eov-txt">
+                        <h5>{promo.position}</h5>
+                        <span>{promo.company_name}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-
-                <div className="eov-timeline-item">
-                  <div className="eov-dot" />
-                  <div className="eov-txt">
-                    <h5>Senior UI/UX Engineer</h5>
-                    <span>13th Jun 2025</span>
-                  </div>
-                </div>
-
-                <div className="eov-timeline-item">
-                  <div className="eov-dot" />
-                  <div className="eov-txt">
-                    <h5>Associate UI/UX Engineer</h5>
-                    <span>13th Jun 2025</span>
-                  </div>
-                </div>
-
-                <div className="eov-timeline-item">
-                  <div className="eov-dot" />
-                  <div className="eov-txt">
-                    <h5>UI/UX Engineer Intern</h5>
-                    <span>13th Apr 2025</span>
-                  </div>
-                </div>
-              </div>
+              ) : (
+                <p>No professional history available</p>
+              )}
             </div>
 
-       <div className="eov-buttons">
-            <button
-              className="eov-green-btn"
-                onClick={() => navigate("/attendance")}   
-               >
-               <img src={attendanceIcon} alt="" />
-              <span>Attendance</span>
+            <div className="eov-buttons">
+              <button
+                className="eov-green-btn"
+                onClick={() => navigate("/attendance")}
+              >
+                <img src={attendanceIcon} alt="" />
+                <span>Attendance</span>
               </button>
 
-           <button
-  className="eov-green-btn"
-  onClick={() => navigate("/org-hierarchy")}
->
-  <img src={structureIcon} alt="" />
-  <span>Reporting Structure</span>
-</button>
-
+              <button
+                className="eov-green-btn"
+                onClick={() => navigate("/org-hierarchy")}
+              >
+                <img src={structureIcon} alt="" />
+                <span>Reporting Structure</span>
+              </button>
 
               <button className="eov-green-btn">
                 <img src={ratingIcon} alt="" />
@@ -113,7 +206,6 @@ export default function EmployeeOverview() {
 
           {/* RIGHT PANEL */}
           <div className="eov-right">
-
             {/* STATUS ROW */}
             <div className="eov-status-row">
               <div className="eov-status-card">
@@ -123,7 +215,16 @@ export default function EmployeeOverview() {
 
               <div className="eov-status-card">
                 <span className="eov-dark-txt">Employment Status</span>
-                <div className="eov-status-pill">Active</div>
+                <div
+                  className={`eov-status-pill ${
+                    employeeData.status === "active"
+                      ? "eov-active"
+                      : "eov-inactive"
+                  }`}
+                >
+                  {employeeData.status.charAt(0).toUpperCase() +
+                    employeeData.status.slice(1)}
+                </div>
               </div>
 
               <div className="eov-status-card eov-docs">
@@ -142,49 +243,49 @@ export default function EmployeeOverview() {
               <div className="eov-grid">
                 <div className="eov-info">
                   <label>Gender</label>
-                  <p>Male</p>
+                  <p>{employeeData.EmployeeDetail?.gender || "N/A"}</p>
                 </div>
 
                 <div className="eov-info">
                   <label>Date of Birth</label>
-                  <p>20 Jan 1999</p>
+                  <p>{formatDate(employeeData.EmployeeDetail?.dob)}</p>
                 </div>
 
                 <div className="eov-info eov-has-icon">
                   <label>Email</label>
-                  <p>sample@gmail.com</p>
+                  <p>{employeeData.email}</p>
                   <img src={mailIcon} alt="" />
                 </div>
 
                 <div className="eov-info eov-has-icon">
                   <label>Phone Number</label>
-                  <p>+94 75 744 8876</p>
+                  <p>{employeeData.EmployeeDetail?.phone || "N/A"}</p>
                   <img src={copyIcon} alt="" />
                 </div>
 
                 <div className="eov-info">
                   <label>Address</label>
-                  <p>Jaffna</p>
+                  <p>{employeeData.EmployeeDetail?.address || "N/A"}</p>
                 </div>
 
                 <div className="eov-info">
                   <label>Starts on</label>
-                  <p>14 Apr 2025</p>
+                  <p>{formatDate(employeeData.EmployeeDetail?.joined_date)}</p>
                 </div>
 
                 <div className="eov-info">
                   <label>Management Role</label>
-                  <p>CFO</p>
+                  <p>{employeeData.management_role || "N/A"}</p>
                 </div>
 
                 <div className="eov-info">
                   <label>Designation</label>
-                  <p>UI/UX Engineer</p>
+                  <p>{employeeData.designation || "N/A"}</p>
                 </div>
 
                 <div className="eov-info">
                   <label>Department</label>
-                  <p>UI/UX Design</p>
+                  <p>{employeeData.Department?.name || "N/A"}</p>
                 </div>
               </div>
             </section>
@@ -197,20 +298,44 @@ export default function EmployeeOverview() {
               </div>
 
               <div className="eov-grid">
-                <div className="eov-info">
-                  <label>Position</label>
-                  <p>None</p>
-                </div>
+                {employeeData.professional &&
+                employeeData.professional.length > 0 ? (
+                  employeeData.professional.map((exp, index) => (
+                    <React.Fragment key={index}>
+                      <div className="eov-info">
+                        <label>Position</label>
+                        <p>{exp.position}</p>
+                      </div>
 
-                <div className="eov-info">
-                  <label>Company Name</label>
-                  <p>None</p>
-                </div>
+                      <div className="eov-info">
+                        <label>Company Name</label>
+                        <p>{exp.company_name}</p>
+                      </div>
 
-                <div className="eov-info">
-                  <label>Year of Experience</label>
-                  <p>None</p>
-                </div>
+                      <div className="eov-info">
+                        <label>Year of Experience</label>
+                        <p>{exp.years_of_experience || "N/A"} years</p>
+                      </div>
+                    </React.Fragment>
+                  ))
+                ) : (
+                  <>
+                    <div className="eov-info">
+                      <label>Position</label>
+                      <p>N/A</p>
+                    </div>
+
+                    <div className="eov-info">
+                      <label>Company Name</label>
+                      <p>N/A</p>
+                    </div>
+
+                    <div className="eov-info">
+                      <label>Year of Experience</label>
+                      <p>N/A</p>
+                    </div>
+                  </>
+                )}
               </div>
             </section>
 
@@ -222,20 +347,43 @@ export default function EmployeeOverview() {
               </div>
 
               <div className="eov-grid">
-                <div className="eov-info">
-                  <label>Educational Qualification</label>
-                  <p>Bachelor of Software Engineering</p>
-                </div>
+                {employeeData.education && employeeData.education.length > 0 ? (
+                  employeeData.education.map((edu, index) => (
+                    <React.Fragment key={index}>
+                      <div className="eov-info">
+                        <label>Educational Qualification</label>
+                        <p>{edu.qualification}</p>
+                      </div>
 
-                <div className="eov-info">
-                  <label>Name of the Institute</label>
-                  <p>The Open University of Sri Lanka</p>
-                </div>
+                      <div className="eov-info">
+                        <label>Name of the Institute</label>
+                        <p>{edu.institution}</p>
+                      </div>
 
-                <div className="eov-info">
-                  <label>Year of Completion</label>
-                  <p>Present</p>
-                </div>
+                      <div className="eov-info">
+                        <label>Year of Completion</label>
+                        <p>{edu.year_of_completion}</p>
+                      </div>
+                    </React.Fragment>
+                  ))
+                ) : (
+                  <>
+                    <div className="eov-info">
+                      <label>Educational Qualification</label>
+                      <p>N/A</p>
+                    </div>
+
+                    <div className="eov-info">
+                      <label>Name of the Institute</label>
+                      <p>N/A</p>
+                    </div>
+
+                    <div className="eov-info">
+                      <label>Year of Completion</label>
+                      <p>N/A</p>
+                    </div>
+                  </>
+                )}
               </div>
             </section>
 
@@ -249,7 +397,13 @@ export default function EmployeeOverview() {
               <div className="eov-grid">
                 <div className="eov-info">
                   <label>Team Lead</label>
-                  <p>Kishana</p>
+                  <p>
+                    {employeeData.report_to
+                      ? `${employeeData.ReportTo?.first_name} ${
+                          employeeData.ReportTo?.last_name || ""
+                        }`.trim()
+                      : "N/A"}
+                  </p>
                 </div>
 
                 <div className="eov-info">

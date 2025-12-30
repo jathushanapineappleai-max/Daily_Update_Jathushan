@@ -299,66 +299,83 @@
 
 // export default CurrentEmpList;
 
-
-
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../../styles/current_emp_list.css";
+import employeeAPI from "../../integration/employeeAPI"; // Import the employee API
 
 import filter from "../../assets/icons/filterricon.png";
 import search from "../../assets/icons/searchicon.png";
-import greenicon from "../../assets/icons/editicon.png";       // Overview (was Edit)
-import blueicon from "../../assets/icons/editblueicon.png";   // Edit (was Overview)
+import greenicon from "../../assets/icons/editicon.png"; // Overview (was Edit)
+import blueicon from "../../assets/icons/editblueicon.png"; // Edit (was Overview)
 import tempimg from "../../assets/icons/img.png";
 
-const CurrentEmpList = () => {
+const CurrentEmpList = ({ page = 1, setTotalPages }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const employees = [
-    {
-      id: "01",
-      name: "Y. Kishana",
-      designation: "Full Stack Engineer",
-      role: "Team Lead",
-      mgmtRole: "-",
-      manager: "S. Sanjeevan",
-      avatar: tempimg,
-      managerAvatar: tempimg,
-    },
-    {
-      id: "02",
-      name: "A. Nimal",
-      designation: "UI/UX Engineer",
-      role: "Team Lead",
-      mgmtRole: "-",
-      manager: "S. Sanjeevan",
-      avatar: tempimg,
-      managerAvatar: tempimg,
-    },
-    {
-      id: "03",
-      name: "B. Perera",
-      designation: "QA Engineer",
-      role: "Associate",
-      mgmtRole: "COO",
-      manager: "S. Sanjeevan",
-      avatar: tempimg,
-      managerAvatar: tempimg,
-    },
-    {
-      id: "04",
-      name: "S. Sanjeevan",
-      designation: "Mobile App Developer",
-      role: "Intern",
-      mgmtRole: "CHRO",
-      manager: "S. Sanjeevan",
-      avatar: tempimg,
-      managerAvatar: tempimg,
-    },
-  ];
-  
+  // Fetch active and inactive employees from the backend (not terminated)
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        setLoading(true);
+        const response = await employeeAPI.getAllEmployees(page, 10); // Fetch all employees
+
+        if (response.success) {
+          // Filter to show only active and inactive employees (not terminated)
+          const filteredEmployees = response.data.employees.filter(
+            (emp) => emp.status === "active" || emp.status === "inactive"
+          );
+
+          // Transform the backend response to match the frontend format
+          const transformedEmployees = filteredEmployees.map((emp) => ({
+            id: emp.id, // Use the actual database user ID
+            empId: emp.emp_id, // Store emp_id separately
+            name: `${emp.first_name} ${emp.last_name || ""}`.trim(),
+            designation: emp.designation || "-",
+            role: emp.role || "-",
+            mgmtRole: emp.management_role || "-",
+            manager: emp.ReportTo
+              ? `${emp.ReportTo.first_name} ${
+                  emp.ReportTo.last_name || ""
+                }`.trim()
+              : "-",
+            avatar: emp.EmployeeDetail?.image_path
+              ? `${process.env.REACT_APP_API_BASE_URL?.replace("/api", "")}${
+                  emp.EmployeeDetail.image_path
+                }`
+              : tempimg,
+            managerAvatar: tempimg,
+          }));
+
+          setEmployees(transformedEmployees);
+
+          // Update total pages if provided
+          if (setTotalPages && response.data.pagination) {
+            // Adjust the total pages to reflect the filtered results
+            // This is a simplified approach - in a real app you'd want to make a separate call for filtered counts
+            setTotalPages(response.data.pagination.pages);
+          }
+        } else {
+          setError(response.message || "Failed to fetch employees");
+        }
+      } catch (err) {
+        console.error("Error fetching employees:", err);
+        setError("An error occurred while fetching employees");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEmployees();
+  }, [page, setTotalPages, location.state?.refresh]); // Add location.state.refresh as a dependency
+
   // 🔥 Navigate to Employee Overview (GREEN button)
   const openOverview = (empId) => {
+    // Use the actual database user ID for navigation
     navigate(`/employees/${empId}/overview`);
   };
 
@@ -367,13 +384,51 @@ const CurrentEmpList = () => {
     navigate(`/employees/${empId}/edit`);
   };
 
+  if (loading) {
+    return (
+      <div className="cemp-section">
+        <div className="cemp-header-box">
+          <div className="cemp-title-section">
+            <h2>Current Employee</h2>
+            <p>Loading employees...</p>
+          </div>
+          <div className="cemp-controls">
+            <img src={filter} alt="Filter" className="cemp-filter-icon" />
+            <div className="cemp-search-bar">
+              <img src={search} alt="Search" className="cemp-search-icon" />
+              <input type="text" placeholder="Search" disabled />
+            </div>
+          </div>
+        </div>
+        <div className="loading">Loading employees...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="cemp-section">
+        <div className="cemp-header-box">
+          <div className="cemp-title-section">
+            <h2>Current Employee</h2>
+            <p>Error loading employees</p>
+          </div>
+        </div>
+        <div className="error">Error: {error}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="cemp-section">
       {/* Header Box */}
       <div className="cemp-header-box">
         <div className="cemp-title-section">
           <h2>Current Employee</h2>
-          <p>{employees.length} of 30 employees available</p>
+          <p>
+            {employees.length} of {setTotalPages ? "unknown" : employees.length}{" "}
+            employees available
+          </p>
         </div>
 
         <div className="cemp-controls">
@@ -402,7 +457,7 @@ const CurrentEmpList = () => {
         <tbody>
           {employees.map((emp) => (
             <tr key={emp.id}>
-              <td>{emp.id}</td>
+              <td>{emp.empId}</td>
 
               <td>
                 <span className="cemp-name-cell">

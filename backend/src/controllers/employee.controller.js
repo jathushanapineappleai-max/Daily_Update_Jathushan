@@ -1,8 +1,19 @@
-const { User, EmployeeDetail, EmployeeHistory, Document, Department } = require('../models');
-const { upload } = require('../utils/fileUpload');
-const { personalInfoSchema, educationSchema, professionalSchema, workInfoSchema } = require('../validators/employee.validation');
-const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
+const {
+  User,
+  EmployeeDetail,
+  EmployeeHistory,
+  Document,
+  Department,
+} = require("../models");
+const { upload } = require("../utils/fileUpload");
+const {
+  personalInfoSchema,
+  educationSchema,
+  professionalSchema,
+  workInfoSchema,
+} = require("../validators/employee.validation");
+const bcrypt = require("bcryptjs");
+const { Op } = require("sequelize");
 
 // Utility function to handle errors
 const handleControllerError = (error, operation) => {
@@ -10,7 +21,10 @@ const handleControllerError = (error, operation) => {
   return {
     success: false,
     message: `Server error during ${operation}`,
-    error: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
+    error:
+      process.env.NODE_ENV === "development"
+        ? error.message
+        : "Something went wrong",
   };
 };
 
@@ -24,27 +38,34 @@ exports.createEmployeePersonal = async (req, res) => {
     if (error) {
       return res.status(400).json({
         success: false,
-        message: 'Validation error',
-        error: error.details[0].message
+        message: "Validation error",
+        error: error.details[0].message,
       });
     }
 
-    const { first_name, last_name, email, emp_id, gender, dob, phone, address, password } = req.body;
+    const {
+      first_name,
+      last_name,
+      email,
+      emp_id,
+      gender,
+      dob,
+      phone,
+      address,
+      password,
+    } = req.body;
 
     // Check if employee already exists
     const existingUser = await User.findOne({
       where: {
-        [Op.or]: [
-          { email: email },
-          { emp_id: emp_id }
-        ]
-      }
+        [Op.or]: [{ email: email }, { emp_id: emp_id }],
+      },
     });
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: 'Employee with this email or employee ID already exists'
+        message: "Employee with this email or employee ID already exists",
       });
     }
 
@@ -59,8 +80,8 @@ exports.createEmployeePersonal = async (req, res) => {
       email,
       emp_id,
       password_hash,
-      role: 'employee',
-      status: 'active'
+      role: "employee",
+      status: "active",
     });
 
     // Create employee detail
@@ -70,18 +91,21 @@ exports.createEmployeePersonal = async (req, res) => {
       dob: dob || null,
       phone: phone || null,
       address: address || null,
-      image_path: null // Will be updated when image is uploaded
+      image_path: null, // Will be updated when image is uploaded
     });
 
     res.status(201).json({
       success: true,
-      message: 'Employee personal information created successfully',
+      message: "Employee personal information created successfully",
       data: {
-        user_id: user.id
-      }
+        user_id: user.id,
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'create employee personal info');
+    const errorResponse = handleControllerError(
+      error,
+      "create employee personal info"
+    );
     res.status(500).json(errorResponse);
   }
 };
@@ -92,47 +116,55 @@ exports.createEmployeePersonal = async (req, res) => {
 exports.updateEmployeePersonal = async (req, res) => {
   try {
     const userId = req.params.id;
-    
+
     // Validate input
     const { error } = personalInfoSchema.validate(req.body);
     if (error) {
       return res.status(400).json({
         success: false,
-        message: 'Validation error',
-        error: error.details[0].message
+        message: "Validation error",
+        error: error.details[0].message,
       });
     }
 
-    const { first_name, last_name, email, emp_id, gender, dob, phone, address, password } = req.body;
+    const {
+      first_name,
+      last_name,
+      email,
+      emp_id,
+      gender,
+      dob,
+      phone,
+      address,
+      password,
+    } = req.body;
 
     // Get current user to check their existing email and emp_id
     const currentUser = await User.findByPk(userId);
     if (!currentUser) {
       return res.status(404).json({
         success: false,
-        message: 'Employee not found'
+        message: "Employee not found",
       });
     }
 
     // Check if another employee already has this email or emp_id (excluding current user)
     let whereClause = {
-      [Op.or]: [
-        { email: email },
-        { emp_id: emp_id }
-      ]
+      [Op.or]: [{ email: email }, { emp_id: emp_id }],
     };
 
     // Exclude current user from the check
     whereClause.id = { [Op.ne]: userId };
 
     const existingUser = await User.findOne({
-      where: whereClause
+      where: whereClause,
     });
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: 'Another employee with this email or employee ID already exists'
+        message:
+          "Another employee with this email or employee ID already exists",
       });
     }
 
@@ -149,37 +181,42 @@ exports.updateEmployeePersonal = async (req, res) => {
       last_name: last_name || null,
       email,
       emp_id,
-      password_hash
+      password_hash,
     });
 
     // Get or create employee detail
-    let employeeDetail = await EmployeeDetail.findOne({ where: { user_id: userId } });
+    let employeeDetail = await EmployeeDetail.findOne({
+      where: { user_id: userId },
+    });
     if (!employeeDetail) {
       employeeDetail = await EmployeeDetail.create({
         user_id: userId,
         gender: gender || null,
         dob: dob || null,
         phone: phone || null,
-        address: address || null
+        address: address || null,
       });
     } else {
       await employeeDetail.update({
         gender: gender || null,
         dob: dob || null,
         phone: phone || null,
-        address: address || null
+        address: address || null,
       });
     }
 
     res.status(200).json({
       success: true,
-      message: 'Employee personal information updated successfully',
+      message: "Employee personal information updated successfully",
       data: {
-        user: currentUser
-      }
+        user: currentUser,
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'update employee personal info');
+    const errorResponse = handleControllerError(
+      error,
+      "update employee personal info"
+    );
     res.status(500).json(errorResponse);
   }
 };
@@ -190,14 +227,14 @@ exports.updateEmployeePersonal = async (req, res) => {
 exports.addEmployeeEducation = async (req, res) => {
   try {
     const userId = req.params.id;
-    
+
     // Validate input
     const { error } = educationSchema.validate(req.body);
     if (error) {
       return res.status(400).json({
         success: false,
-        message: 'Validation error',
-        error: error.details[0].message
+        message: "Validation error",
+        error: error.details[0].message,
       });
     }
 
@@ -206,7 +243,7 @@ exports.addEmployeeEducation = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Employee not found'
+        message: "Employee not found",
       });
     }
 
@@ -215,21 +252,24 @@ exports.addEmployeeEducation = async (req, res) => {
     // Create education record
     const education = await EmployeeHistory.create({
       user_id: userId,
-      type: 'education',
+      type: "education",
       qualification,
       institution,
-      year_of_completion
+      year_of_completion,
     });
 
     res.status(201).json({
       success: true,
-      message: 'Employee education information added successfully',
+      message: "Employee education information added successfully",
       data: {
-        education
-      }
+        education,
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'add employee education');
+    const errorResponse = handleControllerError(
+      error,
+      "add employee education"
+    );
     res.status(500).json(errorResponse);
   }
 };
@@ -240,14 +280,14 @@ exports.addEmployeeEducation = async (req, res) => {
 exports.addEmployeeProfessional = async (req, res) => {
   try {
     const userId = req.params.id;
-    
+
     // Validate input
     const { error } = professionalSchema.validate(req.body);
     if (error) {
       return res.status(400).json({
         success: false,
-        message: 'Validation error',
-        error: error.details[0].message
+        message: "Validation error",
+        error: error.details[0].message,
       });
     }
 
@@ -256,7 +296,7 @@ exports.addEmployeeProfessional = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Employee not found'
+        message: "Employee not found",
       });
     }
 
@@ -265,21 +305,24 @@ exports.addEmployeeProfessional = async (req, res) => {
     // Create professional record
     const professional = await EmployeeHistory.create({
       user_id: userId,
-      type: 'experience',
+      type: "experience",
       position,
       company_name,
-      years_of_experience
+      years_of_experience,
     });
 
     res.status(201).json({
       success: true,
-      message: 'Employee professional information added successfully',
+      message: "Employee professional information added successfully",
       data: {
-        professional
-      }
+        professional,
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'add employee professional');
+    const errorResponse = handleControllerError(
+      error,
+      "add employee professional"
+    );
     res.status(500).json(errorResponse);
   }
 };
@@ -290,13 +333,13 @@ exports.addEmployeeProfessional = async (req, res) => {
 exports.uploadEmployeeDocument = async (req, res) => {
   try {
     const userId = req.params.id;
-    
+
     // Check if user exists
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Employee not found'
+        message: "Employee not found",
       });
     }
 
@@ -304,21 +347,28 @@ exports.uploadEmployeeDocument = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: 'No file uploaded'
+        message: "No file uploaded",
       });
     }
 
     const documentType = req.body.document_type;
-    
+
     // Validate document type
-    if (!['nic', 'birth_certificate', 'educational_certificate', 'transcript'].includes(documentType)) {
+    if (
+      ![
+        "nic",
+        "birth_certificate",
+        "educational_certificate",
+        "transcript",
+      ].includes(documentType)
+    ) {
       // Delete uploaded file
-      const { deleteFile } = require('../utils/fileUpload');
+      const { deleteFile } = require("../utils/fileUpload");
       deleteFile(req.file.path);
-      
+
       return res.status(400).json({
         success: false,
-        message: 'Invalid document type'
+        message: "Invalid document type",
       });
     }
 
@@ -326,18 +376,21 @@ exports.uploadEmployeeDocument = async (req, res) => {
     const document = await Document.create({
       user_id: userId,
       document_type: documentType,
-      file_path: req.file.path
+      file_path: req.file.path,
     });
 
     res.status(201).json({
       success: true,
-      message: 'Employee document uploaded successfully',
+      message: "Employee document uploaded successfully",
       data: {
-        document
-      }
+        document,
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'upload employee document');
+    const errorResponse = handleControllerError(
+      error,
+      "upload employee document"
+    );
     res.status(500).json(errorResponse);
   }
 };
@@ -348,13 +401,13 @@ exports.uploadEmployeeDocument = async (req, res) => {
 exports.uploadEmployeeProfilePhoto = async (req, res) => {
   try {
     const userId = req.params.id;
-    
+
     // Check if user exists
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Employee not found'
+        message: "Employee not found",
       });
     }
 
@@ -362,52 +415,63 @@ exports.uploadEmployeeProfilePhoto = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: 'No file uploaded'
+        message: "No file uploaded",
       });
     }
 
     // Check if uploaded file is an image
-    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const allowedImageTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
     if (!allowedImageTypes.includes(req.file.mimetype)) {
       // Delete uploaded file
-      const { deleteFile } = require('../utils/fileUpload');
+      const { deleteFile } = require("../utils/fileUpload");
       deleteFile(req.file.path);
-      
+
       return res.status(400).json({
         success: false,
-        message: 'Only image files (JPEG, PNG, GIF, WEBP) are allowed for profile photos'
+        message:
+          "Only image files (JPEG, PNG, GIF, WEBP) are allowed for profile photos",
       });
     }
 
     // Get or create employee detail
-    let employeeDetail = await EmployeeDetail.findOne({ where: { user_id: userId } });
+    let employeeDetail = await EmployeeDetail.findOne({
+      where: { user_id: userId },
+    });
     if (!employeeDetail) {
       employeeDetail = await EmployeeDetail.create({
         user_id: userId,
-        image_path: req.file.path
+        image_path: req.file.path,
       });
     } else {
       // Delete old profile photo if exists
       if (employeeDetail.image_path) {
-        const { deleteFile } = require('../utils/fileUpload');
+        const { deleteFile } = require("../utils/fileUpload");
         deleteFile(employeeDetail.image_path);
       }
-      
+
       // Update with new profile photo
       await employeeDetail.update({
-        image_path: req.file.path
+        image_path: req.file.path,
       });
     }
 
     res.status(201).json({
       success: true,
-      message: 'Profile photo uploaded successfully',
+      message: "Profile photo uploaded successfully",
       data: {
-        profile_photo: employeeDetail.image_path
-      }
+        profile_photo: employeeDetail.image_path,
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'upload employee profile photo');
+    const errorResponse = handleControllerError(
+      error,
+      "upload employee profile photo"
+    );
     res.status(500).json(errorResponse);
   }
 };
@@ -418,14 +482,14 @@ exports.uploadEmployeeProfilePhoto = async (req, res) => {
 exports.setEmployeeWorkInfo = async (req, res) => {
   try {
     const userId = req.params.id;
-    
+
     // Validate input
     const { error } = workInfoSchema.validate(req.body);
     if (error) {
       return res.status(400).json({
         success: false,
-        message: 'Validation error',
-        error: error.details[0].message
+        message: "Validation error",
+        error: error.details[0].message,
       });
     }
 
@@ -434,11 +498,17 @@ exports.setEmployeeWorkInfo = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Employee not found'
+        message: "Employee not found",
       });
     }
 
-    const { joined_date, designation, department_id, management_role, report_to } = req.body;
+    const {
+      joined_date,
+      designation,
+      department_id,
+      management_role,
+      report_to,
+    } = req.body;
 
     // Check if department exists (only if department_id is provided)
     if (department_id) {
@@ -446,7 +516,7 @@ exports.setEmployeeWorkInfo = async (req, res) => {
       if (!department) {
         return res.status(400).json({
           success: false,
-          message: 'Department not found'
+          message: "Department not found",
         });
       }
     }
@@ -455,31 +525,36 @@ exports.setEmployeeWorkInfo = async (req, res) => {
     await user.update({
       department_id,
       designation,
-      report_to: report_to || null
+      report_to: report_to || null,
     });
 
     // Update employee detail with joined date
-    let employeeDetail = await EmployeeDetail.findOne({ where: { user_id: userId } });
+    let employeeDetail = await EmployeeDetail.findOne({
+      where: { user_id: userId },
+    });
     if (employeeDetail) {
       await employeeDetail.update({
-        joined_date
+        joined_date,
       });
     } else {
       await EmployeeDetail.create({
         user_id: userId,
-        joined_date
+        joined_date,
       });
     }
 
     res.status(200).json({
       success: true,
-      message: 'Employee work information set successfully',
+      message: "Employee work information set successfully",
       data: {
-        user
-      }
+        user,
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'set employee work info');
+    const errorResponse = handleControllerError(
+      error,
+      "set employee work info"
+    );
     res.status(500).json(errorResponse);
   }
 };
@@ -490,43 +565,47 @@ exports.setEmployeeWorkInfo = async (req, res) => {
 exports.getEmployeeOverview = async (req, res) => {
   try {
     const userId = req.params.id;
-    
+
     // Get user with associated data
     const user = await User.findByPk(userId, {
       include: [
         {
           model: EmployeeDetail,
-          as: 'EmployeeDetail'
+          as: "EmployeeDetail",
         },
         {
           model: EmployeeHistory,
-          as: 'EmployeeHistories'
+          as: "EmployeeHistories",
         },
         {
           model: Document,
-          as: 'Documents'
+          as: "Documents",
         },
         {
           model: Department,
-          as: 'Department'
-        }
-      ]
+          as: "Department",
+        },
+      ],
     });
 
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: 'Employee not found'
+        message: "Employee not found",
       });
     }
 
     // Separate education and professional experience
-    const education = user.EmployeeHistories.filter(history => history.type === 'education');
-    const professional = user.EmployeeHistories.filter(history => history.type === 'experience');
+    const education = user.EmployeeHistories.filter(
+      (history) => history.type === "education"
+    );
+    const professional = user.EmployeeHistories.filter(
+      (history) => history.type === "experience"
+    );
 
     res.status(200).json({
       success: true,
-      message: 'Employee overview retrieved successfully',
+      message: "Employee overview retrieved successfully",
       data: {
         user: {
           id: user.id,
@@ -545,12 +624,12 @@ exports.getEmployeeOverview = async (req, res) => {
           EmployeeDetail: user.EmployeeDetail,
           education,
           professional,
-          Documents: user.Documents
-        }
-      }
+          Documents: user.Documents,
+        },
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'get employee overview');
+    const errorResponse = handleControllerError(error, "get employee overview");
     res.status(500).json(errorResponse);
   }
 };
@@ -563,41 +642,46 @@ exports.getAllEmployees = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
+    const status = req.query.status; // Optional status filter (active, inactive, terminated)
+
+    let whereClause = { role: "employee" };
+
+    if (status) {
+      whereClause.status = status;
+    }
 
     const { count, rows } = await User.findAndCountAll({
       limit,
       offset,
-      where: {
-        role: 'employee'
-      },
+      where: whereClause,
       include: [
         {
           model: EmployeeDetail,
-          as: 'EmployeeDetail'
+          as: "EmployeeDetail",
         },
         {
           model: Department,
-          as: 'Department'
-        }
+          as: "Department",
+        },
       ],
-      order: [['created_at', 'DESC']]
+      order: [["created_at", "DESC"]],
     });
 
     res.status(200).json({
       success: true,
-      message: 'Employees retrieved successfully',
+      message: "Employees retrieved successfully",
       data: {
         employees: rows,
         pagination: {
           page,
           limit,
           total: count,
-          pages: Math.ceil(count / limit)
-        }
-      }
+          pages: Math.ceil(count / limit),
+        },
+      },
     });
   } catch (error) {
-    const errorResponse = handleControllerError(error, 'get all employees');
-    res.status(500).json(errorResponse);
+    const errorResponse = handleControllerError(error, "get all employees");
+    res.status(500).json(errorResponse);  
   }
-};
+};  

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import "../styles/add_employee_step3.css";
 import { useNavigate } from "react-router-dom";
+import employeeAPI from "../integration/employeeAPI"; // Import the employee API
 
 // Local icons (place these PNGs in src/assets/icons/)
 import backIcon from "../assets/icons/back.png";
@@ -14,6 +15,7 @@ import infoIcon from "../assets/icons/inicon.png"; // Added info icon
 export default function AddEmployeeStep3() {
   const navigate = useNavigate();
   const joinDateRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     nic: null,
@@ -33,46 +35,152 @@ export default function AddEmployeeStep3() {
   const handleFile = (e) => {
     const { name, files } = e.target;
     setFormData((p) => ({ ...p, [name]: files && files[0] ? files[0] : null }));
+
+    // Clear error when user selects a file
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((p) => ({ ...p, [name]: value }));
+
+    // Clear error when user makes a selection
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
   };
 
   const validate = () => {
     const err = {};
     if (!formData.nic) err.nic = "Upload NIC document";
-    if (!formData.birthCertificate) err.birthCertificate = "Upload Birth Certificate";
-    if (!formData.educationCertificate) err.educationCertificate = "Upload Educational Certificate";
+    if (!formData.birthCertificate)
+      err.birthCertificate = "Upload Birth Certificate";
+    if (!formData.educationCertificate)
+      err.educationCertificate = "Upload Educational Certificate";
     if (!formData.transcript) err.transcript = "Upload Transcript";
     if (!formData.joinDate) err.joinDate = "Select Date of Joining";
     if (!formData.designation) err.designation = "Select Designation";
     if (!formData.role) err.role = "Select Role";
     if (!formData.managementRole) err.managementRole = "Select Management Role";
-    if (!formData.reportingManager) err.reportingManager = "Select Reporting Manager";
+    if (!formData.reportingManager)
+      err.reportingManager = "Select Reporting Manager";
     setErrors(err);
     return Object.keys(err).length === 0;
   };
 
-  const handleSave = () => {
+  const uploadDocument = async (employeeId, file, documentType) => {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("document", file);
+    formData.append("document_type", documentType);
+
+    try {
+      const response = await employeeAPI.uploadEmployeeDocument(
+        employeeId,
+        formData
+      );
+      if (!response.success) {
+        throw new Error(response.message || `Failed to upload ${documentType}`);
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleSave = async () => {
     if (!validate()) {
       alert("Please fill all mandatory fields correctly.");
       return;
     }
-    // Success → show popup → then go to Employees list
-    setShowPopup(true);
-    setTimeout(() => {
-      setShowPopup(false);
-      navigate("/employees");
-    }, 2000);
+
+    const employeeId = sessionStorage.getItem("newEmployeeId");
+    if (!employeeId) {
+      alert("Employee ID not found. Please start the process again.");
+      navigate("/employees/new");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Upload all documents
+      await uploadDocument(employeeId, formData.nic, "nic");
+      await uploadDocument(
+        employeeId,
+        formData.birthCertificate,
+        "birth_certificate"
+      );
+      await uploadDocument(
+        employeeId,
+        formData.educationCertificate,
+        "educational_certificate"
+      );
+      await uploadDocument(employeeId, formData.transcript, "transcript");
+
+      // Set work information - send data as validated by the UI
+      const workInfoData = {
+        joined_date: formData.joinDate, // This should be properly validated in UI
+        designation: formData.designation.trim(), // This should be properly validated in UI
+        department_id: null, // No department field in form, setting to null
+        management_role: formData.managementRole
+          ? formData.managementRole.trim()
+          : null,
+        report_to: formData.reportingManager
+          ? parseInt(formData.reportingManager)
+          : null,
+      };
+
+      const workResponse = await employeeAPI.setEmployeeWorkInfo(
+        employeeId,
+        workInfoData
+      );
+
+      if (workResponse.success) {
+        // Success → show popup → then go to Employees list
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+          // Clear the employee ID from session storage
+          sessionStorage.removeItem("newEmployeeId");
+          navigate("/employees");
+        }, 2000);
+      } else {
+        alert(workResponse.message || "Failed to save work information");
+      }
+    } catch (error) {
+      console.error("Error saving employee data:", error);
+      // Check if it's a validation error from the backend
+      if (error.response) {
+        console.log("Error response:", error.response); // Log for debugging
+        alert(
+          `Server error: ${
+            error.response.data.message ||
+            error.response.data.error ||
+            "Failed to save work information"
+          }`
+        );
+      } else {
+        alert(
+          "An error occurred while saving employee data: " +
+            (error.message || "Unknown error")
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="add-employee-step3">
       {/* ===== Header ===== */}
       <div className="employee-header">
-        <div className="header-left" onClick={() => navigate("/employees/step2")}>
+        <div
+          className="header-left"
+          onClick={() => navigate("/employees/step2")}
+        >
           <img src={backIcon} alt="Back" className="back-icon" />
           <h2>New Employee</h2>
         </div>
@@ -100,13 +208,17 @@ export default function AddEmployeeStep3() {
               <label className="upload-title">NIC</label>
               <div className="mandatory-row">
                 <img src={infoIcon} alt="info" className="info-icon" />
-                <div className="mandatory-pill">Both sides of NIC required.</div>
+                <div className="mandatory-pill">
+                  Both sides of NIC required.
+                </div>
               </div>
             </div>
 
             <label className="upload-field">
               <img src={uploadIcon} alt="upload" />
-              <span>{formData.nic ? formData.nic.name : "Upload NIC document"}</span>
+              <span>
+                {formData.nic ? formData.nic.name : "Upload NIC document"}
+              </span>
               <input
                 type="file"
                 name="nic"
@@ -126,7 +238,9 @@ export default function AddEmployeeStep3() {
               <label className="upload-title">Birth Certificate</label>
               <div className="mandatory-row">
                 <img src={infoIcon} alt="info" className="info-icon" />
-                <div className="mandatory-pill">Both sides of Birth Certificate required.</div>
+                <div className="mandatory-pill">
+                  Both sides of Birth Certificate required.
+                </div>
               </div>
             </div>
 
@@ -184,7 +298,11 @@ export default function AddEmployeeStep3() {
 
             <label className="upload-field">
               <img src={uploadIcon} alt="upload" />
-              <span>{formData.transcript ? formData.transcript.name : "Upload Transcript"}</span>
+              <span>
+                {formData.transcript
+                  ? formData.transcript.name
+                  : "Upload Transcript"}
+              </span>
               <input
                 type="file"
                 name="transcript"
@@ -195,7 +313,9 @@ export default function AddEmployeeStep3() {
             </label>
 
             <small className="pdf-note">* Upload PDF only</small>
-            {errors.transcript && <small className="error">{errors.transcript}</small>}
+            {errors.transcript && (
+              <small className="error">{errors.transcript}</small>
+            )}
           </div>
         </div>
       </div>
@@ -223,10 +343,14 @@ export default function AddEmployeeStep3() {
                 src={calendarIcon}
                 alt="calendar"
                 className="calendar-icon"
-                onClick={() => joinDateRef.current && joinDateRef.current.showPicker()}
+                onClick={() =>
+                  joinDateRef.current && joinDateRef.current.showPicker()
+                }
               />
             </div>
-            {errors.joinDate && <small className="error">{errors.joinDate}</small>}
+            {errors.joinDate && (
+              <small className="error">{errors.joinDate}</small>
+            )}
           </div>
 
           {/* Designation */}
@@ -242,10 +366,18 @@ export default function AddEmployeeStep3() {
                 <option value="Software Engineer">Software Engineer</option>
                 <option value="QA Engineer">QA Engineer</option>
                 <option value="Project Manager">Project Manager</option>
+                <option value="Designer">Designer</option>
+                <option value="HR Specialist">HR Specialist</option>
               </select>
-              <img src={dropdownIcon} alt="dropdown" className="dropdown-icon" />
+              <img
+                src={dropdownIcon}
+                alt="dropdown"
+                className="dropdown-icon"
+              />
             </div>
-            {errors.designation && <small className="error">{errors.designation}</small>}
+            {errors.designation && (
+              <small className="error">{errors.designation}</small>
+            )}
           </div>
 
           {/* Role */}
@@ -254,11 +386,15 @@ export default function AddEmployeeStep3() {
             <div className="select-box">
               <select name="role" value={formData.role} onChange={handleChange}>
                 <option value="">Select Role</option>
-                <option value="Admin">Admin</option>
-                <option value="Employee">Employee</option>
-                <option value="Manager">Manager</option>
+                <option value="admin">Admin</option>
+                <option value="employee">Employee</option>
+                <option value="manager">Manager</option>
               </select>
-              <img src={dropdownIcon} alt="dropdown" className="dropdown-icon" />
+              <img
+                src={dropdownIcon}
+                alt="dropdown"
+                className="dropdown-icon"
+              />
             </div>
             {errors.role && <small className="error">{errors.role}</small>}
           </div>
@@ -275,10 +411,17 @@ export default function AddEmployeeStep3() {
                 <option value="">Select Management Role</option>
                 <option value="Supervisor">Supervisor</option>
                 <option value="Team Lead">Team Lead</option>
+                <option value="Department Head">Department Head</option>
               </select>
-              <img src={dropdownIcon} alt="dropdown" className="dropdown-icon" />
+              <img
+                src={dropdownIcon}
+                alt="dropdown"
+                className="dropdown-icon"
+              />
             </div>
-            {errors.managementRole && <small className="error">{errors.managementRole}</small>}
+            {errors.managementRole && (
+              <small className="error">{errors.managementRole}</small>
+            )}
           </div>
 
           {/* Reporting Manager */}
@@ -291,10 +434,15 @@ export default function AddEmployeeStep3() {
                 onChange={handleChange}
               >
                 <option value="">Select Reporting Manager</option>
-                <option value="Mr. Alex">Mr. Alex</option>
-                <option value="Ms. Tina">Ms. Tina</option>
+                <option value="1">Mr. Alex (ID: 1)</option>
+                <option value="2">Ms. Tina (ID: 2)</option>
+                <option value="3">Mr. John (ID: 3)</option>
               </select>
-              <img src={dropdownIcon} alt="dropdown" className="dropdown-icon" />
+              <img
+                src={dropdownIcon}
+                alt="dropdown"
+                className="dropdown-icon"
+              />
             </div>
             {errors.reportingManager && (
               <small className="error">{errors.reportingManager}</small>
@@ -303,11 +451,15 @@ export default function AddEmployeeStep3() {
         </div>
 
         <div className="button-row">
-          <button className="cancel-btn" onClick={() => navigate("/employees")}>
+          <button
+            className="cancel-btn"
+            onClick={() => navigate("/employees")}
+            disabled={loading}
+          >
             Cancel
           </button>
-          <button className="save-btn" onClick={handleSave}>
-            Save
+          <button className="save-btn" onClick={handleSave} disabled={loading}>
+            {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </div>

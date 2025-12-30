@@ -259,6 +259,11 @@
   color: #f45b69;
 }
 
+.attendance-status--early_arrival {
+  background: #e0f7fa;
+  color: #006064;
+}
+
 .attendance-pagination {
   align-self: stretch;
   display: flex;
